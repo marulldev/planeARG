@@ -61,4 +61,6 @@ a. Recuperar contraseña
 - Mi Perfil
 
 
+#Aclaraciones#
+- mantener una carpeta llamada PRUEBA, la cual tiene archivos de prueba, en este caso mover el archivo llamado codigo.html.
 
