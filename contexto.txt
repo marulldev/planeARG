@@ -1,0 +1,64 @@
+Esto es un sitio de php, html, css.
+Se trata de un sitio web de aerolineas conectado a una base de datos en sql, al principio 
+sera manejado de forma local y despues se subira a un respectivo servicio de hosting (en este caso Hostinger.com) con
+su credenciales de base de datos.
+
+La estructura del sitio consiste en, una home
+
+#Secciones del usuario del Administrador#
+- Gestión de Aerolíneas
+a. Crear Aerolínea
+b. Modificar Aerolínea
+c. Eliminar Aerolínea
+- Aprobar/Denegar Promociones
+- Gestión de Novedades
+a. Crear Novedad
+b. Modificar Novedad
+c. Eliminar Novedad
+d. Ver Novedades
+- Reportes
+a. Reporte de Ventas (reservas con estado “confirmada”)
+b. Reporte de Vuelos
+c. Reporte de Usuarios
+
+#Secciones del usuario CEO de Aerolínea#
+- Gestión de Vuelos
+a. Crear Vuelo
+b. Modificar Vuelo
+c. Eliminar Vuelo
+- Gestión de Promociones
+a. Crear Promoción
+b. Modificar Promoción
+c. Eliminar Promoción
+- Reportes
+a. Reporte de Ventas de mi Aerolínea
+b. Reporte de Ocupación de Vuelos de mi Aerolínea
+
+#Secciones del Usuario/Pasajero#
+- Buscar Vuelos
+- Reservar Vuelo
+- Gestionar Reservas
+a. Consultar Reservas
+b. Cancelar/Confirmar Reservas
+- Ver Historial de Compras
+- Ver Novedades
+
+
+#Esto se encuentra en todas las paginas, son componentes#
+- Header / Navbar
+- Footer / Mapa de Sitio (será una forma adicional para navegar el sitio la cual estará
+presente siempre en footer)
+
+#Esto se ubica en el header/navbar#
+- Sobre nosotros
+- vuelos (todos pueden verlo, en todo caso se le pide registrarse etc.)
+- ayuda
+
+#Esto tambien se ubica en el navbar, dependiendo de el usuario:#
+- Registrarse
+a. Recuperar contraseña
+- Iniciar Sesión
+- Mi Perfil
+
+
+
