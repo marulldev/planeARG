@@ -1,0 +1,3 @@
+JUMA - Un layout con "content buffering", en otras palabras un archivo llamado init.php, al cual
+le podemos hacer la conexion a la base de datos y instanciar el header.php en todas
+las paginas de nuestro sitio.
