@@ -1,0 +1,103 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f7fb;
+    color: #132238;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+ a {
+    text-decoration: none;
+}
+
+.encabezado-principal {
+    background: aliceblue;
+    border-bottom: 1px solid rgba(19, 34, 56, 0.08);
+    box-shadow: 0 2px 10px rgba(19, 34, 56, 0.06);
+}
+
+.contenedor-encabezado {
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.contenedor-encabezado .circulo-flashero{
+    background: red;
+}
+
+.marca {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    color: #132238;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+}
+
+.logo-marca {
+    width: 52px;
+    height: 52px;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 8px rgba(13, 80, 150, 0.18));
+}
+
+.nombre-marca {
+    font-size: 1.2rem;
+}
+
+.navegacion-principal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.navegacion-principal a {
+    padding: 10px 16px;
+    border-radius: 999px;
+    background: rgba(13, 80, 150, 0.06);
+    color: #17365d;
+    font-size: 0.96rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.navegacion-principal a:hover {
+    background: rgba(13, 80, 150, 0.12);
+    transform: translateY(-1px);
+}
+
+.navegacion-principal .enlace-perfil {
+    background: #0d5aa8;
+    color: #ffffff;
+}
+
+.navegacion-principal .enlace-perfil:hover {
+    background: #0b4d93;
+}
+
+@media (max-width: 700px) {
+    .contenedor-encabezado {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .navegacion-principal {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
