@@ -2,11 +2,11 @@
 // Encabezado principal del sitio - placeholder sin funcionalidad.
 ?>
 <header class="encabezado-principal">
+    <div class="circulo-flashero">
+        <img src="../../publico/imagenes/Logo_plano_sinfondo.png" alt="Logo PlaneARG" class="logo-marca">
+    </div>
     <div class="contenedor-encabezado">
         <a href="#" class="marca" aria-label="Inicio">
-            <div class="circulo-flashero">
-                <img src="../../publico/imagenes/Logo_plano_sinfondo.png" alt="Logo PlaneARG" class="logo-marca">
-            </div>
             <span class="nombre-marca">PlaneARG</span>
         </a>
 
