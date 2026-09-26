@@ -16,11 +16,9 @@ a {
 
 /* ENCABEZADO.PHP */
 .encabezado-principal {
+    z-index: 999;
     position: relative;
-    background: aliceblue;
-    border-bottom: 1px solid rgba(19, 34, 56, 0.08);
-    box-shadow: 0 3.2px 7.2px 0 rgb(0 0 0 / 13%), 0 0.6px 1.8px 0 rgb(0 0 0 / 11%);
-    min-height: 88px;
+    min-height: 150px;
     display: flex;
     align-items: center;
 }
@@ -28,7 +26,11 @@ a {
 .contenedor-encabezado {
     position: relative;
     z-index: 1;
-    max-width: 1800px;
+    box-shadow: 0 3.2px 7.2px 0 rgb(0 0 0 / 13%), 0 0.6px 1.8px 0 rgb(0 0 0 / 11%);
+
+    /*max-width: 1800px;*/
+    max-width: 95vw;
+    border-radius: 100px;
     margin: 0 auto;
     padding: 12px 24px 12px 150px;
     display: flex;
@@ -36,13 +38,14 @@ a {
     justify-content: space-between;
     gap: 20px;
     width: 100%;
+    background: aliceblue;
 }
 
 .circulo-flashero {
     position: absolute;
     top: 50%;
     left: 2rem;
-    transform: translateY(-40%);
+    transform: translateY(-50%);
     z-index: 2;
     display: flex;
     align-items: center;
@@ -62,7 +65,6 @@ a {
     height: 100%;
     object-fit: contain;
     display: block;
-
 }
 
 
