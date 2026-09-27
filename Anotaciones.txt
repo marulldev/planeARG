@@ -3,3 +3,5 @@ le podemos hacer la conexion a la base de datos y instanciar el header.php en to
 las paginas de nuestro sitio.
 
 JUMA - Recordar la accesibilidad, alt="descripcion", etc.
+
+JUMA - Necesario boostrap?
