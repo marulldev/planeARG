@@ -2,4 +2,4 @@ JUMA - Un layout con "content buffering", en otras palabras un archivo llamado i
 le podemos hacer la conexion a la base de datos y instanciar el header.php en todas
 las paginas de nuestro sitio.
 
-JUMA - Recordar la accesibilidad, alt, etc.
+JUMA - Recordar la accesibilidad, alt="descripcion", etc.

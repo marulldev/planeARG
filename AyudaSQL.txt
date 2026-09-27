@@ -1,13 +1,19 @@
-intenta conectarse a MySQL con:
+credenciales phpmyadmin:
 host: localhost
 usuario: root
 password: vacía
 base: planearg_prueba
+(lo mas probable es que no las pida.)
 
-permite escribir consultas SQL desde la misma página
-muestra el resultado en una tabla si la consulta devuelve filas
+"conexion_prueba.php" permite escribir consultas SQL desde la misma página
 trae ejemplos de consultas rápidas como:
 
 SELECT * FROM usuarios;
 SELECT * FROM vuelos;
 SHOW TABLES;
+
+Un ejemplo comun de una consulta es:
+SELECT * FROM vuelos WHERE id=1;
+traducido al español seria:
+SELECCIONAR <atributo> DE <tabla> DONDE <condicion> 
+

@@ -4,6 +4,8 @@ $usuario = 'root';
 $password = '';
 $baseDatos = 'planearg_prueba';
 
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
 $mensaje = '';
 $error = '';
 $resultadoConsulta = [];
@@ -12,29 +14,39 @@ $metodoHttp = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
 if ($metodoHttp === 'POST') {
     $consultaActual = trim($_POST['consulta'] ?? '');
+    $resultadoConsulta = [];
 
     if ($consultaActual === '') {
         $error = 'Debes escribir una consulta SQL para ejecutar.';
     } else {
-        $conexion = new mysqli($servidor, $usuario, $password, $baseDatos);
+        $conexion = null;
 
-        if ($conexion->connect_error) {
-            $error = 'No se pudo conectar a la base de datos: ' . $conexion->connect_error;
-        } else {
+        try {
+            $conexion = new mysqli($servidor, $usuario, $password, $baseDatos);
+
+            if ($conexion->connect_errno) {
+                throw new RuntimeException('No se pudo conectar a la base de datos: ' . $conexion->connect_error);
+            }
+
             $resultado = $conexion->query($consultaActual);
 
             if ($resultado === false) {
-                $error = 'Error en la consulta: ' . $conexion->error;
-            } else {
-                if ($resultado instanceof mysqli_result) {
-                    $resultadoConsulta = $resultado->fetch_all(MYSQLI_ASSOC);
-                    $mensaje = 'Consulta ejecutada correctamente. Se encontraron ' . count($resultadoConsulta) . ' fila(s).';
-                } else {
-                    $mensaje = 'Consulta ejecutada correctamente. Filas afectadas: ' . $conexion->affected_rows;
-                }
+                throw new RuntimeException('Error en la consulta: ' . $conexion->error);
             }
 
-            $conexion->close();
+            if ($resultado instanceof mysqli_result) {
+                $resultadoConsulta = $resultado->fetch_all(MYSQLI_ASSOC);
+                $mensaje = 'Consulta ejecutada correctamente. Se encontraron ' . count($resultadoConsulta) . ' fila(s).';
+            } else {
+                $mensaje = 'Consulta ejecutada correctamente. Filas afectadas: ' . $conexion->affected_rows;
+            }
+        } catch (Throwable $e) {
+            $error = $e->getMessage();
+            $resultadoConsulta = [];
+        } finally {
+            if ($conexion instanceof mysqli) {
+                $conexion->close();
+            }
         }
     }
 }
