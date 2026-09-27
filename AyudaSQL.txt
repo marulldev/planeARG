@@ -1,0 +1,13 @@
+intenta conectarse a MySQL con:
+host: localhost
+usuario: root
+password: vacía
+base: planearg_prueba
+
+permite escribir consultas SQL desde la misma página
+muestra el resultado en una tabla si la consulta devuelve filas
+trae ejemplos de consultas rápidas como:
+
+SELECT * FROM usuarios;
+SELECT * FROM vuelos;
+SHOW TABLES;
