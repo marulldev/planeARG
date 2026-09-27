@@ -12,8 +12,16 @@ SELECT * FROM usuarios;
 SELECT * FROM vuelos;
 SHOW TABLES;
 
-Un ejemplo comun de una consulta es:
+##Un ejemplo comun de una consulta es##
+
 SELECT * FROM vuelos WHERE id=1;
 traducido al español seria:
 SELECCIONAR <atributo> DE <tabla> DONDE <condicion> 
 
+##Un ejemplo de creacion / insercion de un registro##
+INSERT INTO usuarios (nombre,email,rol,creado_en)
+VALUES ('1','Matias Torino', 'mato@gmail.com','admin');
+
+
+##Ejemplo de creacion de tabla##
+(ver schema_prueba.sql)
