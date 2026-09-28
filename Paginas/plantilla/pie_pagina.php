@@ -1,7 +1,9 @@
 <?php
 //pie de pagina del sitio 
 ?>
+<?php include "../plantilla/pie_pagina.php"; ?>
 <footer class="pie-pagina">
+
     <div class="contenedor-pie">
         <p>&copy; 2026 PlaneARG. Todos los derechos reservados.</p>
         <nav class="navegacion-pie" aria-label="Navegación del pie de página">
