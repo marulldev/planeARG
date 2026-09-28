@@ -3,7 +3,7 @@
 ?>
 <footer class="pie-pagina">
     <div class="contenedor-pie">
-        <p>&copy; 2024 PlaneARG. Todos los derechos reservados.</p>
+        <p>&copy; 2026 PlaneARG. Todos los derechos reservados.</p>
         <nav class="navegacion-pie" aria-label="Navegación del pie de página">
             <a href="#">Política de privacidad</a>
             <a href="#">Términos de servicio</a>
