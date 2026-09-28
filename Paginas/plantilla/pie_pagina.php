@@ -1,7 +1,6 @@
 <?php
 //pie de pagina del sitio 
 ?>
-<?php include "../plantilla/pie_pagina.php"; ?>
 <footer class="pie-pagina">
 
     <div class="contenedor-pie">

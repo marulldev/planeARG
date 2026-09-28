@@ -13,6 +13,8 @@
         <h1>Hola mundo</h1>
         <h1>Esto es index.php</h1>
     </main>
+
+    <?php include "../plantilla/pie_pagina.php"; ?>
 </body>
 </html>
 
