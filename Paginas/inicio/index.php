@@ -11,6 +11,7 @@
 
     <main class="contenido-principal">
         <h1>Hola mundo</h1>
+        <h1>Esto es index.php</h1>
     </main>
 </body>
 </html>
