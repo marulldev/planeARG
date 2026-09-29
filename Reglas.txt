@@ -1,2 +1,4 @@
 Utilizar solo STYLE.CSS para los estilos.
 no hacer mas hojas de estilos.
+no hacer paginas muy scrolleables.
+accesibilidad, alt="descripcion".
