@@ -1,1 +1,2 @@
-Utilizar solo STYLE.CSS para los estilos
+Utilizar solo STYLE.CSS para los estilos.
+no hacer mas hojas de estilos.
