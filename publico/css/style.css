@@ -177,6 +177,116 @@ a {
     transform: translateY(-1px);
 }
 
+/* ACERCA DE NOSOTROS */
+.acerca {
+    width: min(1120px, calc(100% - 40px));
+    margin: 0 auto;
+    padding: 42px 0 72px;
+}
+
+.acerca-presentacion {
+    padding: 52px clamp(24px, 7vw, 88px);
+    border-radius: 12px;
+    background: linear-gradient(115deg, #e2f2f8 0%, #f3f7fb 72%);
+    border-left: 6px solid #0d5aa8;
+}
+
+.acerca-etiqueta {
+    margin: 0 0 12px;
+    color: #0d5aa8;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.acerca-presentacion h1 {
+    max-width: 700px;
+    margin: 0;
+    color: #132238;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    line-height: 1.08;
+}
+
+.acerca-bajada {
+    max-width: 680px;
+    margin: 18px 0 0;
+    color: #40546a;
+    font-size: 1.1rem;
+    line-height: 1.7;
+}
+
+.acerca-desplegable {
+    max-width: 720px;
+    margin-top: 30px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(19, 34, 56, 0.18);
+}
+
+.acerca-desplegable summary {
+    width: fit-content;
+    color: #0d5aa8;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.acerca-desplegable p {
+    max-width: 650px;
+    margin: 14px 0 0;
+    color: #40546a;
+    line-height: 1.75;
+}
+
+.acerca-caracteristicas {
+    padding: 58px 0 48px;
+}
+
+.acerca-encabezado-seccion h2,
+.acerca-informacion h2 {
+    margin: 0;
+    color: #132238;
+    font-size: 1.8rem;
+    line-height: 1.2;
+}
+
+.acerca-lista-caracteristicas {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
+    margin-top: 28px;
+}
+
+.acerca-caracteristica {
+    padding-top: 18px;
+    border-top: 2px solid #b8d5e6;
+}
+
+.acerca-numero {
+    color: #0d5aa8;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.acerca-caracteristica h3 {
+    margin: 12px 0 8px;
+    font-size: 1.15rem;
+}
+
+.acerca-caracteristica p,
+.acerca-informacion > p {
+    margin: 0;
+    color: #40546a;
+    line-height: 1.7;
+}
+
+.acerca-informacion {
+    display: grid;
+    grid-template-columns: 1fr 0.8fr;
+    align-items: center;
+    gap: 32px;
+    padding: 30px 0;
+    border-top: 1px solid #cbd9e4;
+}
+
 @media (max-width: 700px) {
     .contenedor-encabezado {
         flex-direction: column;
@@ -196,5 +306,23 @@ a {
 
     .navegacion-pie {
         justify-content: flex-start;
+    }
+
+    .acerca {
+        width: min(100% - 32px, 560px);
+        padding: 28px 0 44px;
+    }
+
+    .acerca-presentacion {
+        padding: 34px 24px;
+    }
+
+    .acerca-lista-caracteristicas,
+    .acerca-informacion {
+        grid-template-columns: 1fr;
+    }
+
+    .acerca-caracteristicas {
+        padding: 42px 0 32px;
     }
 }
