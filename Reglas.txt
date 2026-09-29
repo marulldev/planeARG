@@ -1,0 +1,1 @@
+Utilizar solo STYLE.CSS para los estilos
