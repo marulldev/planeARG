@@ -14,20 +14,7 @@
     <?php include "../plantilla/encabezado.php"; ?>
 
     <main class="contenido-principal">
-        <h1>Hola mundo</h1>
-        <h1>Esto es index.php</h1>
-        <img src="../../publico/imagenes/avion_volando.jpg">
-        <img src="../../publico/imagenes/avion_volando.jpg">
-        <img src="../../publico/imagenes/avion_volando.jpg">
-        <img src="../../publico/imagenes/avion_volando.jpg">
-        <img src="../../publico/imagenes/avion_volando.jpg">
-        <img src="../../publico/imagenes/avion_volando.jpg">
-        <img src="../../publico/imagenes/avion_volando.jpg">
-        <img src="../../publico/imagenes/avion_volando.jpg">
-        <img src="../../publico/imagenes/avion_volando.jpg">
-        <img src="../../publico/imagenes/avion_volando.jpg">
-        <img src="../../publico/imagenes/avion_volando.jpg">
-        <img src="../../publico/imagenes/avion_volando.jpg">
+
     </main>
 
     <?php include "../plantilla/pie_pagina.php"; ?>
