@@ -24,12 +24,59 @@ a {
     text-decoration: none;
 }
 
+/* INDEX.PHP */
+.portada-inicio {
+    position: relative;
+    display: grid;
+    min-height: min(72vh, 760px);
+    place-items: center;
+    overflow: hidden;
+    isolation: isolate;
+    background: #132238;
+}
+
+.portada-inicio::after {
+    position: absolute;
+    z-index: -1;
+    background: linear-gradient(90deg, rgb(10 24 40 / 62%), rgb(10 24 40 / 12%));
+    content: "";
+    inset: 0;
+}
+
+.video-portada {
+    position: absolute;
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.contenido-portada {
+    width: min(calc(100% - 100px));
+    padding: 48px 0;
+}
+
+.contenido-portada h1 {
+    margin: 0;
+    color: #ffffff;
+    font-size: clamp(3rem, 8vw, 7rem);
+    font-weight: 800;
+    line-height: 1;
+}
+
+.contenido-portada h1 span {
+    color: #72d5f4;
+}
+
 
 /* ENCABEZADO.PHP */
 .encabezado-principal {
+    position: fixed;
     z-index: 999;
-    position: relative;
-    min-height: 150px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 180px;
     display: flex;
     align-items: center;
 }
@@ -40,7 +87,7 @@ a {
     box-shadow: 0 3.2px 7.2px 0 rgb(0 0 0 / 13%), 0 0.6px 1.8px 0 rgb(0 0 0 / 11%);
 
     /*max-width: 1800px;*/
-    max-width: 95vw;
+    max-width: 97vw;
     height: 10vh;
     border-radius: 100px;
     margin: 0 auto;
@@ -56,7 +103,7 @@ a {
 .circulo-flashero {
     position: absolute;
     top: 50%;
-    left: 2rem;
+    left: 1.5rem;
     transform: translateY(-50%);
     z-index: 2;
     display: flex;
@@ -298,6 +345,10 @@ a {
 }
 
 @media (max-width: 700px) {
+    .portada-inicio {
+        min-height: 62vh;
+    }
+
     .contenedor-encabezado {
         flex-direction: column;
         align-items: flex-start;
