@@ -11,7 +11,7 @@
         </a>
 
         <nav class="navegacion-principal" aria-label="Navegación principal">
-            <a href="#">Sobre nosotros</a>
+            <a href="/planeARG/Paginas/Info/acerca_nosotros.php">Sobre nosotros</a>
             <a href="#">Vuelos</a>
             <a href="#">Ayuda</a>
             <a href="#" class="enlace-perfil">Mi perfil</a>

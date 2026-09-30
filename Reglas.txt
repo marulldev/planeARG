@@ -1,4 +1,11 @@
 Utilizar solo STYLE.CSS para los estilos.
 no hacer mas hojas de estilos.
+
 no hacer paginas muy scrolleables.
+
 accesibilidad, alt="descripcion".
+
+Abrir el proyecto en XAMPP, ya que los HREF / LINKS / VINCULOS estan hechos de manera tal que
+funcionen en un servidor real, por eso al utilizar "five server" los botones de vinculos te mandan error.
+ejemplo: <a href="/planeARG/Paginas/Info/acerca_nosotros.php">Sobre nosotros</a>
+(si solo van a diseñar una web, no deberia ser necesario usar XAMPP)
