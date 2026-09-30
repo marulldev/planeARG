@@ -9,3 +9,5 @@ Abrir el proyecto en XAMPP, ya que los HREF / LINKS / VINCULOS estan hechos de m
 funcionen en un servidor real, por eso al utilizar "five server" los botones de vinculos te mandan error.
 ejemplo: <a href="/planeARG/Paginas/Info/acerca_nosotros.php">Sobre nosotros</a>
 (si solo van a diseñar una web, no deberia ser necesario usar XAMPP)
+
+para ingresar a la pagina XAMPP escribir "localhost/planeARG" con xampp encendido
