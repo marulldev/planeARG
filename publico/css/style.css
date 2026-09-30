@@ -80,6 +80,11 @@ a {
     align-items: center;
 }
 
+.encabezado-superpuesto {
+    position: fixed;
+    left: 0;
+}
+
 .contenedor-encabezado {
     position: relative;
     z-index: 1;

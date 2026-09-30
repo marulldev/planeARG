@@ -1,7 +1,10 @@
-<?php $paginaActual = basename($_SERVER['SCRIPT_NAME']); ?>
+<?php
+$paginaActual = basename($_SERVER['SCRIPT_NAME']);
+$encabezadoSuperpuesto = !empty($encabezadoSuperpuesto);
+?>
 
 
-<header class="encabezado-principal">
+<header class="encabezado-principal <?= $encabezadoSuperpuesto ? 'encabezado-superpuesto' : '' ?>">
     <a href = "/planeARG/Paginas/inicio/index.php" >
         <div class="circulo-flashero">
             <img src="../../publico/imagenes/Logo_plano_sinfondo.png" alt="Logo PlaneARG" class="logo-marca">

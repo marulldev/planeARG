@@ -11,7 +11,10 @@
 
 
 <body>
-    <?php include "../plantilla/encabezado.php"; ?>
+    <?php
+    $encabezadoSuperpuesto = true;
+    include "../plantilla/encabezado.php";
+    ?>
 
     <main class="contenido-principal">
         <section class="portada-inicio" aria-labelledby="titulo-inicio">
@@ -23,7 +26,7 @@
             <div class="contenido-portada">
                 <h1 id="titulo-inicio">plane<span>ARG</span></h1>
             </div>
-            
+
         </section>
     </main>
 
