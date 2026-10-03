@@ -348,6 +348,176 @@ a {
     border-top: 1px solid #cbd9e4;
 }
 
+/* AUTENTICACION */
+.autenticacion {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 42px 20px 72px;
+}
+
+.tarjeta-autenticacion {
+    width: min(100%, 480px);
+    padding: clamp(28px, 5vw, 48px);
+    border: 1px solid #dce6ee;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 12px 36px rgb(19 34 56 / 9%);
+}
+
+.tarjeta-registro {
+    width: min(100%, 760px);
+}
+
+.autenticacion-etiqueta {
+    margin: 0 0 10px;
+    color: #0d5aa8;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.tarjeta-autenticacion h1 {
+    margin: 0;
+    color: #132238;
+    font-size: clamp(1.8rem, 5vw, 2.4rem);
+    line-height: 1.15;
+}
+
+.autenticacion-introduccion {
+    margin: 12px 0 28px;
+    color: #40546a;
+    line-height: 1.6;
+}
+
+.formulario-autenticacion {
+    display: grid;
+    gap: 18px;
+}
+
+.formulario-registro {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.formulario-registro > .campo-autenticacion:first-child,
+.campos-contrasena-registro {
+    grid-column: 1 / -1;
+}
+
+.campos-contrasena-registro {
+    display: grid;
+    gap: 18px;
+}
+
+.campo-autenticacion {
+    display: grid;
+    gap: 8px;
+}
+
+.campo-autenticacion label {
+    color: #17365d;
+    font-size: 0.92rem;
+    font-weight: 600;
+}
+
+.campo-autenticacion input {
+    width: 100%;
+    min-height: 48px;
+    padding: 11px 14px;
+    border: 1px solid #cbd9e4;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #132238;
+    font-size: 1rem;
+}
+
+.campo-autenticacion input:focus {
+    border-color: #0d5aa8;
+    outline: 3px solid rgb(13 90 168 / 15%);
+}
+
+.campo-contrasena-visible {
+    position: relative;
+}
+
+.campo-contrasena-visible input {
+    padding-right: 52px;
+}
+
+.boton-visibilidad-contrasena {
+    position: absolute;
+    right: 8px;
+    bottom: 7px;
+    width: 36px;
+    height: 36px;
+    padding: 7px;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    cursor: pointer;
+}
+
+.boton-visibilidad-contrasena img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.boton-visibilidad-contrasena:focus-visible {
+    outline: 3px solid rgb(13 90 168 / 35%);
+}
+
+.boton-autenticacion {
+    min-height: 48px;
+    padding: 12px 18px;
+    border: 0;
+    border-radius: 999px;
+    background: #0d5aa8;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.boton-autenticacion:hover {
+    transform: translateY(-1px);
+    background: #0b4d93;
+}
+
+.formulario-registro .boton-autenticacion {
+    grid-column: 1 / -1;
+}
+
+.enlace-recuperar {
+    display: block;
+    width: fit-content;
+    margin: 20px auto 0;
+    color: #0d5aa8;
+    font-size: 0.92rem;
+    font-weight: 600;
+}
+
+.enlace-recuperar:hover,
+.alternativa-autenticacion a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.alternativa-autenticacion {
+    margin: 20px 0 0;
+    color: #40546a;
+    font-size: 0.92rem;
+    text-align: center;
+}
+
+.alternativa-autenticacion a {
+    color: #0d5aa8;
+    font-weight: 700;
+}
+
 @media (max-width: 700px) {
     .portada-inicio {
         min-height: 62vh;
@@ -384,6 +554,14 @@ a {
 
     .acerca-lista-caracteristicas,
     .acerca-informacion {
+        grid-template-columns: 1fr;
+    }
+
+    .autenticacion {
+        padding: 28px 16px 44px;
+    }
+
+    .formulario-registro {
         grid-template-columns: 1fr;
     }
 
