@@ -5,3 +5,5 @@ las paginas de nuestro sitio.
 JUMA - Recordar la accesibilidad, alt="descripcion", etc.
 
 JUMA - Necesario boostrap?
+
+JUMA - api de foto d perfil
