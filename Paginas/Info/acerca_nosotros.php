@@ -26,22 +26,19 @@
 		<section class="acerca-caracteristicas" aria-labelledby="titulo-caracteristicas">
 			<div class="acerca-encabezado-seccion">
 				<p class="acerca-etiqueta">Planeá a tu manera</p>
-				<h2 id="titulo-caracteristicas">rapido, facil y accesible</h2>
+				<h2 id="titulo-caracteristicas">Rápido, Fácil y Accesible</h2>
 			</div>
 
 			<div class="acerca-lista-caracteristicas">
 				<article class="acerca-caracteristica">
-					<span class="acerca-numero" aria-hidden="true">01</span>
 					<h3>Buscá vuelos</h3>
 					<p>Explorá alternativas y encontrá una opción que se adapte a tu próximo destino.</p>
 				</article>
 				<article class="acerca-caracteristica">
-					<span class="acerca-numero" aria-hidden="true">02</span>
 					<h3>Organizá tus reservas</h3>
 					<p>Consultá tus viajes y tené a mano los detalles de cada reserva.</p>
 				</article>
 				<article class="acerca-caracteristica">
-					<span class="acerca-numero" aria-hidden="true">03</span>
 					<h3>Descubrí novedades</h3>
 					<p>Enterate de promociones y noticias para inspirar tu próximo viaje.</p>
 				</article>
@@ -51,7 +48,7 @@
 		<aside class="acerca-informacion" aria-labelledby="titulo-informacion">
 			<div>
 				<p class="acerca-etiqueta">También estamos para ayudarte</p>
-				<h2 id="titulo-informacion">La información que necesitás, cuando la necesitás</h2>
+				<h2 id="titulo-informacion">La información que necesitás,<br>cuando la necesitás <br></h2>
 			</div>
 			<p>Visitá la sección de ayuda para resolver dudas sobre el uso de la plataforma. Antes de viajar, verificá siempre las condiciones y requisitos vigentes de tu vuelo con la aerolínea correspondiente.</p>
 		</aside>
