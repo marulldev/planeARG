@@ -358,7 +358,7 @@ a {
 
 .tarjeta-autenticacion {
     width: min(100%, 480px);
-    padding: clamp(28px, 5vw, 48px);
+    padding: clamp(18px, 5vw, 28px);
     border: 1px solid #dce6ee;
     border-radius: 16px;
     background: #ffffff;
@@ -366,7 +366,7 @@ a {
 }
 
 .tarjeta-registro {
-    width: min(100%, 760px);
+    width: min(100%, 600px);
 }
 
 .autenticacion-etiqueta {

@@ -23,7 +23,7 @@ $encabezadoSuperpuesto = !empty($encabezadoSuperpuesto);
             </a>
             <a href="#">Vuelos</a>
             <a href="#">Ayuda</a>
-            <a href="#" class="enlace-perfil">Mi perfil</a>
+            <a href="/planeARG/Paginas/autenticacion/iniciar_sesion.php" class="enlace-perfil">Mi perfil</a>
         </nav>
     </div>
 </header>

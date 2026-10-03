@@ -63,17 +63,6 @@
                 </div>
 
                 <div class="campo-autenticacion">
-                    <label for="telefono">Teléfono</label>
-                    <input
-                        id="telefono"
-                        name="telefono"
-                        type="tel"
-                        autocomplete="tel"
-                        placeholder="Tu número de teléfono"
-                        required>
-                </div>
-
-                <div class="campo-autenticacion">
                     <label for="nombre">Nombre</label>
                     <input
                         id="nombre"
@@ -107,6 +96,17 @@
                         required>
                 </div>
 
+                <div class="campo-autenticacion">
+                    <label for="telefono">Teléfono</label>
+                    <input
+                        id="telefono"
+                        name="telefono"
+                        type="tel"
+                        autocomplete="tel"
+                        placeholder="Tu número de teléfono"
+                        required>
+                </div>
+                
                 <button class="boton-autenticacion" type="submit">Crear cuenta</button>
             </form>
 
@@ -129,9 +129,9 @@
             campoContrasena.type = mostrarContrasena ? "text" : "password";
             botonVisibilidadContrasena.setAttribute("aria-label", mostrarContrasena ? "Ocultar contraseña" : "Mostrar contraseña");
             botonVisibilidadContrasena.setAttribute("aria-pressed", String(mostrarContrasena));
-            iconoVisibilidadContrasena.src = mostrarContrasena
-                ? "../../publico/icon/hidden.png"
-                : "../../publico/icon/eye.png";
+            iconoVisibilidadContrasena.src = mostrarContrasena ?
+                "../../publico/icon/hidden.png" :
+                "../../publico/icon/eye.png";
         });
     </script>
 </body>
