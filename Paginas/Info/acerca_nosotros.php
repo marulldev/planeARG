@@ -19,7 +19,7 @@
 
 			<details class="acerca-desplegable">
 				<summary>¿Quiénes somos?</summary>
-				<p>grupo de enotrnos graficos conformado por Marull Noseda y Torino. Te ayudamos a explorar vuelos, revisar opciones y gestionar tus reservas con información clara durante cada etapa.</p>
+				<p>Somos un grupo de enotrnos graficos del año 2026 conformado por Marull Noseda y Torino. Te ayudamos a explorar vuelos, revisar opciones y gestionar tus reservas con información clara durante cada etapa.</p>
 			</details>
 		</section>
 
