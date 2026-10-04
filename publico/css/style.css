@@ -882,6 +882,307 @@ a {
     }
 }
 
+/* GESTION AEROLINEAS */
+.gestionar-aerolineas {
+    width: min(920px, calc(100% - 40px));
+    margin: 0 auto;
+    padding: 38px 0 48px;
+}
+
+.encabezado-gestion-aerolineas {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.etiqueta-gestion-aerolineas {
+    margin: 0 0 5px;
+    color: #0d5aa8;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.encabezado-gestion-aerolineas h1 {
+    margin: 0;
+    color: #132238;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.boton-agregar-aerolinea {
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 11px 16px;
+    border: 0;
+    border-radius: 10px;
+    background: #0d5aa8;
+    color: #ffffff;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.boton-agregar-aerolinea:disabled {
+    background: #7d9dbb;
+    cursor: not-allowed;
+}
+
+.enlace-vista-aerolineas,
+.aviso-vista-aerolineas {
+    margin: 0 0 18px;
+    color: #526579;
+    font-size: 0.9rem;
+}
+
+.enlace-vista-aerolineas a,
+.aviso-vista-aerolineas a {
+    color: #0d5aa8;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.aviso-vista-aerolineas {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 15px;
+    border-left: 4px solid #32a9a9;
+    border-radius: 0 8px 8px 0;
+    background: #eaf7f6;
+}
+
+.boton-agregar-aerolinea svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-width: 2.2;
+}
+
+.lista-aerolineas {
+    display: grid;
+    gap: 14px;
+}
+
+.fila-aerolinea {
+    display: flex;
+    min-height: 76px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 16px 12px 22px;
+    border: 1px solid rgb(19 34 56 / 16%);
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgb(19 34 56 / 5%);
+}
+
+.fila-aerolinea h2 {
+    min-width: 0;
+    margin: 0;
+    color: #17365d;
+    font-size: 1.05rem;
+    font-weight: 500;
+    overflow-wrap: anywhere;
+}
+
+.acciones-aerolinea {
+    display: flex;
+    flex: 0 0 auto;
+    gap: 8px;
+}
+
+.boton-icono {
+    display: grid;
+    width: 42px;
+    height: 42px;
+    place-items: center;
+    border: 1px solid rgb(19 34 56 / 18%);
+    border-radius: 8px;
+    background: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.boton-icono:disabled {
+    cursor: not-allowed;
+    opacity: 1;
+}
+
+.boton-icono img,
+.boton-icono svg {
+    display: block;
+    width: 20px;
+    height: 20px;
+}
+
+.boton-icono svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
+}
+
+.boton-eliminar-aerolinea {
+    color: #c5333a;
+}
+
+.boton-eliminar-aerolinea img {
+    filter: invert(24%) sepia(42%) saturate(2533%) hue-rotate(326deg) brightness(88%) contrast(94%);
+}
+
+.boton-eliminar-aerolinea:hover {
+    border-color: #c5333a;
+    background: #fff1f0;
+}
+
+.boton-editar-aerolinea {
+    color: #0d5aa8;
+}
+
+.boton-editar-aerolinea:hover {
+    border-color: #0d5aa8;
+    background: #eef6fb;
+}
+
+.estado-vacio-aerolineas {
+    display: grid;
+    justify-items: center;
+    padding: 42px 24px;
+    border: 1px dashed rgb(19 34 56 / 24%);
+    border-radius: 12px;
+    background: #ffffff;
+    text-align: center;
+}
+
+.icono-vacio-aerolineas {
+    display: grid;
+    width: 56px;
+    height: 56px;
+    margin-bottom: 12px;
+    place-items: center;
+    border-radius: 16px;
+    background: #eaf1fc;
+}
+
+.icono-vacio-aerolineas img {
+    width: 30px;
+    height: 30px;
+    filter: invert(31%) sepia(21%) saturate(2556%) hue-rotate(185deg) brightness(87%) contrast(89%);
+}
+
+.estado-vacio-aerolineas h2 {
+    margin: 0 0 8px;
+    color: #132238;
+    font-size: 1.15rem;
+}
+
+.estado-vacio-aerolineas p {
+    max-width: 440px;
+    margin: 0;
+    color: #526579;
+    line-height: 1.6;
+}
+
+.paginacion-aerolineas {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 22px;
+}
+
+.control-paginacion-aerolineas {
+    display: inline-flex;
+    min-height: 40px;
+    align-items: center;
+    padding: 8px 13px;
+    border: 1px solid rgb(19 34 56 / 18%);
+    border-radius: 8px;
+    background: #ffffff;
+    color: #17365d;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.control-paginacion-aerolineas:hover:not(.deshabilitado) {
+    border-color: #0d5aa8;
+    background: #eef6fb;
+}
+
+.control-paginacion-aerolineas.deshabilitado {
+    color: #8796a5;
+    cursor: not-allowed;
+}
+
+.estado-paginacion-aerolineas {
+    display: grid;
+    gap: 3px;
+    color: #17365d;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.estado-paginacion-aerolineas span {
+    color: #526579;
+    font-size: 0.8rem;
+    font-weight: 400;
+}
+
+@media (max-width: 600px) {
+    .gestionar-aerolineas {
+        width: min(100% - 32px, 480px);
+        padding: 28px 0 40px;
+    }
+
+    .encabezado-gestion-aerolineas {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .aviso-vista-aerolineas {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .encabezado-gestion-aerolineas h1 {
+        font-size: 1.7rem;
+    }
+
+    .fila-aerolinea {
+        min-height: 68px;
+        padding: 10px 12px 10px 16px;
+    }
+
+    .estado-vacio-aerolineas {
+        padding: 34px 18px;
+    }
+
+    .paginacion-aerolineas {
+        gap: 8px;
+    }
+
+    .control-paginacion-aerolineas {
+        padding: 8px 10px;
+        font-size: 0.82rem;
+    }
+
+    .estado-paginacion-aerolineas {
+        font-size: 0.82rem;
+    }
+}
+
 /* MENU ADMIN */
 .menu-admin {
     width: min(920px, calc(100% - 40px));
