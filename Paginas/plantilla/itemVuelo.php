@@ -14,7 +14,7 @@ $escapar = static function ($valor): string {
         <img src="../../publico/icon/airplane-svgrepo-com.svg" alt="">
     </div>
     <div class="item-vuelo-detalles">
-        <h2 class="item-vuelo-ruta"><?= $escapar($nombre) ?> <span aria-hidden="true">→</span> <strong><?= $escapar($destino) ?></strong></h2>
+        <h2 class="item-vuelo-ruta"><strong><?= $escapar($nombre) ?> <span aria-hidden="true">→</span> <?= $escapar($destino) ?></strong></h2>
         <p class="item-vuelo-fechas"><?= $escapar($fechaInicio) ?> <span aria-hidden="true">—</span> <strong><?= $escapar($fechaFin) ?></strong></p>
     </div>
     <p class="item-vuelo-precio"><?= $escapar($precio) ?></p>
