@@ -544,7 +544,7 @@ a {
     }
 
     .acerca {
-        width: min(100% - 32px, 560px);
+        width: min(560px, calc(100% - 32px));
         padding: 28px 0 44px;
     }
 
@@ -660,5 +660,181 @@ a {
 @media (max-width: 700px) {
     .ayuda-informacion {
         grid-template-columns: 1fr;
+    }
+}
+
+/* VUELOS */
+.vuelos {
+    width: min(1120px, calc(100% - 40px));
+    margin: 0 auto;
+    padding: 42px 0 72px;
+}
+
+.vuelos-presentacion {
+    margin-bottom: 30px;
+}
+
+.vuelos-etiqueta {
+    margin: 0 0 10px;
+    color: #0d5aa8;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.vuelos-presentacion h1 {
+    margin: 0;
+    color: #132238;
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: 1.1;
+}
+
+.vuelos-presentacion > p:last-child {
+    margin: 12px 0 0;
+    color: #40546a;
+    line-height: 1.6;
+}
+
+.vuelos-grupo {
+    margin-top: 28px;
+}
+
+.vuelos-grupo > h2 {
+    margin: 0 0 14px;
+    color: #132238;
+    font-size: 1.25rem;
+}
+
+.vuelos-lista {
+    display: grid;
+    gap: 12px;
+}
+
+.vuelos-lista-fila {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.item-vuelo {
+    display: grid;
+    grid-template-columns: 56px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 14px;
+    min-height: 96px;
+    padding: 14px 18px;
+    border-radius: 18px;
+    background: #ffffff;
+    box-shadow: 0 5px 16px rgb(19 34 56 / 8%);
+}
+
+.item-vuelo-icono {
+    display: grid;
+    width: 56px;
+    aspect-ratio: 1;
+    place-items: center;
+    border-radius: 14px;
+    background: #079fdf;
+}
+
+.item-vuelo-icono img {
+    width: 72%;
+    height: 72%;
+    filter: brightness(0) invert(1);
+}
+
+.item-vuelo-ruta {
+    margin: 0;
+    color: #079fdf;
+    font-size: clamp(1rem, 2vw, 1.4rem);
+    font-weight: 400;
+    line-height: 1.15;
+}
+
+.item-vuelo-fechas {
+    margin: 6px 0 0;
+    color: #079fdf;
+    font-size: 0.9rem;
+    font-weight: 300;
+}
+
+.item-vuelo-precio {
+    margin: 0;
+    color: #12b84a;
+    font-family: monospace;
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.vuelos-lista-fila .item-vuelo {
+    grid-template-columns: 42px minmax(0, 1fr);
+    gap: 10px;
+    padding: 12px;
+}
+
+.vuelos-lista-fila .item-vuelo-icono {
+    width: 42px;
+    border-radius: 12px;
+}
+
+.vuelos-lista-fila .item-vuelo-ruta {
+    font-size: 1rem;
+}
+
+.vuelos-lista-fila .item-vuelo-fechas {
+    font-size: 0.78rem;
+}
+
+.vuelos-lista-fila .item-vuelo-precio {
+    grid-column: 2;
+    font-size: 1rem;
+    justify-self: stretch;
+}
+
+@media (max-width: 700px) {
+    .vuelos {
+        width: min(560px, calc(100% - 32px));
+        padding: 28px 0 44px;
+    }
+
+    .vuelos-lista-fila {
+        grid-template-columns: 1fr;
+    }
+
+    .item-vuelo {
+        grid-template-columns: 56px minmax(0, 1fr) auto;
+        gap: 12px;
+        min-height: 0;
+        padding: 12px;
+        border-radius: 16px;
+    }
+
+    .item-vuelo-icono {
+        width: 56px;
+    }
+
+    .item-vuelo-precio {
+        grid-column: auto;
+        font-size: 1rem;
+    }
+
+    .vuelos-lista-fila .item-vuelo-icono {
+        width: 56px;
+    }
+
+    .vuelos-lista-fila .item-vuelo-precio {
+        grid-column: 2;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .item-vuelo {
+        grid-template-columns: 56px minmax(0, 1fr);
+    }
+
+    .item-vuelo-precio {
+        grid-column: 2;
+        justify-self: stretch;
     }
 }

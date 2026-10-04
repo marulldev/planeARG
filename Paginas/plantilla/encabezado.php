@@ -21,7 +21,7 @@ $espacioEnBlanco = isset($espacioEnBlanco) ? $espacioEnBlanco : true;
                <?= $paginaActual === 'acerca_nosotros.php' ? 'aria-current="page"' : '' ?>>
                 Sobre nosotros
             </a>
-            <a href="#">Vuelos</a>
+            <a href="/planeARG/Paginas/Info/vuelos.php" class="<?= $paginaActual === 'vuelos.php' ? 'activo' : '' ?>" <?= $paginaActual === 'vuelos.php' ? 'aria-current="page"' : '' ?>>Vuelos</a>
             <a href="/planeARG/Paginas/Info/ayuda.php" class="<?= $paginaActual === 'ayuda.php' ? 'activo' : '' ?>" <?= $paginaActual === 'ayuda.php' ? 'aria-current="page"' : '' ?>>Ayuda</a>
             <a href="/planeARG/Paginas/autenticacion/iniciar_sesion.php" class="enlace-perfil">Mi perfil</a>
         </nav>
