@@ -838,3 +838,156 @@ a {
         justify-self: stretch;
     }
 }
+
+/* MENU ADMIN */
+.menu-admin {
+    width: min(920px, calc(100% - 40px));
+    margin: 0 auto;
+    padding: 38px 0 56px;
+}
+
+.menu-admin > h1 {
+    margin: 0 0 28px;
+    color: #132238;
+    font-size: 2rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.acciones-admin {
+    display: grid;
+    gap: 18px;
+}
+
+.accion-admin {
+    display: flex;
+    min-height: 76px;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 18px 24px;
+    border: 1px solid rgb(19 34 56 / 18%);
+    border-radius: 14px;
+    background: #ffffff;
+    box-shadow: 0 5px 16px rgb(19 34 56 / 6%);
+    color: #17365d;
+    font-size: 1.15rem;
+    font-weight: 600;
+    text-align: center;
+    transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+}
+
+.icono-admin {
+    display: grid;
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
+    place-items: center;
+    border-radius: 12px;
+}
+
+.icono-admin svg,
+.icono-admin img {
+    display: block;
+    width: 27px;
+    height: 27px;
+}
+
+.icono-admin svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 3;
+}
+
+.icono-avion {
+    background: #eaf1fc;
+    color: #2857a8;
+}
+
+.icono-promocion {
+    background: #e4f7f6;
+    color: #32a9a9;
+}
+
+.icono-novedad {
+    background: #fff0ed;
+    color: #d9363e;
+}
+
+.accion-admin:hover {
+    transform: translateY(-2px);
+    border-color: #0d5aa8;
+    background: #f2f9fc;
+}
+
+.accion-admin:focus-visible,
+.enlaces-reportes-admin a:focus-visible {
+    outline: 3px solid #079fdf;
+    outline-offset: 3px;
+}
+
+.reportes-admin {
+    margin-top: 34px;
+}
+
+.reportes-admin h2 {
+    margin: 0 0 14px;
+    color: #132238;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.enlaces-reportes-admin {
+    display: grid;
+    gap: 9px;
+}
+
+.enlaces-reportes-admin a {
+    display: flex;
+    min-height: 44px;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 14px;
+    border: 1px solid rgb(19 34 56 / 14%);
+    border-radius: 8px;
+    background: #ffffff;
+    color: #17365d;
+    font-weight: 500;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.icono-reporte {
+    width: 23px;
+    height: 23px;
+    flex: 0 0 23px;
+    fill: none;
+    stroke: #132238;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2.6;
+}
+
+.enlaces-reportes-admin a:hover {
+    border-color: #0d5aa8;
+    background: #f2f9fc;
+}
+
+@media (max-width: 600px) {
+    .menu-admin {
+        width: min(100% - 32px, 480px);
+        padding: 28px 0 40px;
+    }
+
+    .menu-admin > h1 {
+        margin-bottom: 22px;
+        font-size: 1.7rem;
+    }
+
+    .accion-admin {
+        min-height: 68px;
+        padding: 16px;
+        font-size: 1rem;
+    }
+}
