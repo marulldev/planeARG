@@ -107,7 +107,7 @@ a {
 .circulo-flashero {
     position: absolute;
     top: 6vh;
-    left: 1.5rem;
+    left: 15px;
     transform: translateY(-50%);
     z-index: 2;
     display: flex;
