@@ -961,6 +961,14 @@ a {
     color: #d9363e;
 }
 
+.icono-promocion img {
+    filter: brightness(0) saturate(100%) invert(78%) sepia(40%) saturate(857%) hue-rotate(162deg) brightness(101%) contrast(96%);
+}
+
+.icono-novedad img {
+    filter: brightness(0) saturate(100%) invert(27%) sepia(76%) saturate(2297%) hue-rotate(338deg) brightness(95%) contrast(94%);
+}
+
 .accion-admin:hover {
     transform: translateY(-2px);
     border-color: #0d5aa8;

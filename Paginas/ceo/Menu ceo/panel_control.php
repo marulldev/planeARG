@@ -15,13 +15,13 @@
 		<nav class="acciones-admin" aria-label="Gestión de PlaneARG">
 			<a class="accion-admin" href="/planeARG/Paginas/ceo/vuelos/GestionarVuelos.php">
 				<span class="icono-admin icono-avion" aria-hidden="true">
-					<img src="/planeARG/publico/icon/image-1791125549913.png" alt="">
+					<img src="/planeARG/publico/icon/airplane-svgrepo-com.svg" alt="">
 				</span>
 				Gestión de vuelos
 			</a>
 			<a class="accion-admin" href="/planeARG/Paginas/ceo/promociones/GestionarPromociones.php">
 				<span class="icono-admin icono-promocion" aria-hidden="true">
-					<img src="/planeARG/publico/icon/image-1791125372545.png" alt="">
+					<img src="/planeARG/publico/icon/percent-symbol-svgrepo-com.svg" alt="">
 				</span>
 				Gestión de promociones
 			</a>
@@ -31,11 +31,11 @@
 			<h2 id="titulo-reportes-ceo">Reportes</h2>
 			<nav class="enlaces-reportes-admin" aria-label="Reportes CEO">
 				<a href="/planeARG/Paginas/ceo/reportes/ventas.php">
-					<img class="icono-reporte" src="/planeARG/publico/icon/image-1791125348746.png" alt="" aria-hidden="true">
+					<img class="icono-reporte" src="/planeARG/publico/icon/document-text-svgrepo-com.svg" alt="" aria-hidden="true">
 					Reporte de ventas
 				</a>
 				<a href="/planeARG/Paginas/ceo/reportes/ocupacion.php">
-					<img class="icono-reporte" src="/planeARG/publico/icon/image-1791125549913.png" alt="" aria-hidden="true">
+					<img class="icono-reporte" src="/planeARG/publico/icon/document-text-svgrepo-com.svg" alt="" aria-hidden="true">
 					Reporte de ocupación de vuelos
 				</a>
 			</nav>
