@@ -75,9 +75,9 @@ a {
     z-index: 999;
     top: 0;
     width: 100%;
-    min-height: 180px;
+    min-height: 140px;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .encabezado-superpuesto {
@@ -92,10 +92,10 @@ a {
 
     /*max-width: 1800px;*/
     max-width: 97vw;
-    height: 10vh;
+    height: 12vh;
     border-radius: 100px;
     margin: 0 auto;
-    padding: 12px 24px 12px 150px;
+    padding: 12px 24px 12px 125px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -106,7 +106,7 @@ a {
 
 .circulo-flashero {
     position: absolute;
-    top: 50%;
+    top: 6vh;
     left: 1.5rem;
     transform: translateY(-50%);
     z-index: 2;
@@ -115,10 +115,10 @@ a {
     justify-content: center;
     border-bottom: 1px solid rgba(19, 34, 56, 0.08);
     box-shadow: 0 3.2px 7.2px 0 rgb(0 0 0 / 13%), 0 0.6px 1.8px 0 rgb(0 0 0 / 11%);
-    padding: 20px;
+    padding: 12px;
     border-radius: 100%;
-    width: 140px;
-    height: 140px;
+    width: 100px;
+    height: 100px;
     overflow: hidden;
     background: aliceblue;
 }

@@ -24,7 +24,7 @@
             </video>
 
             <div class="contenido-portada">
-                <h1 id="titulo-inicio">plane<span>ARG</span></h1>
+                <h1 id="titulo-inicio">Plane<span>ARG</span></h1>
             </div>
 
         </section>
