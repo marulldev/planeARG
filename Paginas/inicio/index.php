@@ -12,7 +12,7 @@
 
 <body>
     <?php
-    $encabezadoSuperpuesto = true;
+    $espacioEnBlanco = false;
     include "../plantilla/encabezado.php";
     ?>
 
