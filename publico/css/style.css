@@ -193,49 +193,87 @@ a {
 
 /* PIE DE PAGINA */
 .pie-pagina {
-    padding: 12px 0 24px;
+    margin-top: auto;
+    padding: 60px 24px 30px;
+    background: #132238;
 }
 
 .contenedor-pie {
-    max-width: 100vw;
+    width: min(1120px, 100%);
     margin: 0 auto;
-    padding: 22px 32px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    background: aliceblue;
-    border-radius: 0px;
-    box-shadow: 0 3.2px 7.2px 0 rgb(0 0 0 / 13%), 0 0.6px 1.8px 0 rgb(0 0 0 / 11%);
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 40px;
 }
 
-.contenedor-pie p {
+.pie-columna {
+    display: grid;
+    align-content: start;
+    justify-items: start;
+    gap: 14px;
+    ;
+}
+.pie-columna ul {
+    list-style: none;
+    padding: 0;
     margin: 0;
-    color: #17365d;
+}
+
+.pie-columna h2 {
+    margin: 0;
+    color: #72d5f4;
+    font-size: 0.88rem;
+    font-weight: 700;
+}
+
+.pie-marca {
+    display: inline-flex;
+    color: #ffffff;
+    font-size: 1.35rem;
+    font-weight: 800;
+}
+
+.pie-marca span {
+    color: #72d5f4;
+}
+
+.pie-columna p {
+    max-width: 340px;
+    margin: 0;
+    color: #c4d2df;
+    line-height: 1.65;
+}
+
+.lista-pie {
+    display: grid;
+    justify-items: start;
+    gap: 12px;
+    list-style: none;
+}
+
+.pie-columna a:not(.pie-marca) {
+    color: #e4edf4;
     font-size: 0.92rem;
+    transition: color 0.2s ease;
 }
 
-.navegacion-pie {
+.pie-columna a:not(.pie-marca):hover {
+    color: #72d5f4;
+}
+
+.pie-final {
+    grid-column: 1 / -1;
     display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    flex-wrap: wrap;
-    gap: 10px;
+    justify-content: space-between;
+    gap: 16px;
+    padding-top: 18px;
+    border-top: 1px solid rgb(255 255 255 / 16%);
 }
 
-.navegacion-pie a {
-    padding: 9px 14px;
-    border-radius: 999px;
-    background: rgba(13, 80, 150, 0.06);
-    color: #17365d;
-    font-size: 0.9rem;
-    font-weight: 600;
-    transition: all 0.2s ease;
-}
-
-.navegacion-pie a:hover {
-    background: rgba(13, 80, 150, 0.12);
-    transform: translateY(-1px);
+.pie-final p {
+    margin: 0;
+    color: #c4d2df;
+    font-size: 0.82rem;
 }
 
 /* ACERCA DE NOSOTROS */
@@ -534,13 +572,16 @@ a {
     }
 
     .contenedor-pie {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 22px;
+        grid-template-columns: 1fr;
+        gap: 28px;
     }
 
-    .navegacion-pie {
-        justify-content: flex-start;
+    .pie-pagina {
+        padding: 44px 20px 24px;
+    }
+
+    .pie-final {
+        flex-direction: column;
     }
 
     .acerca {
