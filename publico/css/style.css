@@ -75,52 +75,54 @@ a {
     z-index: 999;
     top: 0;
     width: 100%;
-    min-height: 140px;
+    min-height: 110px;
     display: flex;
-    align-items: flex-start;
+        align-items: center;
+        justify-content: center;
+        padding-top: 12px;
 }
 
 .encabezado-superpuesto {
-    position: fixed;
-    left: 0;
+        position: fixed;
+        left: 0;
 }
 
 .contenedor-encabezado {
-    position: relative;
-    z-index: 1;
-    box-shadow: 0 3.2px 7.2px 0 rgb(0 0 0 / 13%), 0 0.6px 1.8px 0 rgb(0 0 0 / 11%);
+        position: relative;
+        z-index: 1;
+        box-shadow: 0 3.2px 7.2px 0 rgb(0 0 0 / 13%), 0 0.6px 1.8px 0 rgb(0 0 0 / 11%);
 
-    /*max-width: 1800px;*/
-    max-width: 97vw;
-    height: 12vh;
-    border-radius: 100px;
-    margin: 0 auto;
-    padding: 12px 24px 12px 125px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    width: 100%;
-    background: aliceblue;
+        /*max-width: 1800px;*/
+        max-width: 95vw;
+        height: 78px;
+        border-radius: 100px;
+        margin: 12px auto 0;
+        padding: 8px 24px 8px 150px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        width: 100%;
+        background: aliceblue;
 }
 
 .circulo-flashero {
-    position: absolute;
-    top: 6vh;
-    left: 15px;
-    transform: translateY(-50%);
-    z-index: 2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-bottom: 1px solid rgba(19, 34, 56, 0.08);
-    box-shadow: 0 3.2px 7.2px 0 rgb(0 0 0 / 13%), 0 0.6px 1.8px 0 rgb(0 0 0 / 11%);
-    padding: 12px;
-    border-radius: 100%;
-    width: 100px;
-    height: 100px;
-    overflow: hidden;
-    background: aliceblue;
+        position: absolute;
+        top: calc(50% + 12px);
+        left: 34px;
+        transform: translateY(-50%);
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-bottom: 1px solid rgba(19, 34, 56, 0.08);
+        box-shadow: 0 3.2px 7.2px 0 rgb(0 0 0 / 13%), 0 0.6px 1.8px 0 rgb(0 0 0 / 11%);
+        padding: 10px;
+        border-radius: 100%;
+        width: 122px;
+        height: 122px;
+        overflow: hidden;
+        background: aliceblue;
 }
 
 .circulo-flashero img {
