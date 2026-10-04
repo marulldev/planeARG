@@ -4,10 +4,10 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Panel CEO | PlaneARG</title>
-	<link rel="stylesheet" href="../../publico/css/style.css">
+    <link rel="stylesheet" href="../../../publico/css/style.css">
 </head>
 <body>
-	<?php include "../plantilla/encabezado.php"; ?>
+	<?php include __DIR__ . "/../../plantilla/encabezado.php"; ?>
 
 	<main class="contenido-principal menu-admin">
 		<h1>Menú CEO</h1>
@@ -30,6 +30,6 @@
 		</section>
 	</main>
 
-	<?php include "../plantilla/pie_pagina.php"; ?>
+	<?php include __DIR__ . "/../../plantilla/pie_pagina.php"; ?>
 </body>
 </html>
