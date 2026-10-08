@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/conexion.php';
+require_once __DIR__ . '/../../includes/conexion.php';
 
 $nombreAerolinea = '';
 $codigoIATA = '';
@@ -9,7 +9,7 @@ $errorFormulario = '';
 $conexion = null;
 
 try {
-	$conexion = conectarBaseAerolineas();
+	$conexion = conectarBaseDeDatos();
 } catch (Throwable $error) {
 	$errorFormulario = 'No se pudo conectar con la base planearg. Verificá que MySQL esté iniciado y que hayas importado PRUEBA/basepruba2.sql.';
 }

@@ -934,32 +934,6 @@ a {
     background: #0b4d93;
 }
 
-.enlace-vista-aerolineas,
-.aviso-vista-aerolineas {
-    margin: 0 0 18px;
-    color: #526579;
-    font-size: 0.9rem;
-}
-
-.enlace-vista-aerolineas a,
-.aviso-vista-aerolineas a {
-    color: #0d5aa8;
-    font-weight: 600;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-}
-
-.aviso-vista-aerolineas {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 12px 15px;
-    border-left: 4px solid #32a9a9;
-    border-radius: 0 8px 8px 0;
-    background: #eaf7f6;
-}
-
 .boton-agregar-aerolinea svg {
     width: 20px;
     height: 20px;
@@ -1365,11 +1339,6 @@ a {
         align-items: flex-start;
         flex-direction: column;
         gap: 16px;
-    }
-
-    .aviso-vista-aerolineas {
-        align-items: flex-start;
-        flex-direction: column;
     }
 
     .encabezado-gestion-aerolineas h1 {

@@ -1,65 +1,5 @@
 <?php
-require_once __DIR__ . '/conexion.php';
-
-$vistaDemostracion = ($_GET['vista'] ?? '') === 'demo';
-$aerolineasDemo = [
-	[
-		'codAerolinea' => 1,
-		'nombreAerolinea' => 'Aero Sur',
-		'codigoIATA' => 'ASR',
-		'descripcionAerolinea' => 'Vuelos nacionales y conexiones regionales.',
-		'codPais' => 'ARG',
-	],
-	[
-		'codAerolinea' => 2,
-		'nombreAerolinea' => 'Cóndor Líneas',
-		'codigoIATA' => 'CDL',
-		'descripcionAerolinea' => 'Conexiones entre las principales ciudades.',
-		'codPais' => 'ARG',
-	],
-	[
-		'codAerolinea' => 3,
-		'nombreAerolinea' => 'Patagonia Air',
-		'codigoIATA' => 'PAT',
-		'descripcionAerolinea' => 'Rutas aéreas hacia destinos patagónicos.',
-		'codPais' => 'ARG',
-	],
-	[
-		'codAerolinea' => 4,
-		'nombreAerolinea' => 'Río Plata Airways',
-		'codigoIATA' => 'RPA',
-		'descripcionAerolinea' => 'Vuelos regionales a orillas del Río de la Plata.',
-		'codPais' => 'URY',
-	],
-	[
-		'codAerolinea' => 5,
-		'nombreAerolinea' => 'Horizonte Aéreo',
-		'codigoIATA' => 'HOR',
-		'descripcionAerolinea' => 'Servicios aéreos para rutas de media distancia.',
-		'codPais' => 'CHL',
-	],
-	[
-		'codAerolinea' => 6,
-		'nombreAerolinea' => 'Nube Austral',
-		'codigoIATA' => 'NAT',
-		'descripcionAerolinea' => 'Vuelos entre ciudades del sur argentino.',
-		'codPais' => 'ARG',
-	],
-	[
-		'codAerolinea' => 7,
-		'nombreAerolinea' => 'Andes Express',
-		'codigoIATA' => 'AEX',
-		'descripcionAerolinea' => 'Conexiones regionales a través de la cordillera.',
-		'codPais' => 'CHL',
-	],
-	[
-		'codAerolinea' => 8,
-		'nombreAerolinea' => 'Costa Atlántica',
-		'codigoIATA' => 'CAT',
-		'descripcionAerolinea' => 'Rutas costeras y destinos turísticos.',
-		'codPais' => 'URY',
-	],
-];
+require_once __DIR__ . '/../../includes/conexion.php';
 $elementosPorPagina = 5;
 $paginaSolicitada = filter_input(INPUT_GET, 'pagina', FILTER_VALIDATE_INT);
 $paginaListado = max(1, (int) $paginaSolicitada);
@@ -68,15 +8,9 @@ $cantidadPaginas = 1;
 $aerolineasPagina = [];
 $errorBaseDatos = '';
 
-if ($vistaDemostracion) {
-	$cantidadAerolineas = count($aerolineasDemo);
-	$cantidadPaginas = max(1, (int) ceil($cantidadAerolineas / $elementosPorPagina));
-	$paginaListado = min($paginaListado, $cantidadPaginas);
-	$aerolineasPagina = array_slice($aerolineasDemo, ($paginaListado - 1) * $elementosPorPagina, $elementosPorPagina);
-} else {
 	$conexion = null;
 	try {
-		$conexion = conectarBaseAerolineas();
+		$conexion = conectarBaseDeDatos();
 		$resultadoCantidad = $conexion->query('SELECT COUNT(*) AS total FROM aerolineas');
 		$cantidadAerolineas = (int) $resultadoCantidad->fetch_assoc()['total'];
 		$cantidadPaginas = max(1, (int) ceil($cantidadAerolineas / $elementosPorPagina));
@@ -97,7 +31,6 @@ if ($vistaDemostracion) {
 			$conexion->close();
 		}
 	}
-}
 
 $escapar = static function ($valor): string {
 	return htmlspecialchars((string) $valor, ENT_QUOTES, 'UTF-8');
@@ -136,17 +69,6 @@ $escapar = static function ($valor): string {
 
 		<?php if ($errorBaseDatos !== ''): ?>
 			<p class="mensaje-formulario-aerolinea error-formulario-aerolinea" role="alert"><?= $escapar($errorBaseDatos) ?></p>
-		<?php endif; ?>
-
-		<?php if ($vistaDemostracion): ?>
-			<p class="aviso-vista-aerolineas" role="status">
-				Vista previa: estos datos son ficticios y no se guardan.
-				<a href="gestionar_aerolineas.php">Volver al listado vacío</a>
-			</p>
-		<?php elseif ($errorBaseDatos === ''): ?>
-			<p class="enlace-vista-aerolineas">
-				<a href="?vista=demo">Ver vista previa con datos de ejemplo</a>
-			</p>
 		<?php endif; ?>
 
 		<section class="lista-aerolineas" aria-label="Listado de aerolíneas">
@@ -200,7 +122,7 @@ $escapar = static function ($valor): string {
 		<?php if ($errorBaseDatos === ''): ?>
 		<nav class="paginacion-aerolineas" aria-label="Paginación de aerolíneas">
 			<a class="control-paginacion-aerolineas <?= $paginaListado <= 1 ? 'deshabilitado' : '' ?>"
-			   href="?pagina=<?= max(1, $paginaListado - 1) ?><?= $vistaDemostracion ? '&amp;vista=demo' : '' ?>"
+			   href="?pagina=<?= max(1, $paginaListado - 1) ?>"
 			   <?= $paginaListado <= 1 ? 'aria-disabled="true" tabindex="-1"' : '' ?>>
 				Anterior
 			</a>
@@ -209,7 +131,7 @@ $escapar = static function ($valor): string {
 				<span><?= $cantidadAerolineas ?> <?= $cantidadAerolineas === 1 ? 'aerolínea' : 'aerolíneas' ?></span>
 			</span>
 			<a class="control-paginacion-aerolineas <?= $paginaListado >= $cantidadPaginas ? 'deshabilitado' : '' ?>"
-			   href="?pagina=<?= min($cantidadPaginas, $paginaListado + 1) ?><?= $vistaDemostracion ? '&amp;vista=demo' : '' ?>"
+			   href="?pagina=<?= min($cantidadPaginas, $paginaListado + 1) ?>"
 			   <?= $paginaListado >= $cantidadPaginas ? 'aria-disabled="true" tabindex="-1"' : '' ?>>
 				Siguiente
 			</a>
