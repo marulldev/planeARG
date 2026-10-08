@@ -925,11 +925,13 @@ a {
     color: #ffffff;
     font-size: 0.95rem;
     font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-.boton-agregar-aerolinea:disabled {
-    background: #7d9dbb;
-    cursor: not-allowed;
+.boton-agregar-aerolinea:hover {
+    transform: translateY(-1px);
+    background: #0b4d93;
 }
 
 .enlace-vista-aerolineas,
@@ -974,7 +976,7 @@ a {
 
 .fila-aerolinea {
     display: flex;
-    min-height: 76px;
+    min-height: 104px;
     align-items: center;
     justify-content: space-between;
     gap: 16px;
@@ -985,13 +987,54 @@ a {
     box-shadow: 0 4px 12px rgb(19 34 56 / 5%);
 }
 
-.fila-aerolinea h2 {
+.datos-aerolinea {
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.identidad-aerolinea {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.identidad-aerolinea h2 {
     min-width: 0;
     margin: 0;
     color: #17365d;
     font-size: 1.05rem;
     font-weight: 500;
     overflow-wrap: anywhere;
+}
+
+.codigo-iata-aerolinea {
+    display: inline-flex;
+    min-width: 42px;
+    min-height: 25px;
+    align-items: center;
+    justify-content: center;
+    padding: 3px 8px;
+    border-radius: 5px;
+    background: #eaf1fc;
+    color: #2857a8;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.descripcion-aerolinea {
+    margin: 6px 0;
+    color: #526579;
+    font-size: 0.88rem;
+    line-height: 1.45;
+}
+
+.metadatos-aerolinea {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    color: #68798b;
+    font-size: 0.76rem;
 }
 
 .acciones-aerolinea {
@@ -1139,10 +1182,183 @@ a {
     font-weight: 400;
 }
 
+.formulario-aerolinea-pagina {
+    width: min(760px, calc(100% - 40px));
+    margin: 0 auto;
+    padding: 38px 0 56px;
+}
+
+.encabezado-formulario-aerolinea {
+    margin-bottom: 24px;
+}
+
+.encabezado-formulario-aerolinea h1 {
+    margin: 0;
+    color: #132238;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.encabezado-formulario-aerolinea > p:last-child {
+    margin: 8px 0 0;
+    color: #526579;
+}
+
+.formulario-aerolinea {
+    display: grid;
+    gap: 20px;
+    padding: 28px;
+    border: 1px solid rgb(19 34 56 / 12%);
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 5px 18px rgb(19 34 56 / 6%);
+}
+
+.campo-aerolinea {
+    display: grid;
+    gap: 8px;
+}
+
+.campo-aerolinea label {
+    color: #17365d;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.campo-aerolinea label span {
+    color: #68798b;
+    font-size: 0.82rem;
+    font-weight: 400;
+}
+
+.campo-aerolinea input,
+.campo-aerolinea textarea {
+    width: 100%;
+    min-height: 46px;
+    padding: 11px 13px;
+    border: 1px solid #bccbd8;
+    border-radius: 7px;
+    background: #ffffff;
+    color: #132238;
+    font-size: 0.95rem;
+}
+
+.campo-aerolinea input:focus,
+.campo-aerolinea textarea:focus {
+    border-color: #0d5aa8;
+    outline: 3px solid rgb(13 90 168 / 16%);
+}
+
+.campo-aerolinea-corto input {
+    max-width: 220px;
+    text-transform: uppercase;
+}
+
+.campo-aerolinea-pais input {
+    max-width: 140px;
+    text-transform: uppercase;
+}
+
+.campo-aerolinea-descripcion textarea {
+    min-height: 140px;
+    resize: vertical;
+}
+
+.contador-descripcion-aerolinea {
+    margin: -3px 0 0;
+    color: #68798b;
+    font-size: 0.8rem;
+    text-align: right;
+}
+
+.acciones-formulario-aerolinea {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 4px;
+}
+
+.cancelar-aerolinea,
+.boton-guardar-aerolinea {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 16px;
+    border: 1px solid #bccbd8;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #17365d;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.boton-guardar-aerolinea {
+    border-color: #0d5aa8;
+    background: #0d5aa8;
+    color: #ffffff;
+}
+
+.boton-guardar-aerolinea:hover:not(:disabled) {
+    background: #0b4d93;
+}
+
+.boton-guardar-aerolinea:disabled {
+    border-color: #7d9dbb;
+    background: #7d9dbb;
+    cursor: not-allowed;
+}
+
+.cancelar-aerolinea:hover {
+    background: #f2f6f9;
+}
+
+.mensaje-formulario-aerolinea {
+    margin: 0 0 18px;
+    padding: 12px 15px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    line-height: 1.5;
+}
+
+.error-formulario-aerolinea {
+    border-color: #edb9b9;
+    background: #fff1f0;
+    color: #9d252b;
+}
+
+.exito-formulario-aerolinea {
+    border-color: #a9d8bf;
+    background: #eef9f2;
+    color: #236b43;
+}
+
 @media (max-width: 600px) {
     .gestionar-aerolineas {
         width: min(100% - 32px, 480px);
         padding: 28px 0 40px;
+    }
+
+    .formulario-aerolinea-pagina {
+        width: min(100% - 32px, 480px);
+        padding: 28px 0 40px;
+    }
+
+    .encabezado-formulario-aerolinea h1 {
+        font-size: 1.7rem;
+    }
+
+    .formulario-aerolinea {
+        gap: 18px;
+        padding: 20px 16px;
+    }
+
+    .acciones-formulario-aerolinea {
+        flex-direction: column-reverse;
+        align-items: stretch;
     }
 
     .encabezado-gestion-aerolineas {
@@ -1161,8 +1377,25 @@ a {
     }
 
     .fila-aerolinea {
-        min-height: 68px;
+        align-items: flex-start;
         padding: 10px 12px 10px 16px;
+    }
+
+    .fila-aerolinea h2 {
+        font-size: 0.98rem;
+    }
+
+    .descripcion-aerolinea {
+        font-size: 0.82rem;
+    }
+
+    .acciones-aerolinea {
+        gap: 5px;
+    }
+
+    .boton-icono {
+        width: 36px;
+        height: 36px;
     }
 
     .estado-vacio-aerolineas {
