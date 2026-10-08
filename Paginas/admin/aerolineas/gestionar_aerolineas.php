@@ -1,5 +1,48 @@
 <?php
 require_once __DIR__ . '/../../includes/conexion.php';
+
+if (session_status() !== PHP_SESSION_ACTIVE) {
+	session_start();
+}
+
+$_SESSION['token_aerolineas'] ??= bin2hex(random_bytes(32));
+$tokenAerolineas = $_SESSION['token_aerolineas'];
+$errorAccion = '';
+
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST' && ($_POST['accion'] ?? '') === 'eliminar') {
+	$tokenEnviado = (string) ($_POST['tokenAerolineas'] ?? '');
+	$idEliminar = filter_var($_POST['codAerolinea'] ?? null, FILTER_VALIDATE_INT);
+
+	if (!hash_equals($tokenAerolineas, $tokenEnviado)) {
+		$errorAccion = 'La sesión venció. Recargá la página e intentá nuevamente.';
+	} elseif ($idEliminar === false || $idEliminar === null || $idEliminar < 1) {
+		$errorAccion = 'No se pudo identificar la aerolínea que querés eliminar.';
+	} else {
+		$conexionEliminar = null;
+		try {
+			$conexionEliminar = conectarBaseDeDatos();
+			$consultaEliminar = $conexionEliminar->prepare('DELETE FROM aerolineas WHERE codAerolinea = ?');
+			$consultaEliminar->bind_param('i', $idEliminar);
+			$consultaEliminar->execute();
+			$filasEliminadas = $consultaEliminar->affected_rows;
+			$consultaEliminar->close();
+
+			if ($filasEliminadas > 0) {
+				$conexionEliminar->close();
+				header('Location: gestionar_aerolineas.php?eliminada=1');
+				exit;
+			}
+			$errorAccion = 'La aerolínea ya no existe o ya fue eliminada.';
+		} catch (Throwable $error) {
+			$errorAccion = 'No se pudo eliminar la aerolínea. Puede tener vuelos o promociones asociados.';
+		} finally {
+			if ($conexionEliminar instanceof mysqli) {
+				$conexionEliminar->close();
+			}
+		}
+	}
+}
+
 $elementosPorPagina = 5;
 $paginaSolicitada = filter_input(INPUT_GET, 'pagina', FILTER_VALIDATE_INT);
 $paginaListado = max(1, (int) $paginaSolicitada);
@@ -66,6 +109,15 @@ $escapar = static function ($valor): string {
 		<?php if (isset($_GET['creada'])): ?>
 			<p class="mensaje-formulario-aerolinea exito-formulario-aerolinea" role="status">La aerolínea se guardó correctamente.</p>
 		<?php endif; ?>
+		<?php if (isset($_GET['actualizada'])): ?>
+			<p class="mensaje-formulario-aerolinea exito-formulario-aerolinea" role="status">Los cambios se guardaron correctamente.</p>
+		<?php endif; ?>
+		<?php if (isset($_GET['eliminada'])): ?>
+			<p class="mensaje-formulario-aerolinea exito-formulario-aerolinea" role="status">La aerolínea se eliminó correctamente.</p>
+		<?php endif; ?>
+		<?php if ($errorAccion !== ''): ?>
+			<p class="mensaje-formulario-aerolinea error-formulario-aerolinea" role="alert"><?= $escapar($errorAccion) ?></p>
+		<?php endif; ?>
 
 		<?php if ($errorBaseDatos !== ''): ?>
 			<p class="mensaje-formulario-aerolinea error-formulario-aerolinea" role="alert"><?= $escapar($errorBaseDatos) ?></p>
@@ -96,15 +148,20 @@ $escapar = static function ($valor): string {
 							</div>
 						</div>
 						<div class="acciones-aerolinea">
-							<button class="boton-icono boton-eliminar-aerolinea" type="button" aria-label="Eliminar <?= $escapar($aerolinea['nombreAerolinea'] ?? 'aerolínea') ?>" title="Acción disponible al conectar la base de datos" disabled>
-								<img src="../../../publico/icon/trash-alt-svgrepo-com.svg" alt="" aria-hidden="true">
-							</button>
-							<button class="boton-icono boton-editar-aerolinea" type="button" aria-label="Editar <?= $escapar($aerolinea['nombreAerolinea'] ?? 'aerolínea') ?>" title="Acción disponible al conectar la base de datos" disabled>
+							<form class="formulario-eliminar-aerolinea" method="post" onsubmit="return confirm('¿Seguro que querés eliminar esta aerolínea? Esta acción no se puede deshacer.');">
+								<input type="hidden" name="accion" value="eliminar">
+								<input type="hidden" name="codAerolinea" value="<?= (int) $aerolinea['codAerolinea'] ?>">
+								<input type="hidden" name="tokenAerolineas" value="<?= $escapar($tokenAerolineas) ?>">
+								<button class="boton-icono boton-eliminar-aerolinea" type="submit" aria-label="Eliminar <?= $escapar($aerolinea['nombreAerolinea'] ?? 'aerolínea') ?>" title="Eliminar aerolínea">
+									<img src="../../../publico/icon/trash-alt-svgrepo-com.svg" alt="" aria-hidden="true">
+								</button>
+							</form>
+							<a class="boton-icono boton-editar-aerolinea" href="crear_aerolinea.php?id=<?= (int) $aerolinea['codAerolinea'] ?>" aria-label="Editar <?= $escapar($aerolinea['nombreAerolinea'] ?? 'aerolínea') ?>" title="Editar aerolínea">
 								<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
 									<path d="m4 16.5-.8 4.3 4.3-.8L20 7.5 16.5 4 4 16.5Z"></path>
 									<path d="m14.8 5.7 3.5 3.5M3 21h18"></path>
 								</svg>
-							</button>
+							</a>
 						</div>
 					</article>
 				<?php endforeach; ?>

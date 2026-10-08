@@ -1,15 +1,42 @@
 <?php
 require_once __DIR__ . '/../../includes/conexion.php';
 
+if (session_status() !== PHP_SESSION_ACTIVE) {
+	session_start();
+}
+
+$_SESSION['token_aerolineas'] ??= bin2hex(random_bytes(32));
+$tokenAerolineas = $_SESSION['token_aerolineas'];
+$idAerolinea = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+$modoEdicion = $idAerolinea !== null && $idAerolinea !== false && $idAerolinea > 0;
 $nombreAerolinea = '';
 $codigoIATA = '';
 $codPais = '';
 $descripcionAerolinea = '';
+$aerolineaEdicion = null;
 $errorFormulario = '';
 $conexion = null;
 
 try {
 	$conexion = conectarBaseDeDatos();
+	if ($modoEdicion) {
+		$consultaEdicion = $conexion->prepare(
+			'SELECT nombreAerolinea, codigoIATA, codPais, descripcionAerolinea FROM aerolineas WHERE codAerolinea = ?'
+		);
+		$consultaEdicion->bind_param('i', $idAerolinea);
+		$consultaEdicion->execute();
+		$aerolineaEdicion = $consultaEdicion->get_result()->fetch_assoc() ?: null;
+		$consultaEdicion->close();
+
+		if ($aerolineaEdicion === null) {
+			$errorFormulario = 'No se encontró la aerolínea que querés editar.';
+		} else {
+			$nombreAerolinea = $aerolineaEdicion['nombreAerolinea'];
+			$codigoIATA = $aerolineaEdicion['codigoIATA'];
+			$codPais = $aerolineaEdicion['codPais'] ?? '';
+			$descripcionAerolinea = $aerolineaEdicion['descripcionAerolinea'] ?? '';
+		}
+	}
 } catch (Throwable $error) {
 	$errorFormulario = 'No se pudo conectar con la base planearg. Verificá que MySQL esté iniciado y que hayas importado PRUEBA/basepruba2.sql.';
 }
@@ -19,32 +46,45 @@ $longitudTexto = static function (string $texto): int {
 };
 
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST' && $conexion instanceof mysqli) {
-	$nombreAerolinea = trim($_POST['nombreAerolinea'] ?? '');
-	$codigoIATA = strtoupper(trim($_POST['codigoIATA'] ?? ''));
-	$codPais = strtoupper(trim($_POST['codPais'] ?? ''));
-	$descripcionAerolinea = trim($_POST['descripcionAerolinea'] ?? '');
-
-	if ($nombreAerolinea === '' || $longitudTexto($nombreAerolinea) > 100) {
-		$errorFormulario = 'El nombre es obligatorio y debe tener como máximo 100 caracteres.';
-	} elseif (!preg_match('/^[A-Z0-9]{3}$/', $codigoIATA)) {
-		$errorFormulario = 'El código IATA debe tener exactamente 3 letras o números.';
-	} elseif (!preg_match('/^[A-Z]{3}$/', $codPais)) {
-		$errorFormulario = 'El código de país debe tener exactamente 3 letras.';
-	} elseif ($longitudTexto($descripcionAerolinea) > 200) {
-		$errorFormulario = 'La descripción puede tener como máximo 200 caracteres.';
+	if (!hash_equals($tokenAerolineas, (string) ($_POST['tokenAerolineas'] ?? ''))) {
+		$errorFormulario = 'La sesión del formulario venció. Recargá la página e intentá nuevamente.';
+	} elseif ($modoEdicion && $aerolineaEdicion === null) {
+		$errorFormulario = 'No se encontró la aerolínea que querés editar.';
 	} else {
+		$nombreAerolinea = trim($_POST['nombreAerolinea'] ?? '');
+		$codigoIATA = strtoupper(trim($_POST['codigoIATA'] ?? ''));
+		$codPais = strtoupper(trim($_POST['codPais'] ?? ''));
+		$descripcionAerolinea = trim($_POST['descripcionAerolinea'] ?? '');
+	}
+
+	if ($errorFormulario === '' && ($nombreAerolinea === '' || $longitudTexto($nombreAerolinea) > 100)) {
+		$errorFormulario = 'El nombre es obligatorio y debe tener como máximo 100 caracteres.';
+	} elseif ($errorFormulario === '' && !preg_match('/^[A-Z0-9]{3}$/', $codigoIATA)) {
+		$errorFormulario = 'El código IATA debe tener exactamente 3 letras o números.';
+	} elseif ($errorFormulario === '' && !preg_match('/^[A-Z]{3}$/', $codPais)) {
+		$errorFormulario = 'El código de país debe tener exactamente 3 letras.';
+	} elseif ($errorFormulario === '' && $longitudTexto($descripcionAerolinea) > 200) {
+		$errorFormulario = 'La descripción puede tener como máximo 200 caracteres.';
+	} elseif ($errorFormulario === '') {
 		$descripcionParaGuardar = $descripcionAerolinea !== '' ? $descripcionAerolinea : null;
 
 		try {
-			$consulta = $conexion->prepare(
-				'INSERT INTO aerolineas (nombreAerolinea, codigoIATA, descripcionAerolinea, codPais) VALUES (?, ?, ?, ?)'
-			);
-			$consulta->bind_param('ssss', $nombreAerolinea, $codigoIATA, $descripcionParaGuardar, $codPais);
+			if ($modoEdicion) {
+				$consulta = $conexion->prepare(
+					'UPDATE aerolineas SET nombreAerolinea = ?, codigoIATA = ?, descripcionAerolinea = ?, codPais = ? WHERE codAerolinea = ?'
+				);
+				$consulta->bind_param('ssssi', $nombreAerolinea, $codigoIATA, $descripcionParaGuardar, $codPais, $idAerolinea);
+			} else {
+				$consulta = $conexion->prepare(
+					'INSERT INTO aerolineas (nombreAerolinea, codigoIATA, descripcionAerolinea, codPais) VALUES (?, ?, ?, ?)'
+				);
+				$consulta->bind_param('ssss', $nombreAerolinea, $codigoIATA, $descripcionParaGuardar, $codPais);
+			}
 			$consulta->execute();
 			$consulta->close();
 			$conexion->close();
 
-			header('Location: gestionar_aerolineas.php?creada=1');
+			header('Location: gestionar_aerolineas.php?' . ($modoEdicion ? 'actualizada=1' : 'creada=1'));
 			exit;
 		} catch (Throwable $error) {
 			$errorFormulario = 'No se pudo guardar la aerolínea. Revisá los datos e intentá nuevamente.';
@@ -76,15 +116,16 @@ $escapar = static function ($valor): string {
 	<main class="contenido-principal formulario-aerolinea-pagina">
 		<div class="encabezado-formulario-aerolinea">
 			<p class="etiqueta-gestion-aerolineas">Administración</p>
-			<h1>Agregar aerolínea</h1>
-			<p>Completá los datos para registrar una nueva aerolínea.</p>
+			<h1><?= $modoEdicion ? 'Editar aerolínea' : 'Agregar aerolínea' ?></h1>
+			<p><?= $modoEdicion ? 'Actualizá los datos de la aerolínea.' : 'Completá los datos para registrar una nueva aerolínea.' ?></p>
 		</div>
 
 		<?php if ($errorFormulario !== ''): ?>
 			<p class="mensaje-formulario-aerolinea error-formulario-aerolinea" role="alert"><?= $escapar($errorFormulario) ?></p>
 		<?php endif; ?>
 
-		<form class="formulario-aerolinea" method="post" action="crear_aerolinea.php" accept-charset="UTF-8">
+		<form class="formulario-aerolinea" method="post" action="crear_aerolinea.php<?= $modoEdicion ? '?id=' . (int) $idAerolinea : '' ?>" accept-charset="UTF-8">
+			<input type="hidden" name="tokenAerolineas" value="<?= $escapar($tokenAerolineas) ?>">
 			<div class="campo-aerolinea">
 				<label for="nombreAerolinea">Nombre de la aerolínea</label>
 				<input id="nombreAerolinea" name="nombreAerolinea" type="text" maxlength="100" autocomplete="organization" value="<?= $escapar($nombreAerolinea) ?>" placeholder="Ej.: Aero Sur" required>
@@ -108,7 +149,7 @@ $escapar = static function ($valor): string {
 
 			<div class="acciones-formulario-aerolinea">
 				<a class="cancelar-aerolinea" href="gestionar_aerolineas.php">Cancelar</a>
-				<button class="boton-guardar-aerolinea" type="submit" <?= $conexion instanceof mysqli ? '' : 'disabled' ?>>Guardar aerolínea</button>
+				<button class="boton-guardar-aerolinea" type="submit" <?= $conexion instanceof mysqli && (!$modoEdicion || $aerolineaEdicion !== null) ? '' : 'disabled' ?>><?= $modoEdicion ? 'Guardar cambios' : 'Guardar aerolínea' ?></button>
 			</div>
 		</form>
 	</main>

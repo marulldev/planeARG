@@ -1062,8 +1062,13 @@ a {
     background: #fff1f0;
 }
 
+.formulario-eliminar-aerolinea {
+    margin: 0;
+}
+
 .boton-editar-aerolinea {
     color: #0d5aa8;
+    text-decoration: none;
 }
 
 .boton-editar-aerolinea:hover {
