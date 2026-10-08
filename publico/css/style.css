@@ -1315,6 +1315,131 @@ a {
     color: #236b43;
 }
 
+.gestionar-novedades {
+    width: min(1040px, calc(100% - 40px));
+    margin: 0 auto;
+    padding: 38px 0 48px;
+}
+
+.encabezado-gestion-novedades {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 26px;
+}
+
+.encabezado-gestion-novedades h1 {
+    margin: 0;
+    color: #132238;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.lista-novedades {
+    display: grid;
+    gap: 16px;
+}
+
+.fila-novedad {
+    display: grid;
+    grid-template-columns: minmax(128px, 0.8fr) minmax(0, 2fr) auto;
+    align-items: center;
+    gap: 18px;
+    min-height: 140px;
+    padding: 18px;
+    border: 1px solid rgb(19 34 56 / 15%);
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgb(19 34 56 / 5%);
+}
+
+.fechas-novedad {
+    display: grid;
+    gap: 12px;
+}
+
+.fechas-novedad p {
+    display: grid;
+    gap: 3px;
+    margin: 0;
+    color: #68798b;
+    font-size: 0.76rem;
+}
+
+.fechas-novedad time {
+    color: #17365d;
+    font-size: 0.88rem;
+    font-weight: 600;
+}
+
+.contenido-novedad {
+    min-width: 0;
+}
+
+.contenido-novedad p {
+    display: -webkit-box;
+    margin: 0 0 10px;
+    overflow: hidden;
+    color: #132238;
+    font-size: 0.96rem;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+}
+
+.contenido-novedad span {
+    color: #68798b;
+    font-size: 0.76rem;
+}
+
+.acciones-novedad {
+    display: grid;
+    gap: 8px;
+}
+
+.formulario-novedad-pagina {
+    width: min(760px, calc(100% - 40px));
+    margin: 0 auto;
+    padding: 38px 0 56px;
+}
+
+.formulario-novedad .campo-aerolinea textarea {
+    min-height: 180px;
+    resize: vertical;
+}
+
+.fecha-publicacion-automatica,
+.ayuda-fecha-novedad {
+    margin: 0;
+    color: #526579;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.fecha-publicacion-automatica time {
+    color: #17365d;
+    font-weight: 700;
+}
+
+.campo-fecha-expiracion-novedad input {
+    width: min(100%, 240px);
+    min-height: 46px;
+    padding: 9px 12px;
+    border: 1px solid #bccbd8;
+    border-radius: 7px;
+    background: #ffffff;
+    color: #132238;
+    font-size: 0.95rem;
+}
+
+.campo-fecha-expiracion-novedad input:focus {
+    border-color: #0d5aa8;
+    outline: 3px solid rgb(13 90 168 / 16%);
+}
+
 @media (max-width: 600px) {
     .gestionar-aerolineas {
         width: min(100% - 32px, 480px);
@@ -1324,6 +1449,48 @@ a {
     .formulario-aerolinea-pagina {
         width: min(100% - 32px, 480px);
         padding: 28px 0 40px;
+    }
+
+    .gestionar-novedades,
+    .formulario-novedad-pagina {
+        width: min(100% - 32px, 560px);
+        padding: 28px 0 40px;
+    }
+
+    .encabezado-gestion-novedades {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .encabezado-gestion-novedades h1 {
+        font-size: 1.7rem;
+    }
+
+    .fila-novedad {
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 12px;
+        padding: 14px;
+    }
+
+    .fechas-novedad {
+        grid-column: 1 / -1;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .contenido-novedad {
+        grid-column: 1;
+    }
+
+    .acciones-novedad {
+        grid-column: 2;
+        grid-row: 2;
+    }
+
+    .acciones-novedad .boton-icono {
+        width: 36px;
+        height: 36px;
     }
 
     .encabezado-formulario-aerolinea h1 {
