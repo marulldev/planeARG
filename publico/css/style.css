@@ -626,13 +626,13 @@ a {
     background: linear-gradient(115deg, #e2f2f8 0%, #f3f7fb 72%);
 }
 
-.ayuda-etiqueta {
+/* .ayuda-etiqueta {
     margin: 0 0 12px;
     color: #0d5aa8;
     font-size: 0.82rem;
     font-weight: 700;
     text-transform: uppercase;
-}
+} */
 
 .ayuda-presentacion h1 {
     max-width: 760px;

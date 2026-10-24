@@ -5,13 +5,13 @@ $espacioEnBlanco = isset($espacioEnBlanco) ? $espacioEnBlanco : true;
 
 
 <header class="encabezado-principal <?= $espacioEnBlanco ? '' : 'encabezado-superpuesto' ?>">
-    <a href = "/planeARG/Paginas/inicio/index.php" >
+    <a href="/planeARG/">
         <div class="circulo-flashero">
             <img src="/planeARG/publico/imagenes/Logo_plano_sinfondo.png" alt="Logo PlaneARG" class="logo-marca">
         </div>
     </a>
     <div class="contenedor-encabezado">
-        <a href="#" class="marca" aria-label="Inicio">
+        <a href="/planeARG/" class="marca" aria-label="Inicio">
             <span class="nombre-marca">PlaneARG</span>
         </a>
 
