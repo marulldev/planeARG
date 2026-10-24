@@ -1,3 +1,67 @@
+<?php
+require_once __DIR__ . '/../includes/sesion.php';
+require_once __DIR__ . '/../includes/conexion.php';
+
+$errorAutenticacion = '';
+$emailIngresado = '';
+
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
+    $emailIngresado = trim((string) ($_POST['email'] ?? ''));
+    $contrasena = (string) ($_POST['contrasena'] ?? '');
+    $tokenEnviado = (string) ($_POST['csrf_token'] ?? '');
+
+    if (!hash_equals($_SESSION['csrf_auth'], $tokenEnviado)) {
+        $errorAutenticacion = 'La sesión venció. Recargá la página e intentá nuevamente.';
+    } elseif (!filter_var($emailIngresado, FILTER_VALIDATE_EMAIL) || $contrasena === '') {
+        $errorAutenticacion = 'Ingresá un correo electrónico y una contraseña válidos.';
+    } else {
+        $conexion = null;
+
+        try {
+            $conexion = conectarBaseDeDatos();
+            $consulta = $conexion->prepare(
+                'SELECT codUsuario, nombreUsuario, claveUsuario, tipoUsuario
+                 FROM usuarios
+                 WHERE emailUsuario = ?
+                 LIMIT 1'
+            );
+            $consulta->bind_param('s', $emailIngresado);
+            $consulta->execute();
+            $consulta->bind_result($codUsuario, $nombreUsuario, $hashContrasena, $tipoUsuario);
+            $usuarioEncontrado = $consulta->fetch();
+            $consulta->close();
+
+            if ($usuarioEncontrado && is_string($hashContrasena) && password_verify($contrasena, $hashContrasena)) {
+                session_regenerate_id(true);
+                $_SESSION['codUsuario'] = (int) $codUsuario;
+                $_SESSION['nombreUsuario'] = $nombreUsuario;
+                $_SESSION['tipoUsuario'] = $tipoUsuario;
+                $_SESSION['csrf_auth'] = bin2hex(random_bytes(32));
+
+                if ($tipoUsuario === 'administrador') {
+                    header('Location: /Paginas/admin/menu_admin.php');
+                } elseif ($tipoUsuario === 'ceo de aerolinea') {
+                    header('Location: /Paginas/ceo/Menu%20ceo/panel_control.php');
+                } else {
+                    header('Location: /');
+                }
+                exit;
+            }
+
+            $errorAutenticacion = 'El correo o la contraseña no son correctos.';
+        } catch (mysqli_sql_exception $error) {
+            error_log('Error al iniciar sesión: ' . $error->getMessage());
+            $errorAutenticacion = 'No se pudo procesar el inicio de sesión. Intentá nuevamente más tarde.';
+        } finally {
+            if ($conexion instanceof mysqli) {
+                $conexion->close();
+            }
+        }
+    }
+}
+
+$escapar = static fn(string $valor): string => htmlspecialchars($valor, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -9,7 +73,7 @@
 </head>
 
 <body>
-    <?php include "../plantilla/encabezado.php"; ?>
+    <?php include __DIR__ . '/../plantilla/encabezado.php'; ?>
 
     <main class="contenido-principal autenticacion">
         <section class="tarjeta-autenticacion" aria-labelledby="titulo-login">
@@ -17,15 +81,22 @@
             <h1 id="titulo-login">Iniciar sesión</h1>
             <p class="autenticacion-introduccion">Ingresá tus datos para continuar.</p>
 
+            <?php if ($errorAutenticacion !== ''): ?>
+                <p class="mensaje-autenticacion" role="alert"><?= $escapar($errorAutenticacion) ?></p>
+            <?php endif; ?>
+
             <form class="formulario-autenticacion" method="post">
+                <input type="hidden" name="csrf_token" value="<?= $escapar($_SESSION['csrf_auth']) ?>">
                 <div class="campo-autenticacion">
-                    <label for="identificador">Nombre de usuario o correo electrónico</label>
+                    <label for="email">Correo electrónico</label>
                     <input
-                        id="identificador"
-                        name="identificador"
-                        type="text"
-                        autocomplete="username"
-                        placeholder="Tu nombre de usuario o correo"
+                        id="email"
+                        name="email"
+                        type="email"
+                        maxlength="100"
+                        autocomplete="email"
+                        placeholder="Tu correo electrónico"
+                        value="<?= $escapar($emailIngresado) ?>"
                         required>
                 </div>
 
@@ -51,7 +122,7 @@
         </section>
     </main>
 
-    <?php include "../plantilla/pie_pagina.php"; ?>
+    <?php include __DIR__ . '/../plantilla/pie_pagina.php'; ?>
 </body>
 
 </html>

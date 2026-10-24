@@ -6,7 +6,7 @@ CREATE TABLE usuarios (
   nombreUsuario VARCHAR(100) NOT NULL,
   claveUsuario VARCHAR(255) NOT NULL,
   tipoUsuario ENUM('administrador','ceo de aerolinea','usuario') NOT NULL,
-  emailUsuario VARCHAR(100) NOT NULL,
+  emailUsuario VARCHAR(100) NOT NULL UNIQUE,
   telefonoUsuario VARCHAR(20)
 );
 
