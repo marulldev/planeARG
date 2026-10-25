@@ -18,6 +18,62 @@ if (($_SESSION['tipoUsuario'] ?? '') !== 'administrador') {
     exit;
 }
 
+$mensajeAccion = '';
+$tipoMensajeAccion = 'exito';
+
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
+    $codUsuarioSolicitud = filter_var($_POST['codUsuario'] ?? null, FILTER_VALIDATE_INT);
+    $mensajeAccion = '';
+    $tipoMensajeAccion = 'error';
+    $conexion = null;
+
+    if (!hash_equals((string) $_SESSION['csrf_auth'], (string) ($_POST['csrf_token'] ?? ''))) {
+        $mensajeAccion = 'La sesión venció. Recargá la página e intentá nuevamente.';
+    } elseif ($codUsuarioSolicitud === false || $codUsuarioSolicitud === null || $codUsuarioSolicitud < 1) {
+        $mensajeAccion = 'El código del usuario no es válido.';
+    } else {
+        try {
+            $conexion = conectarBaseDeDatos();
+            $consulta = $conexion->prepare(
+                "UPDATE usuarios
+                 SET tipoUsuario = 'ceo de aerolinea'
+                 WHERE codUsuario = ?
+                   AND tipoUsuario = 'ceo pendiente'
+                   AND codAerolinea IS NOT NULL"
+            );
+            $consulta->bind_param('i', $codUsuarioSolicitud);
+            $consulta->execute();
+            $solicitudAprobada = $consulta->affected_rows === 1;
+            $consulta->close();
+
+            if ($solicitudAprobada) {
+                $mensajeAccion = 'La solicitud fue aprobada. El usuario ya puede gestionar los vuelos de la aerolínea elegida.';
+                $tipoMensajeAccion = 'exito';
+            } else {
+                $mensajeAccion = 'La solicitud ya no está pendiente o no tiene una aerolínea asociada.';
+            }
+        } catch (mysqli_sql_exception $error) {
+            error_log('Error al aprobar la solicitud de CEO: ' . $error->getMessage());
+            $mensajeAccion = 'No se pudo aprobar la solicitud. Intentá nuevamente más tarde.';
+        } finally {
+            if ($conexion instanceof mysqli) {
+                $conexion->close();
+            }
+        }
+    }
+
+    $_SESSION['mensaje_aprobacion_ceo'] = [
+        'tipo' => $tipoMensajeAccion,
+        'texto' => $mensajeAccion,
+    ];
+    header('Location: /Paginas/admin/aprobar%20ceo/aprobar_ceo.php');
+    exit;
+}
+
+$mensajeAccion = (string) ($_SESSION['mensaje_aprobacion_ceo']['texto'] ?? '');
+$tipoMensajeAccion = (string) ($_SESSION['mensaje_aprobacion_ceo']['tipo'] ?? 'exito');
+unset($_SESSION['mensaje_aprobacion_ceo']);
+
 $solicitudesCeo = [];
 $errorCarga = '';
 $conexion = null;
@@ -84,6 +140,13 @@ $escapar = static fn(string $valor): string => htmlspecialchars($valor, ENT_QUOT
             <p>Revisá quién solicita administrar una aerolínea y cuál eligió en el registro.</p>
         </header>
 
+        <?php if ($mensajeAccion !== ''): ?>
+            <p class="mensaje-reserva <?= $tipoMensajeAccion === 'error' ? 'mensaje-reserva-error' : 'mensaje-reserva-exito' ?>"
+               role="<?= $tipoMensajeAccion === 'error' ? 'alert' : 'status' ?>">
+                <?= $escapar($mensajeAccion) ?>
+            </p>
+        <?php endif; ?>
+
         <?php if ($errorCarga !== ''): ?>
             <p class="mensaje-autenticacion" role="alert"><?= $escapar($errorCarga) ?></p>
         <?php elseif ($solicitudesCeo === []): ?>
@@ -107,7 +170,14 @@ $escapar = static fn(string $valor): string => htmlspecialchars($valor, ENT_QUOT
                             <h3><?= $escapar((string) $solicitud['nombreAerolinea']) ?></h3>
                             <p>Aerolínea #<?= (int) $solicitud['codAerolinea'] ?> · IATA <?= $escapar((string) $solicitud['codigoIATA']) ?></p>
                         </div>
-                        <span class="solicitud-ceo-estado">Pendiente</span>
+                        <div class="solicitud-ceo-acciones">
+                            <span class="solicitud-ceo-estado">Pendiente</span>
+                            <form method="post">
+                                <input type="hidden" name="csrf_token" value="<?= $escapar((string) $_SESSION['csrf_auth']) ?>">
+                                <input type="hidden" name="codUsuario" value="<?= (int) $solicitud['codUsuario'] ?>">
+                                <button class="boton-reserva boton-pagar" type="submit">Aprobar solicitud</button>
+                            </form>
+                        </div>
                     </article>
                 <?php endforeach; ?>
             </section>

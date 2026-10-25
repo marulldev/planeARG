@@ -2675,6 +2675,26 @@ a {
     white-space: nowrap;
 }
 
+.solicitud-ceo-acciones {
+    display: grid;
+    justify-items: end;
+    gap: 10px;
+}
+
+.solicitud-ceo-acciones form,
+.solicitud-ceo-acciones .boton-reserva {
+    width: 100%;
+}
+
+.icono-confirmacion {
+    background: #e7f6ed;
+    color: #17643a;
+}
+
+.icono-confirmacion img {
+    filter: brightness(0) saturate(100%) invert(29%) sepia(20%) saturate(2010%) hue-rotate(91deg) brightness(94%) contrast(88%);
+}
+
 .solicitudes-ceo-vacio {
     padding: 28px;
     border: 1px solid #dce6ee;
@@ -2701,6 +2721,11 @@ a {
     .solicitud-ceo-persona,
     .solicitud-ceo-aerolinea {
         grid-column: 1 / -1;
+    }
+
+    .solicitud-ceo-acciones {
+        grid-column: 1 / -1;
+        justify-items: stretch;
     }
 }
 

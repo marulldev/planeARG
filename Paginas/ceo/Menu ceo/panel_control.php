@@ -14,8 +14,8 @@
 
 		<nav class="acciones-admin" aria-label="Gestión de PlaneARG">
 			<a class="accion-admin" href="/Paginas/ceo/vuelos/GestionarVuelos.php">
-				<span class="icono-admin icono-avion" aria-hidden="true">
-					<img src="/publico/icon/airplane-svgrepo-com.svg" alt="">
+				<span class="icono-admin icono-confirmacion" aria-hidden="true">
+					<img src="/publico/icon/tick.png" alt="">
 				</span>
 				Gestión de vuelos
 			</a>
