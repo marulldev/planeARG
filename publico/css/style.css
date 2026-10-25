@@ -164,10 +164,7 @@ a {
 }
 
 .navegacion-principal a {
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-left: 5px;
-    padding-right: 20px;
+    padding: 8px 16px;
     border-radius: 999px;
     background: rgba(13, 80, 150, 0.06);
     color: #17365d;
@@ -188,6 +185,13 @@ a {
 }
 
 .navegacion-principal .enlace-perfil {
+    
+    padding-right:20px;
+    padding-left:5px;
+    
+    padding-top: 5px;
+    padding-bottom: 5px;
+    
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -202,7 +206,7 @@ a {
 }
 
 .navegacion-principal .enlace-perfil .icono-perfil {
-    flex: 0 0 8px;
+    flex: 0 0 16px;
     object-fit: cover;
 }
 
@@ -2805,6 +2809,87 @@ a {
 .enlaces-reportes-admin a:hover {
     border-color: #0d5aa8;
     background: #f2f9fc;
+}
+
+.novedades-publicas {
+    width: min(calc(100% - 40px), 1000px);
+    margin: 0 auto;
+    padding: 42px 0 72px;
+}
+
+.novedades-publicas-encabezado {
+    margin-bottom: 26px;
+}
+
+.novedades-publicas-encabezado h1 {
+    margin: 0;
+    color: #132238;
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+}
+
+.novedades-publicas-encabezado > p:last-child,
+.novedades-publicas-vacio p {
+    color: #40546a;
+    line-height: 1.6;
+}
+
+.novedades-publicas-lista {
+    display: grid;
+    gap: 16px;
+}
+
+.novedad-publica,
+.novedades-publicas-vacio {
+    padding: 22px;
+    border: 1px solid #dce6ee;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 8px 24px rgb(19 34 56 / 6%);
+}
+
+.novedad-publica-fechas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+}
+
+.novedad-publica-fechas p {
+    margin: 0;
+    color: #536171;
+    font-size: 0.86rem;
+}
+
+.novedad-publica-texto {
+    margin: 16px 0;
+    color: #132238;
+    line-height: 1.75;
+    overflow-wrap: anywhere;
+}
+
+.novedad-publica-codigo {
+    color: #0d5aa8;
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.novedades-publicas-vacio h2 {
+    margin-top: 0;
+    color: #132238;
+    font-size: 1.2rem;
+}
+
+.novedades-publicas-admin {
+    margin-top: 22px;
+}
+
+.novedades-publicas-admin a {
+    color: #0d5aa8;
+    font-weight: 700;
+}
+
+.novedades-publicas-admin a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
 }
 
 .gestion-promociones,
