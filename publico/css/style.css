@@ -185,8 +185,18 @@ a {
 }
 
 .navegacion-principal .enlace-perfil {
+<<<<<<< HEAD
     padding-top: 2px;
     padding-bottom: 2px;
+=======
+    
+    padding-right:20px;
+    padding-left:5px;
+    
+    padding-top: 5px;
+    padding-bottom: 5px;
+    
+>>>>>>> bdd30493ceba15f449b425be33194125175005e0
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -2906,12 +2916,30 @@ a {
     color: #d9363e;
 }
 
+.icono-reservas {
+    background: #fff0ed;
+    color: #d9363e;
+}
+
+.icono-historial {
+    background: #edf2ff;
+    color: #4b5fb8;
+}
+
 .icono-promocion img {
     filter: brightness(0) saturate(100%) invert(78%) sepia(40%) saturate(857%) hue-rotate(162deg) brightness(101%) contrast(96%);
 }
 
 .icono-novedad img {
     filter: brightness(0) saturate(100%) invert(27%) sepia(76%) saturate(2297%) hue-rotate(338deg) brightness(95%) contrast(94%);
+}
+
+.icono-reservas img {
+    filter: brightness(0) saturate(100%) invert(27%) sepia(76%) saturate(2297%) hue-rotate(338deg) brightness(95%) contrast(94%);
+}
+
+.icono-historial img {
+    filter: brightness(0) saturate(100%) invert(33%) sepia(27%) saturate(1791%) hue-rotate(202deg) brightness(92%) contrast(88%);
 }
 
 .accion-admin:hover {
