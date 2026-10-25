@@ -514,6 +514,14 @@ a {
     cursor: pointer;
 }
 
+.campo-aerolinea-ceo {
+    grid-column: 1 / -1;
+}
+
+.campo-aerolinea-ceo[hidden] {
+    display: none;
+}
+
 .opcion-ceo-registro input {
     width: 18px;
     height: 18px;
@@ -550,7 +558,8 @@ a {
     font-weight: 600;
 }
 
-.campo-autenticacion input {
+.campo-autenticacion input,
+.campo-autenticacion select {
     width: 100%;
     min-height: 48px;
     padding: 11px 14px;
@@ -561,7 +570,8 @@ a {
     font-size: 1rem;
 }
 
-.campo-autenticacion input:focus {
+.campo-autenticacion input:focus,
+.campo-autenticacion select:focus {
     border-color: #0d5aa8;
     outline: 3px solid rgb(13 90 168 / 15%);
 }
