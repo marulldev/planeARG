@@ -7,7 +7,8 @@ CREATE TABLE usuarios (
   claveUsuario VARCHAR(255) NOT NULL,
   tipoUsuario ENUM('administrador','ceo de aerolinea','ceo pendiente','usuario') NOT NULL,
   emailUsuario VARCHAR(100) NOT NULL UNIQUE,
-  telefonoUsuario VARCHAR(20)
+  telefonoUsuario VARCHAR(20),
+  codAerolinea INT NULL
 );
 
 CREATE TABLE aerolineas (
@@ -17,6 +18,10 @@ CREATE TABLE aerolineas (
   descripcionAerolinea VARCHAR(200),
   codPais VARCHAR(3)
 );
+
+ALTER TABLE usuarios
+  ADD CONSTRAINT fk_usuarios_aerolineas
+  FOREIGN KEY (codAerolinea) REFERENCES aerolineas(codAerolinea);
 
 CREATE TABLE vuelos (
   codVuelo INT AUTO_INCREMENT PRIMARY KEY,

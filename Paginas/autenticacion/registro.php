@@ -6,13 +6,33 @@ $erroresRegistro = [];
 $nombreCompleto = '';
 $emailIngresado = '';
 $telefonoIngresado = '';
+$codAerolineaIngresada = '';
 $solicitudCeo = false;
 $mensajeRegistro = '';
+$aerolineas = [];
+$errorCargaAerolineas = '';
+
+$conexionAerolineas = null;
+try {
+    $conexionAerolineas = conectarBaseDeDatos();
+    $resultadoAerolineas = $conexionAerolineas->query(
+        'SELECT codAerolinea, nombreAerolinea, codigoIATA FROM aerolineas ORDER BY nombreAerolinea'
+    );
+    $aerolineas = $resultadoAerolineas->fetch_all(MYSQLI_ASSOC);
+} catch (mysqli_sql_exception $error) {
+    error_log('Error al cargar aerolíneas para el registro (MySQL ' . $error->getCode() . '): ' . $error->getMessage());
+    $errorCargaAerolineas = 'No se pudieron cargar las aerolíneas disponibles.';
+} finally {
+    if ($conexionAerolineas instanceof mysqli) {
+        $conexionAerolineas->close();
+    }
+}
 
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     $nombreCompleto = trim((string) ($_POST['nombre_completo'] ?? ''));
     $emailIngresado = trim((string) ($_POST['email'] ?? ''));
     $telefonoIngresado = trim((string) ($_POST['telefono'] ?? ''));
+    $codAerolineaIngresada = (string) ($_POST['cod_aerolinea'] ?? '');
     $solicitudCeo = ($_POST['soy_ceo'] ?? '') === '1';
     $contrasena = (string) ($_POST['contrasena'] ?? '');
     $repetirContrasena = (string) ($_POST['repetir_contrasena'] ?? '');
@@ -31,6 +51,25 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
 
         if (!preg_match('/\A.{1,20}\z/u', $telefonoIngresado)) {
             $erroresRegistro[] = 'Ingresá un teléfono de hasta 20 caracteres.';
+        }
+
+        if ($solicitudCeo) {
+            if ($errorCargaAerolineas !== '') {
+                $erroresRegistro[] = $errorCargaAerolineas;
+            } elseif ($aerolineas === []) {
+                $erroresRegistro[] = 'Todavía no hay aerolíneas disponibles para elegir.';
+            } else {
+                $codAerolineaValidado = filter_var($codAerolineaIngresada, FILTER_VALIDATE_INT);
+                $codigosAerolineas = array_map('intval', array_column($aerolineas, 'codAerolinea'));
+
+                if (
+                    $codAerolineaValidado === false
+                    || $codAerolineaValidado < 1
+                    || !in_array($codAerolineaValidado, $codigosAerolineas, true)
+                ) {
+                    $erroresRegistro[] = 'Elegí una aerolínea válida para tu solicitud de CEO.';
+                }
+            }
         }
 
         if (strlen($contrasena) < 8 || strlen($contrasena) > 72) {
@@ -60,18 +99,20 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
                 } else {
                     $hashContrasena = password_hash($contrasena, PASSWORD_DEFAULT);
                     $tipoUsuarioNuevo = $solicitudCeo ? 'ceo pendiente' : 'usuario';
+                    $codAerolineaRegistro = $solicitudCeo ? (int) $codAerolineaIngresada : null;
                     $consulta = $conexion->prepare(
                         "INSERT INTO usuarios
-                            (nombreUsuario, claveUsuario, tipoUsuario, emailUsuario, telefonoUsuario)
-                         VALUES (?, ?, ?, ?, ?)"
+                            (nombreUsuario, claveUsuario, tipoUsuario, emailUsuario, telefonoUsuario, codAerolinea)
+                         VALUES (?, ?, ?, ?, ?, ?)"
                     );
                     $consulta->bind_param(
-                        'sssss',
+                        'sssssi',
                         $nombreCompleto,
                         $hashContrasena,
                         $tipoUsuarioNuevo,
                         $emailIngresado,
-                        $telefonoIngresado
+                        $telefonoIngresado,
+                        $codAerolineaRegistro
                     );
                     $consulta->execute();
                     $codUsuario = $conexion->insert_id;
@@ -82,6 +123,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
                         $nombreCompleto = '';
                         $emailIngresado = '';
                         $telefonoIngresado = '';
+                        $codAerolineaIngresada = '';
                         $solicitudCeo = false;
                     } else {
                         session_regenerate_id(true);
@@ -103,7 +145,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
                     1044 => 'El usuario de la base de datos no tiene permiso para acceder a esa base. Revisá sus permisos en Hostinger.',
                     1045 => 'Hostinger rechazó el usuario o la contraseña de la base de datos. Revisá los datos de conexión configurados para el sitio.',
                     1049 => 'No se encontró la base de datos configurada. Revisá su nombre completo en la configuración de conexión.',
-                    1054 => 'La tabla usuarios no tiene las columnas que espera el registro. Compará su estructura con el esquema basepruba2.sql.',
+                    1054 => 'La tabla usuarios no tiene las columnas que espera el registro. Compará su estructura con el esquema PRUEBA/basepruba2.sql.',
                     1062 => 'Ya existe una cuenta registrada con ese correo electrónico.',
                     1146 => 'No se encontró la tabla usuarios en la base seleccionada. Importá la tabla en la base configurada.',
                     1142 => 'El usuario de la base de datos no tiene permiso para consultar la tabla usuarios. Revisá sus permisos en Hostinger.',
@@ -111,6 +153,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
                     2003 => 'El servidor MySQL no está disponible en el host configurado. Revisá los datos de conexión del sitio.',
                     1265 => 'La base de datos todavía no permite el estado ceo pendiente. Actualizá el ENUM de tipoUsuario en phpMyAdmin.',
                     1364 => 'Falta una columna obligatoria en la tabla usuarios. Compará su estructura con PRUEBA/basepruba2.sql.',
+                    1452 => 'La aerolínea seleccionada ya no está disponible. Elegí otra e intentá nuevamente.',
                 ];
 
                 $erroresRegistro[] = $erroresPorCodigo[$codigoError]
@@ -247,6 +290,31 @@ $escapar = static fn(string $valor): string => htmlspecialchars($valor, ENT_QUOT
                     <span>Soy CEO de una aerolínea <small>Tu solicitud necesitará aprobación antes de habilitar el acceso CEO.</small></span>
                 </label>
 
+                <div
+                    class="campo-autenticacion campo-aerolinea-ceo"
+                    id="campo-aerolinea-ceo"
+                    <?= $solicitudCeo ? '' : 'hidden' ?>>
+                    <label for="cod-aerolinea">Aerolínea</label>
+                    <select
+                        id="cod-aerolinea"
+                        name="cod_aerolinea"
+                        <?= $solicitudCeo && $aerolineas !== [] ? 'required' : 'disabled' ?>>
+                        <option value="">Elegí una aerolínea</option>
+                        <?php foreach ($aerolineas as $aerolinea): ?>
+                            <option
+                                value="<?= (int) $aerolinea['codAerolinea'] ?>"
+                                <?= (string) $aerolinea['codAerolinea'] === $codAerolineaIngresada ? 'selected' : '' ?>>
+                                <?= $escapar($aerolinea['nombreAerolinea']) ?> (<?= $escapar($aerolinea['codigoIATA']) ?>)
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <?php if ($errorCargaAerolineas !== ''): ?>
+                        <small><?= $escapar($errorCargaAerolineas) ?></small>
+                    <?php elseif ($aerolineas === []): ?>
+                        <small>Todavía no hay aerolíneas disponibles para elegir.</small>
+                    <?php endif; ?>
+                </div>
+
                 <button class="boton-autenticacion" type="submit">Crear cuenta</button>
             </form>
 
@@ -263,6 +331,19 @@ $escapar = static fn(string $valor): string => htmlspecialchars($valor, ENT_QUOT
         const campoContrasena = document.getElementById("contrasena");
         const botonVisibilidadContrasena = document.getElementById("alternar-visibilidad-contrasena");
         const iconoVisibilidadContrasena = botonVisibilidadContrasena.querySelector("img");
+        const opcionCeo = document.getElementById("soy-ceo");
+        const campoAerolineaCeo = document.getElementById("campo-aerolinea-ceo");
+        const seleccionAerolinea = document.getElementById("cod-aerolinea");
+
+        const actualizarCampoAerolinea = () => {
+            const hayAerolineas = seleccionAerolinea.options.length > 1;
+            campoAerolineaCeo.hidden = !opcionCeo.checked;
+            seleccionAerolinea.disabled = !opcionCeo.checked || !hayAerolineas;
+            seleccionAerolinea.required = opcionCeo.checked && hayAerolineas;
+        };
+
+        opcionCeo.addEventListener("change", actualizarCampoAerolinea);
+        actualizarCampoAerolinea();
 
         botonVisibilidadContrasena.addEventListener("click", () => {
             const mostrarContrasena = campoContrasena.type === "password";
