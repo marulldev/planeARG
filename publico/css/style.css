@@ -208,16 +208,6 @@ a {
     font-weight: 600;
 }
 
-.formulario-cerrar-sesion {
-    margin: 0;
-}
-
-.formulario-cerrar-sesion button {
-    border: 0;
-    font-family: inherit;
-    cursor: pointer;
-}
-
 /* PIE DE PAGINA */
 .pie-pagina {
     margin-top: auto;
@@ -623,6 +613,26 @@ a {
     margin: 0;
     color: #40546a;
     overflow-wrap: anywhere;
+}
+
+.formulario-cerrar-sesion-perfil {
+    margin-top: 28px;
+}
+
+.boton-cerrar-sesion-perfil {
+    min-height: 44px;
+    padding: 10px 18px;
+    border: 0;
+    border-radius: 999px;
+    background: #0d5aa8;
+    color: #ffffff;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.boton-cerrar-sesion-perfil:hover {
+    background: #0b4d93;
 }
 
 @media (max-width: 700px) {
