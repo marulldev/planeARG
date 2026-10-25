@@ -22,9 +22,7 @@ $etiquetaRol = match ($tipoUsuario) {
 };
 ?>
 
-<head>
-    <link rel="stylesheet" href="/publico/css/style.css?v=<?= filemtime($_SERVER['DOCUMENT_ROOT'] . '/publico/css/style.css') ?>">
-</head>
+
 <header class="encabezado-principal <?= $espacioEnBlanco ? '' : 'encabezado-superpuesto' ?>">
     <a href="/">
         <div class="circulo-flashero">
