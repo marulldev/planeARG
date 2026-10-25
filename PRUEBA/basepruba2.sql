@@ -27,6 +27,7 @@ CREATE TABLE vuelos (
   horaSalidaVuelo TIME NOT NULL,
   precioVuelo DECIMAL(10,2) NOT NULL,
   asientosDisponibles INT NOT NULL,
+  capacidadTotal INT NOT NULL,
   FOREIGN KEY (codAerolinea) REFERENCES aerolineas(codAerolinea)
 );
 
