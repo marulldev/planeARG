@@ -2598,6 +2598,137 @@ a {
     }
 }
 
+.solicitudes-ceo {
+    width: min(100% - 40px, 1000px);
+    margin: 0 auto;
+    padding: 42px 0 72px;
+}
+
+.solicitudes-ceo-encabezado {
+    margin-bottom: 24px;
+}
+
+.solicitudes-ceo-encabezado h1 {
+    margin: 0;
+    color: #132238;
+    font-size: clamp(1.8rem, 5vw, 2.4rem);
+}
+
+.solicitudes-ceo-encabezado > p:last-child,
+.solicitud-ceo p,
+.solicitudes-ceo-vacio p {
+    color: #40546a;
+    line-height: 1.6;
+}
+
+.solicitudes-ceo-total {
+    margin: 0 0 14px;
+    color: #40546a;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.solicitudes-ceo-listado {
+    display: grid;
+    gap: 14px;
+}
+
+.solicitud-ceo {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 20px;
+    padding: 18px;
+    border: 1px solid #dce6ee;
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow: 0 8px 24px rgb(19 34 56 / 6%);
+}
+
+.solicitud-ceo h2,
+.solicitud-ceo h3 {
+    margin: 0;
+    color: #132238;
+    font-size: 1.05rem;
+}
+
+.solicitud-ceo p {
+    overflow-wrap: anywhere;
+    margin: 5px 0 0;
+    font-size: 0.88rem;
+}
+
+.solicitud-ceo-codigo,
+.solicitud-ceo-etiqueta {
+    color: #0d5aa8 !important;
+    font-size: 0.78rem !important;
+    font-weight: 700;
+}
+
+.solicitud-ceo-estado {
+    padding: 6px 11px;
+    border-radius: 999px;
+    background: #fff5dc;
+    color: #735510;
+    font-size: 0.82rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.solicitud-ceo-acciones {
+    display: grid;
+    justify-items: end;
+    gap: 10px;
+}
+
+.solicitud-ceo-acciones form,
+.solicitud-ceo-acciones .boton-reserva {
+    width: 100%;
+}
+
+.icono-confirmacion {
+    background: #e7f6ed;
+    color: #17643a;
+}
+
+.icono-confirmacion img {
+    filter: brightness(0) saturate(100%) invert(29%) sepia(20%) saturate(2010%) hue-rotate(91deg) brightness(94%) contrast(88%);
+}
+
+.solicitudes-ceo-vacio {
+    padding: 28px;
+    border: 1px solid #dce6ee;
+    border-radius: 12px;
+    background: #ffffff;
+}
+
+.solicitudes-ceo-vacio h2 {
+    margin: 0;
+    color: #132238;
+}
+
+@media (max-width: 680px) {
+    .solicitudes-ceo {
+        width: min(100% - 24px, 1000px);
+        padding: 28px 0 48px;
+    }
+
+    .solicitud-ceo {
+        grid-template-columns: 1fr auto;
+        gap: 14px;
+    }
+
+    .solicitud-ceo-persona,
+    .solicitud-ceo-aerolinea {
+        grid-column: 1 / -1;
+    }
+
+    .solicitud-ceo-acciones {
+        grid-column: 1 / -1;
+        justify-items: stretch;
+    }
+}
+
 .reporte-usuarios {
     width: min(100% - 40px, 1040px);
     margin: 0 auto;
