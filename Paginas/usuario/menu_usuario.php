@@ -31,10 +31,30 @@ if (($_SESSION['tipoUsuario'] ?? '') !== 'usuario') {
     <main class="contenido-principal menu-admin">
         <h1>Menú de pasajero</h1>
         <nav class="acciones-admin" aria-label="Opciones de pasajero">
-            <a class="accion-admin" href="/Paginas/Info/vuelos.php">Consultar vuelos</a>
-            <a class="accion-admin" href="/Paginas/usuario/reservar_vuelo.php">Reservar un vuelo</a>
-            <a class="accion-admin" href="/Paginas/usuario/gestion_reservas.php">Gestionar reservas</a>
-            <a class="accion-admin" href="/Paginas/usuario/historial_compras.php">Historial de compras</a>
+            <a class="accion-admin" href="/Paginas/Info/vuelos.php">
+                <span class="icono-admin icono-avion" aria-hidden="true">
+                    <img src="/publico/icon/airplane-svgrepo-com.svg" alt="">
+                </span>
+                <span>Consultar vuelos</span>
+            </a>
+            <a class="accion-admin" href="/Paginas/usuario/reservar_vuelo.php">
+                <span class="icono-admin icono-promocion" aria-hidden="true">
+                    <img src="/publico/icon/airplane-svgrepo-com.svg" alt="">
+                </span>
+                <span>Reservar un vuelo</span>
+            </a>
+            <a class="accion-admin" href="/Paginas/usuario/gestion_reservas.php">
+                <span class="icono-admin icono-reservas" aria-hidden="true">
+                    <img src="/publico/icon/user-identity-svgrepo-com.svg" alt="">
+                </span>
+                <span>Gestionar reservas</span>
+            </a>
+            <a class="accion-admin" href="/Paginas/usuario/historial_compras.php">
+                <span class="icono-admin icono-historial" aria-hidden="true">
+                    <img src="/publico/icon/document-text-svgrepo-com.svg" alt="">
+                </span>
+                <span>Historial de compras</span>
+            </a>
         </nav>
     </main>
 
