@@ -28,8 +28,10 @@
 				<span>Aprobar o denegar promociones</span>
 			</a>
 			<a class="accion-admin" href="aprobar%20ceo/aprobar_ceo.php">
-				<span class="icono-admin icono-avion" aria-hidden="true">
-					<img src="/publico/icon/airplane-svgrepo-com.svg" alt="">
+				<span class="icono-admin icono-confirmacion" aria-hidden="true">
+					<svg viewBox="0 0 24 24" focusable="false">
+						<path d="m5 12 4 4L19 6"></path>
+					</svg>
 				</span>
 				<span>Solicitudes para ser CEO</span>
 			</a>
