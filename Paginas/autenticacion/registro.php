@@ -82,12 +82,25 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
                     exit;
                 }
             } catch (mysqli_sql_exception $error) {
-                if ((int) $error->getCode() === 1062) {
-                    $erroresRegistro[] = 'Ya existe una cuenta registrada con ese correo electrónico.';
-                } else {
-                    error_log('Error al crear una cuenta: ' . $error->getMessage());
-                    $erroresRegistro[] = 'No se pudo crear la cuenta. Intentá nuevamente más tarde.';
-                }
+                $codigoError = (int) $error->getCode();
+                error_log('Error al crear una cuenta (MySQL ' . $codigoError . '): ' . $error->getMessage());
+
+                $erroresPorCodigo = [
+                    1044 => 'El usuario de la base de datos no tiene permiso para acceder a esa base. Revisá sus permisos en Hostinger.',
+                    1045 => 'Hostinger rechazó el usuario o la contraseña de la base de datos. Revisá los datos de conexión configurados para el sitio.',
+                    1049 => 'No se encontró la base de datos configurada. Revisá su nombre completo en la configuración de conexión.',
+                    1054 => 'La tabla usuarios no tiene las columnas que espera el registro. Compará su estructura con el esquema basepruba2.sql.',
+                    1062 => 'Ya existe una cuenta registrada con ese correo electrónico.',
+                    1146 => 'No se encontró la tabla usuarios en la base seleccionada. Importá la tabla en la base configurada.',
+                    1142 => 'El usuario de la base de datos no tiene permiso para consultar la tabla usuarios. Revisá sus permisos en Hostinger.',
+                    2002 => 'No se pudo establecer conexión con MySQL. Verificá el servidor de base de datos indicado por Hostinger.',
+                    2003 => 'El servidor MySQL no está disponible en el host configurado. Revisá los datos de conexión del sitio.',
+                    1265 => 'Un valor no coincide con el formato permitido por la base. Revisá la estructura de usuarios.',
+                    1364 => 'Falta una columna obligatoria en la tabla usuarios. Compará su estructura con PRUEBA/basepruba2.sql.',
+                ];
+
+                $erroresRegistro[] = $erroresPorCodigo[$codigoError]
+                    ?? 'No se pudo crear la cuenta. Código de referencia MySQL: ' . $codigoError . '.';
             } finally {
                 if ($conexion instanceof mysqli) {
                     $conexion->close();
