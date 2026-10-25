@@ -198,6 +198,17 @@ a {
     border-radius: 50%;
 }
 
+.navegacion-principal .enlace-perfil .icono-perfil {
+    width: 8px;
+    height: 8px;
+    min-width: 8px;
+    min-height: 8px;
+    max-width: 8px;
+    max-height: 8px;
+    flex: 0 0 8px;
+    object-fit: cover;
+}
+
 .navegacion-principal .enlace-perfil:hover {
     background: #0b4d93;
 }
