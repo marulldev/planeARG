@@ -76,6 +76,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
                     $_SESSION['codUsuario'] = (int) $codUsuario;
                     $_SESSION['nombreUsuario'] = $nombreCompleto;
                     $_SESSION['tipoUsuario'] = 'usuario';
+                    $_SESSION['emailUsuario'] = $emailIngresado;
                     $_SESSION['csrf_auth'] = bin2hex(random_bytes(32));
 
                     header('Location: /');
@@ -143,7 +144,7 @@ $escapar = static fn(string $valor): string => htmlspecialchars($valor, ENT_QUOT
 
             <form class="formulario-autenticacion formulario-registro" method="post">
                 <input type="hidden" name="csrf_token" value="<?= $escapar($_SESSION['csrf_auth']) ?>">
-                <div class="campo-autenticacion">
+                <div class="campo-autenticacion campo-email-registro">
                     <label for="email">Correo electrónico</label>
                     <input
                         id="email"

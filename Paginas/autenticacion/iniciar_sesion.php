@@ -20,14 +20,14 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
         try {
             $conexion = conectarBaseDeDatos();
             $consulta = $conexion->prepare(
-                'SELECT codUsuario, nombreUsuario, claveUsuario, tipoUsuario
+                'SELECT codUsuario, nombreUsuario, claveUsuario, tipoUsuario, emailUsuario
                  FROM usuarios
                  WHERE emailUsuario = ?
                  LIMIT 1'
             );
             $consulta->bind_param('s', $emailIngresado);
             $consulta->execute();
-            $consulta->bind_result($codUsuario, $nombreUsuario, $hashContrasena, $tipoUsuario);
+            $consulta->bind_result($codUsuario, $nombreUsuario, $hashContrasena, $tipoUsuario, $emailUsuario);
             $usuarioEncontrado = $consulta->fetch();
             $consulta->close();
 
@@ -36,6 +36,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
                 $_SESSION['codUsuario'] = (int) $codUsuario;
                 $_SESSION['nombreUsuario'] = $nombreUsuario;
                 $_SESSION['tipoUsuario'] = $tipoUsuario;
+                $_SESSION['emailUsuario'] = $emailUsuario;
                 $_SESSION['csrf_auth'] = bin2hex(random_bytes(32));
 
                 if ($tipoUsuario === 'administrador') {

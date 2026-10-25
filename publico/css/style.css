@@ -193,6 +193,15 @@ a {
     background: #0b4d93;
 }
 
+.navegacion-principal .enlace-menu {
+    background: #e5f1fb;
+    color: #17365d;
+}
+
+.navegacion-principal .enlace-menu:hover {
+    background: #d5e8f8;
+}
+
 .saludo-usuario {
     color: #17365d;
     font-size: 0.92rem;
@@ -422,7 +431,7 @@ a {
 }
 
 .tarjeta-registro {
-    width: min(100%, 600px);
+    width: min(100%, 720px);
 }
 
 .autenticacion-etiqueta {
@@ -473,6 +482,10 @@ a {
 
 .formulario-registro > .campo-autenticacion:first-child,
 .campos-contrasena-registro {
+    grid-column: 1 / -1;
+}
+
+.campo-email-registro {
     grid-column: 1 / -1;
 }
 
@@ -587,6 +600,29 @@ a {
 .alternativa-autenticacion a {
     color: #0d5aa8;
     font-weight: 700;
+}
+
+.datos-perfil {
+    display: grid;
+    gap: 16px;
+    margin: 24px 0 0;
+}
+
+.datos-perfil div {
+    display: grid;
+    gap: 5px;
+}
+
+.datos-perfil dt {
+    color: #17365d;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.datos-perfil dd {
+    margin: 0;
+    color: #40546a;
+    overflow-wrap: anywhere;
 }
 
 @media (max-width: 700px) {
