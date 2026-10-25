@@ -1,8 +1,21 @@
 <?php
+require_once __DIR__ . '/../../includes/sesion.php';
 require_once __DIR__ . '/../../includes/conexion.php';
 
-if (session_status() !== PHP_SESSION_ACTIVE) {
-	session_start();
+if (!isset($_SESSION['codUsuario'])) {
+	header('Location: /Paginas/autenticacion/iniciar_sesion.php');
+	exit;
+}
+
+if (($_SESSION['tipoUsuario'] ?? '') !== 'administrador') {
+	if (($_SESSION['tipoUsuario'] ?? '') === 'ceo de aerolinea') {
+		header('Location: /Paginas/ceo/Menu%20ceo/panel_control.php');
+	} elseif (($_SESSION['tipoUsuario'] ?? '') === 'usuario') {
+		header('Location: /Paginas/usuario/menu_usuario.php');
+	} else {
+		header('Location: /');
+	}
+	exit;
 }
 
 $_SESSION['token_novedades'] ??= bin2hex(random_bytes(32));
