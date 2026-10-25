@@ -38,10 +38,6 @@
 		<section class="reportes-admin" aria-labelledby="titulo-reportes-admin">
 			<h2 id="titulo-reportes-admin">Reportes</h2>
 			<nav class="enlaces-reportes-admin" aria-label="Reportes">
-				<a href="reportes/crear_reporte.php">
-					<img class="icono-reporte" src="/publico/icon/document-text-svgrepo-com.svg" alt="" aria-hidden="true">
-					<span>Generar reportes</span>
-				</a>
 				<a href="reportes/rep_ventas.php">
 					<img class="icono-reporte" src="/publico/icon/document-text-svgrepo-com.svg" alt="" aria-hidden="true">
 					<span>Reporte de ventas</span>
