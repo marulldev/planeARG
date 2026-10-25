@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../../includes/sesion.php';
 require_once __DIR__ . '/../../includes/conexion.php';
+require_once __DIR__ . '/../../includes/imagenes_contenido.php';
 
 if (!isset($_SESSION['codUsuario'])) {
 	header('Location: /Paginas/autenticacion/iniciar_sesion.php');
@@ -28,6 +29,7 @@ $fechaHoy = (new DateTimeImmutable('today', $zonaHoraria))->format('Y-m-d');
 $fechaPublicacion = $fechaHoy;
 $fechaExpiracion = '';
 $textoNovedad = '';
+$imagenNovedad = null;
 $novedadEdicion = null;
 $errorFormulario = '';
 $conexion = null;
@@ -38,7 +40,7 @@ try {
 		$errorFormulario = 'El identificador de la novedad no es válido.';
 	} elseif ($modoEdicion) {
 		$consultaEdicion = $conexion->prepare(
-			'SELECT textoNovedad, fechaPublicacionNovedad, fechaExpiracionNovedad FROM novedades WHERE codNovedad = ?'
+			'SELECT textoNovedad, imagenNovedad, fechaPublicacionNovedad, fechaExpiracionNovedad FROM novedades WHERE codNovedad = ?'
 		);
 		$consultaEdicion->bind_param('i', $idSolicitado);
 		$consultaEdicion->execute();
@@ -49,6 +51,7 @@ try {
 			$errorFormulario = 'No se encontró la novedad que querés editar.';
 		} else {
 			$textoNovedad = $novedadEdicion['textoNovedad'];
+			$imagenNovedad = $novedadEdicion['imagenNovedad'];
 			$fechaPublicacion = $novedadEdicion['fechaPublicacionNovedad'];
 			$fechaExpiracion = $novedadEdicion['fechaExpiracionNovedad'] ?? '';
 		}
@@ -89,25 +92,52 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST' && $conexion instanceof mys
 
 	if ($errorFormulario === '') {
 		$fechaExpiracionParaGuardar = $fechaExpiracion !== '' ? $fechaExpiracion : null;
+		$imagenNueva = null;
+		$imagenSubida = null;
+		$eliminarImagenAnterior = false;
+
 		try {
+			$imagenSubida = guardarImagenContenido($_FILES['imagenNovedad'] ?? null);
+			if ($imagenSubida !== null) {
+				$imagenNueva = $imagenSubida;
+			} elseif ($modoEdicion && isset($_POST['quitarImagenNovedad'])) {
+				$imagenNueva = null;
+				$eliminarImagenAnterior = true;
+			} else {
+				$imagenNueva = $imagenNovedad;
+			}
+
 			if ($modoEdicion) {
 				$consulta = $conexion->prepare(
-					'UPDATE novedades SET textoNovedad = ?, fechaExpiracionNovedad = ? WHERE codNovedad = ?'
+					'UPDATE novedades
+					 SET textoNovedad = ?, fechaExpiracionNovedad = ?, imagenNovedad = ?
+					 WHERE codNovedad = ?'
 				);
-				$consulta->bind_param('ssi', $textoNovedad, $fechaExpiracionParaGuardar, $idSolicitado);
+				$consulta->bind_param('sssi', $textoNovedad, $fechaExpiracionParaGuardar, $imagenNueva, $idSolicitado);
 			} else {
 				$consulta = $conexion->prepare(
-					'INSERT INTO novedades (textoNovedad, fechaPublicacionNovedad, fechaExpiracionNovedad) VALUES (?, ?, ?)'
+					'INSERT INTO novedades
+					 (textoNovedad, fechaPublicacionNovedad, fechaExpiracionNovedad, imagenNovedad)
+					 VALUES (?, ?, ?, ?)'
 				);
-				$consulta->bind_param('sss', $textoNovedad, $fechaPublicacion, $fechaExpiracionParaGuardar);
+				$consulta->bind_param('ssss', $textoNovedad, $fechaPublicacion, $fechaExpiracionParaGuardar, $imagenNueva);
 			}
 			$consulta->execute();
 			$consulta->close();
+			if ($modoEdicion && ($eliminarImagenAnterior || $imagenNueva !== $imagenNovedad)) {
+				eliminarImagenContenido($imagenNovedad);
+			}
 			$conexion->close();
 
 			header('Location: gestionar_novedades.php?' . ($modoEdicion ? 'actualizada=1' : 'creada=1'));
 			exit;
+		} catch (RuntimeException $error) {
+			eliminarImagenContenido($imagenSubida);
+			$errorFormulario = $error instanceof mysqli_sql_exception
+				? 'No se pudo guardar la novedad. Revisá los datos e intentá nuevamente.'
+				: $error->getMessage();
 		} catch (Throwable $error) {
+			eliminarImagenContenido($imagenSubida);
 			$errorFormulario = 'No se pudo guardar la novedad. Revisá los datos e intentá nuevamente.';
 		}
 	}
@@ -145,12 +175,25 @@ $escapar = static function ($valor): string {
 			<p class="mensaje-formulario-aerolinea error-formulario-aerolinea" role="alert"><?= $escapar($errorFormulario) ?></p>
 		<?php endif; ?>
 
-		<form class="formulario-aerolinea formulario-novedad" method="post" action="crear_novedad.php<?= $modoEdicion ? '?id=' . (int) $idSolicitado : '' ?>" accept-charset="UTF-8">
+		<form class="formulario-aerolinea formulario-novedad" method="post" action="crear_novedad.php<?= $modoEdicion ? '?id=' . (int) $idSolicitado : '' ?>" accept-charset="UTF-8" enctype="multipart/form-data">
 			<input type="hidden" name="tokenNovedades" value="<?= $escapar($tokenNovedades) ?>">
 			<div class="campo-aerolinea">
 				<label for="textoNovedad">Texto de la novedad <span>(máximo 200 caracteres)</span></label>
 				<textarea id="textoNovedad" name="textoNovedad" maxlength="200" rows="6" placeholder="Escribí el texto de la novedad." required><?= $escapar($textoNovedad) ?></textarea>
 				<p class="contador-descripcion-aerolinea"><span id="cantidadTextoNovedad"><?= $longitudTexto($textoNovedad) ?></span>/200</p>
+			</div>
+
+			<div class="campo-aerolinea">
+				<label for="imagenNovedad">Imagen <span>(opcional, JPG/PNG/WebP, hasta 5 MB)</span></label>
+				<input id="imagenNovedad" name="imagenNovedad" type="file" accept="image/jpeg,image/png,image/webp">
+				<?php if ($modoEdicion): ?>
+					<p>Imagen actual:</p>
+					<img class="imagen-contenido imagen-contenido-formulario" src="<?= $escapar((string) ($imagenNovedad ?: '/publico/imagenes/novedad/promo_generica.png')) ?>" alt="Imagen actual de la novedad">
+					<?php if ($imagenNovedad !== null): ?>
+						<p>Si no elegís otra imagen, se conservará.</p>
+						<label><input type="checkbox" name="quitarImagenNovedad" value="1"> Quitar imagen actual</label>
+					<?php endif; ?>
+				<?php endif; ?>
 			</div>
 
 			<div class="campo-aerolinea">

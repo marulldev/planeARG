@@ -1325,6 +1325,46 @@ a {
         padding: 42px 0 32px;
     }
 }
+
+.imagen-contenido {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 10px;
+    background: #e7f1f8;
+    object-fit: cover;
+}
+
+.novedad-publica > .imagen-contenido {
+    margin-bottom: 16px;
+}
+
+.imagen-contenido-admin {
+    width: 140px;
+    aspect-ratio: 4 / 3;
+    margin-bottom: 10px;
+}
+
+.imagen-contenido-formulario {
+    max-width: 360px;
+}
+
+.imagen-contenido-promocion {
+    flex: 0 0 180px;
+    width: 180px;
+    height: 110px;
+    aspect-ratio: auto;
+}
+
+@media (max-width: 640px) {
+    .imagen-contenido-admin,
+    .imagen-contenido-promocion {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16 / 9;
+        flex-basis: auto;
+    }
+}
 .ayuda {
     width: min(1120px, calc(100% - 40px));
     margin: 0 auto;

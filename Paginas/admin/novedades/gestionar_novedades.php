@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../../includes/sesion.php';
 require_once __DIR__ . '/../../includes/conexion.php';
+require_once __DIR__ . '/../../includes/imagenes_contenido.php';
 
 if (!isset($_SESSION['codUsuario'])) {
 	header('Location: /Paginas/autenticacion/iniciar_sesion.php');
@@ -34,6 +35,13 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST' && ($_POST['accion'] ?? '')
 		$conexionEliminar = null;
 		try {
 			$conexionEliminar = conectarBaseDeDatos();
+			$consultaImagen = $conexionEliminar->prepare('SELECT imagenNovedad FROM novedades WHERE codNovedad = ?');
+			$consultaImagen->bind_param('i', $idEliminar);
+			$consultaImagen->execute();
+			$consultaImagen->bind_result($imagenEliminar);
+			$consultaImagen->fetch();
+			$consultaImagen->close();
+
 			$consultaEliminar = $conexionEliminar->prepare('DELETE FROM novedades WHERE codNovedad = ?');
 			$consultaEliminar->bind_param('i', $idEliminar);
 			$consultaEliminar->execute();
@@ -41,6 +49,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST' && ($_POST['accion'] ?? '')
 			$consultaEliminar->close();
 
 			if ($filasEliminadas > 0) {
+				eliminarImagenContenido($imagenEliminar ?? null);
 				$conexionEliminar->close();
 				header('Location: gestionar_novedades.php?eliminada=1');
 				exit;
@@ -74,7 +83,8 @@ try {
 	$desplazamiento = ($paginaListado - 1) * $elementosPorPagina;
 
 	$consulta = $conexion->prepare(
-		'SELECT codNovedad, textoNovedad, fechaPublicacionNovedad, fechaExpiracionNovedad FROM novedades ORDER BY codNovedad DESC LIMIT ? OFFSET ?'
+		'SELECT codNovedad, textoNovedad, imagenNovedad, fechaPublicacionNovedad, fechaExpiracionNovedad
+		 FROM novedades ORDER BY codNovedad DESC LIMIT ? OFFSET ?'
 	);
 	$consulta->bind_param('ii', $elementosPorPagina, $desplazamiento);
 	$consulta->execute();
@@ -153,6 +163,7 @@ $formatearFecha = static function (?string $fecha): string {
 							<p>Expiración <time datetime="<?= $escapar($novedad['fechaExpiracionNovedad'] ?? '') ?>"><?= $escapar($formatearFecha($novedad['fechaExpiracionNovedad'])) ?></time></p>
 						</div>
 						<div class="contenido-novedad">
+							<img class="imagen-contenido imagen-contenido-admin" src="<?= $escapar($novedad['imagenNovedad'] ?: '/publico/imagenes/novedad/promo_generica.png') ?>" alt="Imagen de novedad <?= (int) $novedad['codNovedad'] ?>">
 							<p><?= nl2br($escapar($novedad['textoNovedad'])) ?></p>
 							<span>Código #<?= (int) $novedad['codNovedad'] ?></span>
 						</div>

@@ -39,6 +39,7 @@ CREATE TABLE vuelos (
 CREATE TABLE promociones (
   codPromocion INT AUTO_INCREMENT PRIMARY KEY,
   descripcionPromocion VARCHAR(200),
+  imagenPromocion VARCHAR(255) NULL,
   descuentoPromocion DECIMAL(5,2) NOT NULL,
   codAerolinea INT NOT NULL,
   fechaExpiracionPromocion DATE NULL,
@@ -49,6 +50,7 @@ CREATE TABLE promociones (
 CREATE TABLE novedades (
   codNovedad INT AUTO_INCREMENT PRIMARY KEY,
   textoNovedad VARCHAR(200) NOT NULL,
+  imagenNovedad VARCHAR(255) NULL,
   fechaPublicacionNovedad DATE NOT NULL,
   fechaExpiracionNovedad DATE
 );

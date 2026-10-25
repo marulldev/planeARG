@@ -11,7 +11,7 @@ $conexion = null;
 try {
     $conexion = conectarBaseDeDatos();
     $consulta = $conexion->prepare(
-        'SELECT codNovedad, textoNovedad, fechaPublicacionNovedad, fechaExpiracionNovedad
+        'SELECT codNovedad, textoNovedad, imagenNovedad, fechaPublicacionNovedad, fechaExpiracionNovedad
          FROM novedades
          WHERE fechaPublicacionNovedad <= ?
            AND (fechaExpiracionNovedad IS NULL OR fechaExpiracionNovedad >= ?)
@@ -22,6 +22,7 @@ try {
     $consulta->bind_result(
         $codNovedad,
         $textoNovedad,
+        $imagenNovedad,
         $fechaPublicacion,
         $fechaExpiracion
     );
@@ -30,6 +31,7 @@ try {
         $novedades[] = [
             'codNovedad' => $codNovedad,
             'textoNovedad' => $textoNovedad,
+            'imagenNovedad' => $imagenNovedad,
             'fechaPublicacionNovedad' => $fechaPublicacion,
             'fechaExpiracionNovedad' => $fechaExpiracion,
         ];
@@ -78,6 +80,7 @@ $formatearFecha = static fn(string $fecha): string => (
             <section class="novedades-publicas-lista" aria-label="Novedades vigentes">
                 <?php foreach ($novedades as $novedad): ?>
                     <article class="novedad-publica">
+                        <img class="imagen-contenido" src="<?= $escapar((string) ($novedad['imagenNovedad'] ?: '/publico/imagenes/novedad/promo_generica.png')) ?>" alt="Imagen de novedad <?= (int) $novedad['codNovedad'] ?>">
                         <div class="novedad-publica-fechas">
                             <p>
                                 Publicada el

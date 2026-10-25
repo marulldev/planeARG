@@ -14,7 +14,7 @@ try {
     $conexion = conectarBaseDeDatos();
 
     $consultaNovedades = $conexion->prepare(
-        'SELECT codNovedad, textoNovedad, fechaPublicacionNovedad
+        'SELECT codNovedad, textoNovedad, imagenNovedad, fechaPublicacionNovedad
          FROM novedades
          WHERE fechaPublicacionNovedad <= ?
            AND (fechaExpiracionNovedad IS NULL OR fechaExpiracionNovedad >= ?)
@@ -23,11 +23,12 @@ try {
     );
     $consultaNovedades->bind_param('ss', $fechaActual, $fechaActual);
     $consultaNovedades->execute();
-    $consultaNovedades->bind_result($codNovedad, $textoNovedad, $fechaPublicacionNovedad);
+    $consultaNovedades->bind_result($codNovedad, $textoNovedad, $imagenNovedad, $fechaPublicacionNovedad);
     while ($consultaNovedades->fetch()) {
         $novedades[] = [
             'codNovedad' => $codNovedad,
             'textoNovedad' => $textoNovedad,
+            'imagenNovedad' => $imagenNovedad,
             'fechaPublicacionNovedad' => $fechaPublicacionNovedad,
         ];
     }
@@ -70,7 +71,7 @@ try {
     $consultaVuelos->close();
 
     $consultaPromociones = $conexion->prepare(
-        "SELECT p.codPromocion, p.descripcionPromocion, p.descuentoPromocion,
+        "SELECT p.codPromocion, p.descripcionPromocion, p.imagenPromocion, p.descuentoPromocion,
                 p.fechaExpiracionPromocion, a.nombreAerolinea
          FROM promociones AS p
          INNER JOIN aerolineas AS a ON a.codAerolinea = p.codAerolinea
@@ -84,6 +85,7 @@ try {
     $consultaPromociones->bind_result(
         $codPromocion,
         $descripcionPromocion,
+        $imagenPromocion,
         $descuentoPromocion,
         $fechaExpiracionPromocion,
         $nombreAerolinea
@@ -92,6 +94,7 @@ try {
         $promociones[] = [
             'codPromocion' => $codPromocion,
             'descripcionPromocion' => $descripcionPromocion,
+            'imagenPromocion' => $imagenPromocion,
             'descuentoPromocion' => $descuentoPromocion,
             'fechaExpiracionPromocion' => $fechaExpiracionPromocion,
             'nombreAerolinea' => $nombreAerolinea,
@@ -156,6 +159,7 @@ $escapar = static fn(string $valor): string => htmlspecialchars($valor, ENT_QUOT
                     <div class="inicio-lista inicio-lista-novedades">
                         <?php foreach ($novedades as $novedad): ?>
                             <article class="novedad-publica">
+                                <img class="imagen-contenido" src="<?= $escapar((string) ($novedad['imagenNovedad'] ?: '/publico/imagenes/novedad/promo_generica.png')) ?>" alt="Imagen de novedad <?= (int) $novedad['codNovedad'] ?>">
                                 <p class="inicio-fecha">
                                     Publicada el
                                     <time datetime="<?= $escapar((string) $novedad['fechaPublicacionNovedad']) ?>">
@@ -213,6 +217,7 @@ $escapar = static fn(string $valor): string => htmlspecialchars($valor, ENT_QUOT
                     <div class="inicio-lista">
                         <?php foreach ($promociones as $promocion): ?>
                             <article class="promocion-elemento">
+                                <img class="imagen-contenido imagen-contenido-promocion" src="<?= $escapar((string) ($promocion['imagenPromocion'] ?: '/publico/imagenes/novedad/promo_generica.png')) ?>" alt="Imagen de promoción <?= (int) $promocion['codPromocion'] ?>">
                                 <div>
                                     <p class="promocion-aerolinea"><?= $escapar((string) $promocion['nombreAerolinea']) ?></p>
                                     <h3><?= $escapar((string) $promocion['descripcionPromocion']) ?></h3>

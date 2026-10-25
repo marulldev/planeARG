@@ -10,3 +10,7 @@
 6. Confirmá que `mailbox_email` coincide con una dirección autorizada para ese token. La aplicación consulta la API para obtener automáticamente el identificador de la mailbox.
 
 El enlace vence a los 30 minutos, el token se almacena como hash y solo se permite una solicitud por cuenta por minuto. El formulario responde con el mismo mensaje exista o no la cuenta. El SDK requiere PHP 8.2 o superior.
+
+## Imágenes de novedades y promociones
+
+Ejecutá `PRUEBA/migraciones/20261025_imagenes_novedades_promociones.sql` una vez sobre la base de datos activa. Las imágenes son opcionales; se aceptan JPG, PNG y WebP de hasta 5 MB y se guardan en `publico/imagenes/contenido`. Si no se carga una imagen, se muestra `publico/imagenes/novedad/promo_generica.png`.

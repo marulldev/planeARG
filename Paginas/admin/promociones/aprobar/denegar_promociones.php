@@ -84,7 +84,7 @@ $conexion = null;
 try {
     $conexion = conectarBaseDeDatos();
     $consulta = $conexion->prepare(
-        "SELECT p.codPromocion, p.descripcionPromocion, p.descuentoPromocion,
+        "SELECT p.codPromocion, p.descripcionPromocion, p.imagenPromocion, p.descuentoPromocion,
                 p.fechaExpiracionPromocion,
                 a.codAerolinea, a.nombreAerolinea
          FROM promociones AS p
@@ -96,6 +96,7 @@ try {
     $consulta->bind_result(
         $codPromocion,
         $descripcionPromocion,
+        $imagenPromocion,
         $descuentoPromocion,
         $fechaExpiracionPromocion,
         $codAerolinea,
@@ -106,6 +107,7 @@ try {
         $promocionesPendientes[] = [
             'codPromocion' => $codPromocion,
             'descripcionPromocion' => $descripcionPromocion,
+            'imagenPromocion' => $imagenPromocion,
             'descuentoPromocion' => $descuentoPromocion,
             'fechaExpiracionPromocion' => $fechaExpiracionPromocion,
             'codAerolinea' => $codAerolinea,
@@ -159,6 +161,7 @@ $escapar = static fn(string $valor): string => htmlspecialchars($valor, ENT_QUOT
             <div class="lista-promociones-elementos">
                 <?php foreach ($promocionesPendientes as $promocion): ?>
                     <article class="promocion-elemento promocion-pendiente">
+                        <img class="imagen-contenido imagen-contenido-promocion" src="<?= $escapar((string) ($promocion['imagenPromocion'] ?: '/publico/imagenes/novedad/promo_generica.png')) ?>" alt="Imagen de promoción <?= (int) $promocion['codPromocion'] ?>">
                         <div>
                             <p class="promocion-aerolinea"><?= $escapar((string) $promocion['nombreAerolinea']) ?> · Aerolínea #<?= (int) $promocion['codAerolinea'] ?></p>
                             <h2><?= $escapar((string) $promocion['descripcionPromocion']) ?></h2>

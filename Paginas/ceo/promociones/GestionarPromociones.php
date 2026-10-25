@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../../includes/sesion.php';
 require_once __DIR__ . '/../../includes/conexion.php';
+require_once __DIR__ . '/../../includes/imagenes_contenido.php';
 
 if (!isset($_SESSION['codUsuario'])) {
     header('Location: /Paginas/autenticacion/iniciar_sesion.php');
@@ -58,6 +59,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
         ];
     } else {
         $conexion = null;
+        $imagenPromocion = null;
 
         try {
             $conexion = conectarBaseDeDatos();
@@ -81,14 +83,15 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
                     'texto' => 'Tu cuenta no está asociada a una aerolínea. Pedile al administrador que complete la asignación.',
                 ];
             } else {
+                $imagenPromocion = guardarImagenContenido($_FILES['imagenPromocion'] ?? null);
                 $descuento = (float) $descuentoIngresado;
                 $consulta = $conexion->prepare(
                     "INSERT INTO promociones
                         (descripcionPromocion, descuentoPromocion, codAerolinea,
-                         fechaExpiracionPromocion, estadoPromocion)
-                     VALUES (?, ?, ?, ?, 'pendiente')"
+                             fechaExpiracionPromocion, estadoPromocion, imagenPromocion)
+                         VALUES (?, ?, ?, ?, 'pendiente', ?)"
                 );
-                $consulta->bind_param('sdis', $descripcion, $descuento, $codAerolinea, $fechaExpiracion);
+                $consulta->bind_param('sdiss', $descripcion, $descuento, $codAerolinea, $fechaExpiracion, $imagenPromocion);
                 $consulta->execute();
                 $codPromocion = $conexion->insert_id;
                 $consulta->close();
@@ -99,10 +102,24 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
                 ];
             }
         } catch (mysqli_sql_exception $error) {
+            eliminarImagenContenido($imagenPromocion);
             error_log('Error al crear una promoción: ' . $error->getMessage());
             $_SESSION['mensaje_promociones_ceo'] = [
                 'tipo' => 'error',
                 'texto' => 'No se pudo crear la promoción. Verificá la asociación de la aerolínea y volvé a intentarlo.',
+            ];
+        } catch (RuntimeException $error) {
+            eliminarImagenContenido($imagenPromocion);
+            $_SESSION['mensaje_promociones_ceo'] = [
+                'tipo' => 'error',
+                'texto' => $error->getMessage(),
+            ];
+        } catch (Throwable $error) {
+            eliminarImagenContenido($imagenPromocion);
+            error_log('Error inesperado al crear una promoción: ' . $error->getMessage());
+            $_SESSION['mensaje_promociones_ceo'] = [
+                'tipo' => 'error',
+                'texto' => 'No se pudo crear la promoción. Intentá nuevamente.',
             ];
         } finally {
             if ($conexion instanceof mysqli) {
@@ -153,7 +170,7 @@ try {
         $codAerolineaConsulta = $aerolinea['codAerolinea'];
         $consultaPromociones = $conexion->prepare(
             'SELECT codPromocion, descripcionPromocion, descuentoPromocion,
-                    fechaExpiracionPromocion, estadoPromocion
+                    fechaExpiracionPromocion, estadoPromocion, imagenPromocion
              FROM promociones
              WHERE codAerolinea = ?
              ORDER BY codPromocion DESC'
@@ -165,7 +182,8 @@ try {
             $descripcionPromocion,
             $descuentoPromocion,
             $fechaExpiracionPromocion,
-            $estadoPromocion
+            $estadoPromocion,
+            $imagenPromocionLista
         );
 
         while ($consultaPromociones->fetch()) {
@@ -175,6 +193,7 @@ try {
                 'descuentoPromocion' => $descuentoPromocion,
                 'fechaExpiracionPromocion' => $fechaExpiracionPromocion,
                 'estadoPromocion' => $estadoPromocion,
+                'imagenPromocion' => $imagenPromocionLista,
             ];
         }
         $consultaPromociones->close();
@@ -228,7 +247,7 @@ $escapar = static fn(string $valor): string => htmlspecialchars($valor, ENT_QUOT
         <?php else: ?>
             <section class="formulario-promocion-seccion" aria-labelledby="titulo-nueva-promocion">
                 <h2 id="titulo-nueva-promocion">Crear promoción</h2>
-                <form class="formulario-promocion" method="post">
+                <form class="formulario-promocion" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="csrf_token" value="<?= $escapar((string) $_SESSION['csrf_auth']) ?>">
                     <div class="campo-promocion">
                         <label for="descripcionPromocion">Descripción</label>
@@ -237,6 +256,10 @@ $escapar = static fn(string $valor): string => htmlspecialchars($valor, ENT_QUOT
                     <div class="campo-promocion campo-promocion-descuento">
                         <label for="descuentoPromocion">Descuento (%)</label>
                         <input id="descuentoPromocion" name="descuentoPromocion" type="number" min="0.01" max="100" step="0.01" inputmode="decimal" required>
+                    </div>
+                    <div class="campo-promocion">
+                        <label for="imagenPromocion">Imagen <span>(opcional, JPG/PNG/WebP, hasta 5 MB)</span></label>
+                        <input id="imagenPromocion" name="imagenPromocion" type="file" accept="image/jpeg,image/png,image/webp">
                     </div>
                     <div class="campo-promocion">
                         <label for="fechaExpiracionPromocion">Fecha de expiración</label>
@@ -257,6 +280,7 @@ $escapar = static fn(string $valor): string => htmlspecialchars($valor, ENT_QUOT
                     <div class="lista-promociones-elementos">
                         <?php foreach ($promociones as $promocion): ?>
                             <article class="promocion-elemento">
+                                <img class="imagen-contenido imagen-contenido-promocion" src="<?= $escapar((string) ($promocion['imagenPromocion'] ?: '/publico/imagenes/novedad/promo_generica.png')) ?>" alt="Imagen de promoción <?= (int) $promocion['codPromocion'] ?>">
                                 <div>
                                     <h3><?= $escapar((string) $promocion['descripcionPromocion']) ?></h3>
                                     <p>
