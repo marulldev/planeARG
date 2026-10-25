@@ -20,7 +20,7 @@
         <section class="pie-columna" aria-labelledby="titulo-ayuda-pie">
             <nav class="lista-pie" aria-labelledby="titulo-ayuda-pie">
                 <h2 id="titulo-ayuda-pie">CONTACTO</h2>
-                <p>MAIL: info@planearg.com</p>
+                <p>MAIL: planearg@edgardoantinori.com</p>
                 <p>TELEFONO: 11 1234-5678</p>
                 <p>DIRECCIÓN: Av. Siempre Viva 123, Ciudad Autónoma de Buenos Aires, Argentina</p>
             </nav>
