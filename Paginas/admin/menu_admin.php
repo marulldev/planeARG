@@ -27,6 +27,12 @@
 				</span>
 				<span>Aprobar o denegar promociones</span>
 			</a>
+			<a class="accion-admin" href="aprobar%20ceo/aprobar_ceo.php">
+				<span class="icono-admin icono-avion" aria-hidden="true">
+					<img src="/publico/icon/airplane-svgrepo-com.svg" alt="">
+				</span>
+				<span>Solicitudes para ser CEO</span>
+			</a>
 			<a class="accion-admin" href="novedades/gestionar_novedades.php">
 				<span class="icono-admin icono-novedad" aria-hidden="true">
 					<img src="/publico/icon/megaphone-solid-svgrepo-com.svg" alt="">
