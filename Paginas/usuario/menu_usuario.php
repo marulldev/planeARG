@@ -33,6 +33,7 @@ if (($_SESSION['tipoUsuario'] ?? '') !== 'usuario') {
         <nav class="acciones-admin" aria-label="Opciones de pasajero">
             <a class="accion-admin" href="/Paginas/Info/vuelos.php">Consultar vuelos</a>
             <a class="accion-admin" href="/Paginas/usuario/reservar_vuelo.php">Reservar un vuelo</a>
+            <a class="accion-admin" href="/Paginas/usuario/gestion_reservas.php">Gestionar reservas</a>
             <a class="accion-admin" href="/Paginas/usuario/historial_compras.php">Historial de compras</a>
         </nav>
     </main>

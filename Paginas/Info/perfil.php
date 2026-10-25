@@ -44,6 +44,10 @@ $tipoUsuario = htmlspecialchars($tipoUsuario, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-
                 <div><dt>Correo electrónico</dt><dd><?= $emailUsuario ?></dd></div>
                 <div><dt>Tipo de cuenta</dt><dd><?= $tipoUsuario ?></dd></div>
             </dl>
+            <form class="formulario-cerrar-sesion-perfil" action="/Paginas/autenticacion/cerrar_sesion.php" method="post">
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_auth'], ENT_QUOTES, 'UTF-8') ?>">
+                <button class="boton-cerrar-sesion-perfil" type="submit">Cerrar sesión</button>
+            </form>
         </section>
     </main>
 

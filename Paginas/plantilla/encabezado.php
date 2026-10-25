@@ -15,6 +15,11 @@ $rutaMenu = match ($tipoUsuario) {
     'ceo de aerolinea' => '/Paginas/ceo/Menu%20ceo/panel_control.php',
     default => '/Paginas/usuario/menu_usuario.php',
 };
+$etiquetaRol = match ($tipoUsuario) {
+    'administrador' => 'ADMIN',
+    'ceo de aerolinea' => 'CEO',
+    default => '',
+};
 ?>
 
 
@@ -39,12 +44,8 @@ $rutaMenu = match ($tipoUsuario) {
             <a href="/Paginas/Info/ayuda.php" class="<?= $paginaActual === 'ayuda.php' ? 'activo' : '' ?>" <?= $paginaActual === 'ayuda.php' ? 'aria-current="page"' : '' ?>>Ayuda</a>
             <?php if ($usuarioAutenticado): ?>
                 <a href="<?= $rutaMenu ?>" class="enlace-menu">MENU</a>
+                <span class="saludo-usuario">Hola, <?= $nombreUsuario ?><?= $etiquetaRol !== '' ? ' · ' . $etiquetaRol : '' ?></span>
                 <a href="/Paginas/Info/perfil.php" class="enlace-perfil">Mi Perfil</a>
-                <span class="saludo-usuario">Hola, <?= $nombreUsuario ?></span>
-                <form class="formulario-cerrar-sesion" action="/Paginas/autenticacion/cerrar_sesion.php" method="post">
-                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_auth'], ENT_QUOTES, 'UTF-8') ?>">
-                    <button class="enlace-perfil" type="submit">Cerrar sesión</button>
-                </form>
             <?php else: ?>
                 <a href="/Paginas/autenticacion/iniciar_sesion.php" class="enlace-perfil">Iniciar Sesión</a>
             <?php endif; ?>
