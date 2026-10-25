@@ -3883,3 +3883,87 @@ a {
         font-size: 1rem;
     }
 }
+
+.inicio-secciones {
+    display: grid;
+    width: min(calc(100% - 40px), 1120px);
+    gap: 34px;
+    margin: 0 auto;
+    padding: 42px 0 72px;
+}
+
+.inicio-seccion {
+    min-width: 0;
+}
+
+.inicio-seccion-encabezado {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.inicio-seccion-encabezado h2 {
+    margin: 0;
+    color: #132238;
+    font-size: clamp(1.3rem, 3vw, 1.7rem);
+}
+
+.inicio-seccion-encabezado a {
+    flex: 0 0 auto;
+    color: #0d5aa8;
+    font-weight: 700;
+}
+
+.inicio-seccion-encabezado a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.inicio-lista {
+    display: grid;
+    gap: 12px;
+}
+
+.inicio-lista-novedades {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.inicio-lista-novedades .novedad-publica {
+    min-width: 0;
+}
+
+.inicio-fecha {
+    margin: 0;
+    color: #536171;
+    font-size: 0.86rem;
+}
+
+.inicio-vacio {
+    margin: 0;
+    padding: 20px;
+    border: 1px solid #dce6ee;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #40546a;
+}
+
+@media (max-width: 700px) {
+    .inicio-lista-novedades {
+        grid-template-columns: 1fr;
+    }
+
+    .inicio-lista .item-vuelo {
+        grid-template-columns: 44px minmax(0, 1fr);
+    }
+
+    .inicio-lista .item-vuelo-icono {
+        width: 44px;
+    }
+
+    .inicio-lista .item-vuelo-precio {
+        grid-column: 2;
+        justify-self: start;
+    }
+}
