@@ -1,2 +1,3 @@
 /vendor/
 /Paginas/includes/correo_config.local.php
+/Paginas/includes/correo_config.example copy.php
