@@ -7,5 +7,5 @@ return [
     'encryption' => 'ssl',
     'from_email' => 'planearg@ochentinueve.com',
     'from_name' => 'PlaneARG',
-    'base_url' => 'https://TU-DOMINIO-TEMPORAL',
+    'base_url' => 'https://slateblue-octopus-468228.hostingersite.com',
 ];
