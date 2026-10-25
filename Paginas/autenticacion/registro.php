@@ -145,6 +145,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
                     1044 => 'El usuario de la base de datos no tiene permiso para acceder a esa base. Revisá sus permisos en Hostinger.',
                     1045 => 'Hostinger rechazó el usuario o la contraseña de la base de datos. Revisá los datos de conexión configurados para el sitio.',
                     1049 => 'No se encontró la base de datos configurada. Revisá su nombre completo en la configuración de conexión.',
+                    1048 => 'MySQL rechazó un valor NULL. Las cuentas de usuario no están asociadas a una aerolínea, por lo que usuarios.codAerolinea debe permitir NULL. Aplicá la migración PRUEBA/migraciones/20261025_cod_aerolinea_nullable.sql; si el error continúa, revisá el registro PHP para identificar la columna exacta.',
                     1054 => 'La tabla usuarios no tiene las columnas que espera el registro. Compará su estructura con el esquema PRUEBA/basepruba2.sql.',
                     1062 => 'Ya existe una cuenta registrada con ese correo electrónico.',
                     1146 => 'No se encontró la tabla usuarios en la base seleccionada. Importá la tabla en la base configurada.',

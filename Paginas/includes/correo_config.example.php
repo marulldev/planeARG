@@ -1,11 +1,7 @@
 <?php
 return [
-    'host' => 'smtp.hostinger.com',
-    'username' => 'planearg@planearg.ochentinueve.com',
-    'password' => 'LaPerica_10',
-    'port' => 465,
-    'encryption' => 'ssl',
-    'from_email' => 'planearg@planearg.ochentinueve.com',
+    'api_access_token' => 'REEMPLAZAR_POR_EL_TOKEN_DE_HOSTINGER_MAIL_API',
+    'mailbox_email' => 'planearg@planearg.ochentinueve.com',
     'from_name' => 'PlaneARG',
     'base_url' => 'https://slateblue-octopus-468228.hostingersite.com',
 ];

@@ -1479,6 +1479,22 @@ a {
     border-radius: 18px;
     background: #ffffff;
     box-shadow: 0 5px 16px rgb(19 34 56 / 8%);
+    transition: transform 1s ease, box-shadow 1s ease;
+}
+
+.item-vuelo:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgb(19 34 56 / 14%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .item-vuelo {
+        transition: none;
+    }
+
+    .item-vuelo:hover {
+        transform: none;
+    }
 }
 
 .item-vuelo-icono {
