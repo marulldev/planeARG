@@ -185,8 +185,18 @@ a {
 }
 
 .navegacion-principal .enlace-perfil {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     background: #0d5aa8;
     color: #ffffff;
+}
+
+.icono-perfil {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 .navegacion-principal .enlace-perfil:hover {
