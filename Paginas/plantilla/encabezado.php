@@ -51,12 +51,12 @@ $etiquetaRol = match ($tipoUsuario) {
             <?php if ($usuarioAutenticado): ?>
                 <a href="<?= $rutaMenu ?>" class="enlace-menu">Menú</a>
                 <span class="saludo-usuario">Hola, <?= $nombreUsuario ?><?= $etiquetaRol !== '' ? ' · ' . $etiquetaRol : '' ?></span>
-                <a href="/Paginas/Info/perfil.php" class="enlace-perfil">
+                <a href="/Paginas/Info/perfil.php" class="enlace-perfil enlace-perfil-con-icono">
                     <img class="icono-perfil" src="/publico/imagenes/perfil.png" alt="" aria-hidden="true">
                     Mi Perfil
                 </a>
             <?php else: ?>
-                <a href="/Paginas/autenticacion/iniciar_sesion.php" class="enlace-perfil">Iniciar Sesión</a>
+                <a href="/Paginas/autenticacion/iniciar_sesion.php" class="enlace-perfil enlace-perfil-sin-icono">Iniciar Sesión</a>
             <?php endif; ?>
         </nav>
     </div>

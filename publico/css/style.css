@@ -185,18 +185,22 @@ a {
 }
 
 .navegacion-principal .enlace-perfil {
-    
-    padding-right:20px;
-    padding-left:5px;
-    
     padding-top: 2px;
     padding-bottom: 2px;
-    
     display: inline-flex;
     align-items: center;
     gap: 8px;
     background: #0d5aa8;
     color: #ffffff;
+}
+
+.navegacion-principal .enlace-perfil-con-icono {
+    padding-right: 20px;
+    padding-left: 5px;
+}
+
+.navegacion-principal .enlace-perfil-sin-icono {
+    padding: 16px;
 }
 
 .icono-perfil {
