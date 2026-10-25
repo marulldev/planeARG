@@ -35,7 +35,7 @@ $valoresFormulario = [
     'fechaSalidaVuelo' => '',
     'horaSalidaVuelo' => '',
     'precioVuelo' => '',
-    'asientosDisponibles' => '',
+    'capacidadTotal' => '',
 ];
 $longitudTexto = static fn(string $texto): int => function_exists('mb_strlen')
     ? mb_strlen($texto, 'UTF-8')
@@ -152,7 +152,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
             $fecha = trim((string) ($_POST['fechaSalidaVuelo'] ?? ''));
             $hora = trim((string) ($_POST['horaSalidaVuelo'] ?? ''));
             $precioIngresado = trim((string) ($_POST['precioVuelo'] ?? ''));
-            $asientosIngresados = trim((string) ($_POST['asientosDisponibles'] ?? ''));
+            $capacidadIngresada = trim((string) ($_POST['capacidadTotal'] ?? ''));
 
             $valoresFormulario = [
                 'origenVuelo' => $origen,
@@ -160,7 +160,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
                 'fechaSalidaVuelo' => $fecha,
                 'horaSalidaVuelo' => $hora,
                 'precioVuelo' => $precioIngresado,
-                'asientosDisponibles' => $asientosIngresados,
+                'capacidadTotal' => $capacidadIngresada,
             ];
             $idEdicion = $esEdicion ? $idVuelo : null;
             $modoEdicion = $esEdicion;
@@ -196,8 +196,8 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
                 $erroresFormulario[] = 'El precio debe ser mayor que cero y tener hasta dos decimales.';
             }
 
-            if (!preg_match('/\A\d{1,9}\z/', $asientosIngresados)) {
-                $erroresFormulario[] = 'La cantidad de asientos debe ser un número entero igual o mayor que cero.';
+            if (!preg_match('/\A\d{1,9}\z/', $capacidadIngresada) || (int) $capacidadIngresada < 1) {
+                $erroresFormulario[] = 'La capacidad total debe ser un número entero mayor que cero.';
             }
 
             if ($erroresFormulario !== []) {
@@ -205,7 +205,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
             }
 
             $precio = (float) $precioIngresado;
-            $asientos = (int) $asientosIngresados;
+            $capacidadTotal = (int) $capacidadIngresada;
             $conexion->begin_transaction();
             $transaccionIniciada = true;
 
@@ -242,17 +242,19 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
                 $actualizar = $conexion->prepare(
                     'UPDATE vuelos
                      SET origenVuelo = ?, destinoVuelo = ?, fechaSalidaVuelo = ?,
-                         horaSalidaVuelo = ?, precioVuelo = ?, asientosDisponibles = ?
+                         horaSalidaVuelo = ?, precioVuelo = ?, asientosDisponibles = ?,
+                         capacidadTotal = ?
                      WHERE codVuelo = ? AND codAerolinea = ?'
                 );
                 $actualizar->bind_param(
-                    'ssssdiii',
+                    'ssssdiiii',
                     $origen,
                     $destino,
                     $fecha,
                     $hora,
                     $precio,
-                    $asientos,
+                    $capacidadTotal,
+                    $capacidadTotal,
                     $idVuelo,
                     $codAerolinea
                 );
@@ -263,18 +265,19 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
                 $crear = $conexion->prepare(
                     'INSERT INTO vuelos
                         (codAerolinea, origenVuelo, destinoVuelo, fechaSalidaVuelo,
-                         horaSalidaVuelo, precioVuelo, asientosDisponibles)
-                     VALUES (?, ?, ?, ?, ?, ?, ?)'
+                         horaSalidaVuelo, precioVuelo, asientosDisponibles, capacidadTotal)
+                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
                 );
                 $crear->bind_param(
-                    'issssdi',
+                    'issssdii',
                     $codAerolinea,
                     $origen,
                     $destino,
                     $fecha,
                     $hora,
                     $precio,
-                    $asientos
+                    $capacidadTotal,
+                    $capacidadTotal
                 );
                 $crear->execute();
                 $idVueloCreado = $conexion->insert_id;
@@ -352,7 +355,7 @@ try {
         $codAerolineaConsulta = $aerolinea['codAerolinea'];
         $consultaVuelos = $conexion->prepare(
             'SELECT v.codVuelo, v.origenVuelo, v.destinoVuelo, v.fechaSalidaVuelo,
-                    v.horaSalidaVuelo, v.precioVuelo, v.asientosDisponibles,
+                    v.horaSalidaVuelo, v.precioVuelo, v.asientosDisponibles, v.capacidadTotal,
                     (SELECT COUNT(*) FROM reservas AS r WHERE r.codVuelo = v.codVuelo) AS cantidadReservas
              FROM vuelos AS v
              WHERE v.codAerolinea = ?
@@ -368,6 +371,7 @@ try {
             $horaSalidaVuelo,
             $precioVuelo,
             $asientosDisponibles,
+            $capacidadTotalVuelo,
             $cantidadReservas
         );
 
@@ -380,6 +384,7 @@ try {
                 'horaSalidaVuelo' => $horaSalidaVuelo,
                 'precioVuelo' => $precioVuelo,
                 'asientosDisponibles' => $asientosDisponibles,
+                'capacidadTotal' => $capacidadTotalVuelo,
                 'cantidadReservas' => (int) $cantidadReservas,
             ];
         }
@@ -388,7 +393,7 @@ try {
         if ($modoEdicion) {
             $consultaEdicion = $conexion->prepare(
                 'SELECT codVuelo, origenVuelo, destinoVuelo, fechaSalidaVuelo,
-                        horaSalidaVuelo, precioVuelo, asientosDisponibles
+                        horaSalidaVuelo, precioVuelo, capacidadTotal
                  FROM vuelos
                  WHERE codVuelo = ? AND codAerolinea = ?'
             );
@@ -401,7 +406,7 @@ try {
                 $fechaEdicion,
                 $horaEdicion,
                 $precioEdicion,
-                $asientosEdicion
+                $capacidadEdicion
             );
 
             if ($consultaEdicion->fetch()) {
@@ -412,7 +417,7 @@ try {
                     'fechaSalidaVuelo' => $fechaEdicion,
                     'horaSalidaVuelo' => substr((string) $horaEdicion, 0, 5),
                     'precioVuelo' => $precioEdicion,
-                    'asientosDisponibles' => $asientosEdicion,
+                    'capacidadTotal' => $capacidadEdicion,
                 ];
                 if ($mensaje === '') {
                     $valoresFormulario = [
@@ -421,7 +426,7 @@ try {
                         'fechaSalidaVuelo' => (string) $fechaEdicion,
                         'horaSalidaVuelo' => substr((string) $horaEdicion, 0, 5),
                         'precioVuelo' => (string) $precioEdicion,
-                        'asientosDisponibles' => (string) $asientosEdicion,
+                        'capacidadTotal' => (string) $capacidadEdicion,
                     ];
                 }
             } else {
@@ -523,8 +528,9 @@ $urlCancelarEdicion = '/Paginas/ceo/vuelos/GestionarVuelos.php';
                         <input id="precioVuelo" name="precioVuelo" type="number" min="0.01" max="99999999.99" step="0.01" inputmode="decimal" value="<?= $escapar($valoresFormulario['precioVuelo']) ?>" required>
                     </div>
                     <div class="campo-vuelo">
-                        <label for="asientosDisponibles">Asientos disponibles</label>
-                        <input id="asientosDisponibles" name="asientosDisponibles" type="number" min="0" max="999999999" step="1" value="<?= $escapar($valoresFormulario['asientosDisponibles']) ?>" required>
+                        <label for="capacidadTotal">Capacidad total de asientos</label>
+                        <input id="capacidadTotal" name="capacidadTotal" type="number" min="1" max="999999999" step="1" value="<?= $escapar($valoresFormulario['capacidadTotal']) ?>" required>
+                        <small>Al crear el vuelo, todos los asientos comienzan disponibles.</small>
                     </div>
                     <?php if ($mensaje !== '' && $tipoMensaje === 'error' && $erroresFormulario !== []): ?>
                         <p class="nota-vuelo-error" role="alert"><?= $escapar($mensaje) ?></p>
@@ -554,7 +560,7 @@ $urlCancelarEdicion = '/Paginas/ceo/vuelos/GestionarVuelos.php';
                                     <p class="vuelo-gestion-codigo">Vuelo #<?= (int) $vuelo['codVuelo'] ?></p>
                                     <h3><?= $escapar((string) $vuelo['origenVuelo']) ?> <span aria-hidden="true">→</span> <?= $escapar((string) $vuelo['destinoVuelo']) ?></h3>
                                     <p>Salida: <?= $escapar(date('d/m/Y', strtotime((string) $vuelo['fechaSalidaVuelo']))) ?> · <?= $escapar(substr((string) $vuelo['horaSalidaVuelo'], 0, 5)) ?></p>
-                                    <p>Precio: $ <?= number_format((float) $vuelo['precioVuelo'], 2, ',', '.') ?> · Asientos disponibles: <?= (int) $vuelo['asientosDisponibles'] ?></p>
+                                    <p>Precio: $ <?= number_format((float) $vuelo['precioVuelo'], 2, ',', '.') ?> · Asientos disponibles: <?= (int) $vuelo['asientosDisponibles'] ?> / <?= (int) $vuelo['capacidadTotal'] ?> totales</p>
                                     <?php if ($vuelo['cantidadReservas'] > 0): ?>
                                         <p class="vuelo-gestion-reservado"><?= (int) $vuelo['cantidadReservas'] ?> <?= $vuelo['cantidadReservas'] === 1 ? 'reserva asociada' : 'reservas asociadas' ?>; no se puede editar ni eliminar.</p>
                                     <?php endif; ?>
