@@ -164,7 +164,10 @@ a {
 }
 
 .navegacion-principal a {
-    padding: 10px 16px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 20px;
     border-radius: 999px;
     background: rgba(13, 80, 150, 0.06);
     color: #17365d;
@@ -193,18 +196,12 @@ a {
 }
 
 .icono-perfil {
-    width: 8px;
-    height: 8px;
+    width: 64px;
+    height: 64px;
     border-radius: 50%;
 }
 
 .navegacion-principal .enlace-perfil .icono-perfil {
-    width: 8px;
-    height: 8px;
-    min-width: 8px;
-    min-height: 8px;
-    max-width: 8px;
-    max-height: 8px;
     flex: 0 0 8px;
     object-fit: cover;
 }
