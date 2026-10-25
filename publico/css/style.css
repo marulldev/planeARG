@@ -2055,6 +2055,280 @@ a {
     }
 }
 
+.reporte-ventas {
+    width: min(100% - 40px, 1040px);
+    margin: 0 auto;
+    padding: 34px 0 48px;
+}
+
+.reporte-ventas-encabezado,
+.reporte-ventas-paginacion,
+.reporte-ventas-paginacion > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.reporte-ventas-encabezado {
+    margin-bottom: 22px;
+}
+
+.reporte-ventas-etiqueta {
+    margin: 0 0 6px;
+    color: #0d5aa8;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.reporte-ventas-encabezado h1 {
+    margin: 0;
+    color: #132238;
+    font-size: clamp(1.8rem, 4vw, 2.4rem);
+}
+
+.reporte-ventas-filtros {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+    align-items: end;
+    gap: 14px;
+    margin-bottom: 18px;
+    padding: 18px;
+    border: 1px solid #dce6ee;
+    border-radius: 12px;
+    background: #ffffff;
+}
+
+.reporte-ventas-campo {
+    display: grid;
+    gap: 6px;
+}
+
+.reporte-ventas-campo label {
+    color: #40546a;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.reporte-ventas-campo input,
+.reporte-ventas-campo select {
+    width: 100%;
+    min-height: 42px;
+    padding: 8px 10px;
+    border: 1px solid #bdcbd8;
+    border-radius: 7px;
+    background: #ffffff;
+    color: #132238;
+    font: inherit;
+}
+
+.reporte-ventas-campo input:focus-visible,
+.reporte-ventas-campo select:focus-visible,
+.reporte-ventas-boton:focus-visible {
+    outline: 3px solid rgb(13 90 168 / 30%);
+    outline-offset: 2px;
+}
+
+.reporte-ventas-boton {
+    display: inline-flex;
+    min-height: 40px;
+    align-items: center;
+    justify-content: center;
+    padding: 9px 15px;
+    border: 1px solid #0d5aa8;
+    border-radius: 7px;
+    background: #ffffff;
+    color: #0d5aa8;
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.reporte-ventas-boton:hover:not(.deshabilitado) {
+    background: #eaf4ff;
+}
+
+.reporte-ventas-aplicar {
+    background: #0d5aa8;
+    color: #ffffff;
+}
+
+.reporte-ventas-aplicar:hover {
+    background: #08477f;
+}
+
+.reporte-ventas-listado {
+    display: grid;
+    gap: 0;
+    border: 1px solid #bdcbd8;
+    background: #ffffff;
+}
+
+.reporte-ventas-fila {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 82px;
+    border-bottom: 1px solid #bdcbd8;
+}
+
+.reporte-ventas-fila:last-child {
+    border-bottom: 0;
+}
+
+.reporte-ventas-datos {
+    display: grid;
+    align-content: center;
+    gap: 3px;
+    min-width: 0;
+    padding: 9px 14px;
+}
+
+.reporte-ventas-datos + .reporte-ventas-datos {
+    border-left: 1px solid #bdcbd8;
+}
+
+.reporte-ventas-datos p {
+    overflow-wrap: anywhere;
+    margin: 0;
+    color: #26384b;
+    font-size: 0.84rem;
+}
+
+.reporte-ventas-datos p > span:first-child {
+    font-weight: 700;
+}
+
+.reporte-ventas-estado {
+    display: inline-block;
+    margin-left: 10px;
+    color: #40546a;
+    font-weight: 600;
+}
+
+.reporte-ventas-paginacion {
+    margin-top: 16px;
+    color: #40546a;
+    font-size: 0.9rem;
+}
+
+.reporte-ventas-pagina {
+    min-width: 106px;
+    text-align: center;
+}
+
+.reporte-ventas-boton.deshabilitado {
+    border-color: #dce6ee;
+    color: #8291a0;
+    cursor: not-allowed;
+}
+
+.reporte-ventas-vacio,
+.reporte-ventas-mensaje {
+    margin: 0;
+    padding: 16px;
+    border: 1px solid #dce6ee;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #40546a;
+}
+
+.reporte-ventas-mensaje.error {
+    margin-bottom: 16px;
+    border-color: #efc7c7;
+    background: #fff5f5;
+    color: #8c2525;
+}
+
+.reporte-ventas-resumen-impresion {
+    margin: 0 0 12px;
+    color: #40546a;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 760px) {
+    .reporte-ventas-filtros {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .reporte-ventas-aplicar {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 560px) {
+    .reporte-ventas {
+        width: min(100% - 24px, 1040px);
+        padding-top: 24px;
+    }
+
+    .reporte-ventas-encabezado,
+    .reporte-ventas-paginacion {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .reporte-ventas-filtros {
+        grid-template-columns: 1fr;
+    }
+
+    .reporte-ventas-aplicar {
+        grid-column: auto;
+    }
+
+    .reporte-ventas-fila {
+        grid-template-columns: 1fr;
+    }
+
+    .reporte-ventas-datos + .reporte-ventas-datos {
+        border-top: 1px solid #e6edf3;
+        border-left: 0;
+    }
+
+    .reporte-ventas-paginacion > div {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+}
+
+@media print {
+    body {
+        display: block;
+        background: #ffffff;
+        color: #000000;
+    }
+
+    .encabezado-principal,
+    .pie-pagina,
+    .reporte-ventas-filtros,
+    .reporte-ventas-imprimir,
+    .reporte-ventas-paginacion {
+        display: none !important;
+    }
+
+    .reporte-ventas {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    .reporte-ventas-encabezado {
+        margin-bottom: 12px;
+    }
+
+    .reporte-ventas-fila {
+        min-height: 0;
+        break-inside: avoid;
+    }
+
+    .reporte-ventas-datos {
+        padding: 6px 10px;
+    }
+}
+
 /* MENU ADMIN */
 .menu-admin {
     width: min(920px, calc(100% - 40px));
