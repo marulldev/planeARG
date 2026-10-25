@@ -992,50 +992,209 @@ a {
     text-underline-offset: 3px;
 }
 
-.datos-perfil {
-    display: grid;
-    gap: 16px;
-    margin: 24px 0 0;
+.perfil-pagina {
+    display: flex;
+    justify-content: center;
+    padding: 38px 20px 64px;
 }
 
-.datos-perfil div {
-    display: grid;
-    gap: 5px;
+.tarjeta-perfil {
+    width: min(100%, 760px);
+    padding: 0 clamp(18px, 5vw, 32px);
 }
 
-.datos-perfil dt {
+.avatar-perfil {
+    display: block;
+    width: 112px;
+    height: 112px;
+    margin: 0 auto 24px;
+    border: 1px solid #9aa5ae;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.contenido-perfil h1 {
+    margin: 0;
+    color: #132238;
+    font-size: clamp(1.8rem, 5vw, 2.2rem);
+}
+
+.introduccion-perfil {
+    margin: 4px 0 18px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #dce6ee;
+    color: #526273;
+    font-size: 0.92rem;
+}
+
+.datos-perfil-solo-lectura {
+    display: grid;
+    gap: 10px;
+    margin: 0;
+}
+
+.datos-perfil-solo-lectura > div,
+.campo-perfil {
+    display: grid;
+    grid-template-columns: minmax(130px, 1fr) minmax(0, 1.6fr);
+    align-items: center;
+    gap: 12px;
+}
+
+.datos-perfil-solo-lectura dt,
+.campo-perfil label {
     color: #17365d;
     font-size: 0.9rem;
-    font-weight: 700;
+    font-weight: 600;
 }
 
-.datos-perfil dd {
+.datos-perfil-solo-lectura dd {
     margin: 0;
-    color: #40546a;
-    overflow-wrap: anywhere;
 }
 
-.formulario-cerrar-sesion-perfil {
-    margin-top: 28px;
+.datos-perfil-solo-lectura input,
+.campo-perfil > input,
+.campo-contrasena-perfil input {
+    width: 100%;
+    min-width: 0;
+    min-height: 40px;
+    padding: 8px 11px;
+    border: 1px solid #b8c8d8;
+    border-radius: 5px;
+    background: #ffffff;
+    color: #132238;
+    font: inherit;
 }
 
+.datos-perfil-solo-lectura input[readonly] {
+    border-style: dashed;
+    background: #f7f9fb;
+    color: #657486;
+}
+
+.subtitulo-edicion-perfil {
+    margin: 18px 0 12px;
+    padding-bottom: 7px;
+    border-bottom: 1px solid #dce6ee;
+    color: #17365d;
+    font-size: 1rem;
+}
+
+.formulario-edicion-perfil {
+    display: grid;
+    gap: 12px;
+}
+
+.campo-perfil > label span,
+.acciones-perfil > p span {
+    color: #8c2525;
+}
+
+.campo-contrasena-perfil {
+    position: relative;
+    min-width: 0;
+}
+
+.campo-contrasena-perfil input {
+    padding-right: 44px;
+}
+
+.campo-contrasena-perfil .boton-visibilidad-contrasena {
+    bottom: 2px;
+}
+
+.acciones-perfil {
+    display: flex;
+    grid-column: 1 / -1;
+    align-items: end;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 26px;
+}
+
+.acciones-perfil > p {
+    margin: 0;
+    color: #657486;
+    font-size: 0.8rem;
+}
+
+.acciones-perfil > div {
+    display: flex;
+    gap: 10px;
+}
+
+.boton-cancelar-perfil,
+.boton-guardar-perfil,
 .boton-cerrar-sesion-perfil {
-    min-height: 44px;
-    padding: 10px 18px;
-    border: 0;
-    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 9px 16px;
+    border: 1px solid #9aa5ae;
+    border-radius: 7px;
+    background: #ffffff;
+    color: #17365d;
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.boton-guardar-perfil,
+.boton-cerrar-sesion-perfil {
+    border-color: #0d5aa8;
     background: #0d5aa8;
     color: #ffffff;
-    font-size: 0.95rem;
-    font-weight: 700;
-    cursor: pointer;
 }
 
+.boton-cancelar-perfil:hover {
+    background: #f2f6f9;
+}
+
+.boton-guardar-perfil:hover,
 .boton-cerrar-sesion-perfil:hover {
     background: #0b4d93;
 }
 
+.mensaje-perfil-exito {
+    margin: 0 0 16px;
+    padding: 11px 14px;
+    border: 1px solid #a9d7bd;
+    border-radius: 7px;
+    background: #effaf3;
+    color: #23633d;
+}
+
+.formulario-cerrar-sesion-perfil {
+    margin-top: 20px;
+}
+
 @media (max-width: 700px) {
+    .perfil-pagina {
+        padding: 28px 16px 44px;
+    }
+
+    .tarjeta-perfil {
+        padding: 0;
+    }
+
+    .datos-perfil-solo-lectura > div,
+    .campo-perfil {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+
+    .acciones-perfil {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .acciones-perfil > div {
+        justify-content: flex-end;
+    }
+
     .gestion-reserva {
         align-items: flex-start;
         flex-direction: column;
