@@ -4,9 +4,9 @@
             <nav class="lista-pie" aria-labelledby="titulo-mapa-sitio">
                 <h2 id="titulo-mapa-sitio">MAPA DEL SITIO</h2>
                 <ul>
-                    <li><p><a href="/planeARG/Paginas/inicio/index.php">Inicio</a></p></li>
-                    <li><p><a href="/planeARG/Paginas/Info/vuelos.php">Vuelos</a></p></li>
-                    <li><p><a href="/planeARG/Paginas/novedades/listar.php">Novedades</a></p></li>
+                    <li><p><a href="/">Inicio</a></p></li>
+                    <li><p><a href="/Paginas/Info/vuelos.php">Vuelos</a></p></li>
+                    <li><p><a href="/Paginas/novedades/listar.php">Novedades</a></p></li>
                 </ul>
             </nav>
         </section>
@@ -14,7 +14,7 @@
         <section class="pie-columna" aria-labelledby="titulo-contacto-pie">
             <h2 id="titulo-contacto-pie">AYUDA</h2>
             <p>¿Tienes alguna pregunta? Estamos aquí para ayudarte.</p>
-            <a href="/planeARG/Paginas/Info/ayuda.php">Consultar ayuda</a>
+            <a href="/Paginas/Info/ayuda.php">Consultar ayuda</a>
         </section>
 
         <section class="pie-columna" aria-labelledby="titulo-ayuda-pie">

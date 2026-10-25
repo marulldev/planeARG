@@ -13,14 +13,12 @@
 
     <main class="contenido-principal ayuda">
         <section class="ayuda-presentacion" aria-labelledby="titulo-ayuda">
-            <p class="ayuda-etiqueta">Centro de ayuda</p>
             <h1 id="titulo-ayuda">Estamos para ayudarte a organizar tu viaje</h1>
             <p>Encontrá respuestas sobre la búsqueda de vuelos, tus reservas y la información que necesitás antes de viajar.</p>
         </section>
 
         <section class="ayuda-preguntas" aria-labelledby="titulo-preguntas">
             <div class="ayuda-encabezado-seccion">
-                <p class="ayuda-etiqueta">Respuestas rápidas</p>
                 <h2 id="titulo-preguntas">Preguntas frecuentes</h2>
             </div>
 
