@@ -283,7 +283,7 @@ foreach ($aerolineas as $aerolinea) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reporte de vuelos | PlaneARG</title>
-    <link rel="stylesheet" href="../../../publico/css/style.css">
+    <link rel="stylesheet" href="/publico/css/style.css?v=<?= filemtime($_SERVER['DOCUMENT_ROOT'] . '/publico/css/style.css') ?>">
 </head>
 <body>
     <?php include __DIR__ . '/../../plantilla/encabezado.php'; ?>
