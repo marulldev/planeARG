@@ -22,7 +22,9 @@ $etiquetaRol = match ($tipoUsuario) {
 };
 ?>
 
-
+<head>
+    <link rel="stylesheet" href="../../publico/css/style.css">
+</head>
 <header class="encabezado-principal <?= $espacioEnBlanco ? '' : 'encabezado-superpuesto' ?>">
     <a href="/">
         <div class="circulo-flashero">
@@ -36,8 +38,8 @@ $etiquetaRol = match ($tipoUsuario) {
 
         <nav class="navegacion-principal" aria-label="Navegación principal">
             <a href="/Paginas/Info/acerca_nosotros.php"
-               class="<?= $paginaActual === 'acerca_nosotros.php' ? 'activo' : '' ?>"
-               <?= $paginaActual === 'acerca_nosotros.php' ? 'aria-current="page"' : '' ?>>
+                class="<?= $paginaActual === 'acerca_nosotros.php' ? 'activo' : '' ?>"
+                <?= $paginaActual === 'acerca_nosotros.php' ? 'aria-current="page"' : '' ?>>
                 Sobre nosotros
             </a>
             <a href="/Paginas/Info/vuelos.php" class="<?= $paginaActual === 'vuelos.php' ? 'activo' : '' ?>" <?= $paginaActual === 'vuelos.php' ? 'aria-current="page"' : '' ?>>Vuelos</a>
