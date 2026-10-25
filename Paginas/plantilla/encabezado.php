@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../includes/sesion.php';
 
 $paginaActual = basename($_SERVER['SCRIPT_NAME']);
+$rutaActual = str_replace('\\', '/', (string) ($_SERVER['SCRIPT_NAME'] ?? ''));
 $espacioEnBlanco = isset($espacioEnBlanco) ? $espacioEnBlanco : true;
 $usuarioAutenticado = isset($_SESSION['codUsuario']);
 $nombreUsuario = htmlspecialchars(
@@ -42,8 +43,13 @@ $etiquetaRol = match ($tipoUsuario) {
             </a>
             <a href="/Paginas/Info/vuelos.php" class="<?= $paginaActual === 'vuelos.php' ? 'activo' : '' ?>" <?= $paginaActual === 'vuelos.php' ? 'aria-current="page"' : '' ?>>Vuelos</a>
             <a href="/Paginas/Info/ayuda.php" class="<?= $paginaActual === 'ayuda.php' ? 'activo' : '' ?>" <?= $paginaActual === 'ayuda.php' ? 'aria-current="page"' : '' ?>>Ayuda</a>
+            <a href="/Paginas/novedades/listar.php"
+                class="<?= $rutaActual === '/Paginas/novedades/listar.php' ? 'activo' : '' ?>"
+                <?= $rutaActual === '/Paginas/novedades/listar.php' ? 'aria-current="page"' : '' ?>>
+                Novedades
+            </a>
             <?php if ($usuarioAutenticado): ?>
-                <a href="<?= $rutaMenu ?>" class="enlace-menu">MENU</a>
+                <a href="<?= $rutaMenu ?>" class="enlace-menu">Menú</a>
                 <span class="saludo-usuario">Hola, <?= $nombreUsuario ?><?= $etiquetaRol !== '' ? ' · ' . $etiquetaRol : '' ?></span>
                 <a href="/Paginas/Info/perfil.php" class="enlace-perfil">
                     <img class="icono-perfil" src="/publico/imagenes/perfil.png" alt="" aria-hidden="true">
