@@ -592,6 +592,385 @@ a {
     font-weight: 700;
 }
 
+.historial-compras {
+    width: min(calc(100% - 40px), 1200px);
+    margin: 0 auto;
+    padding: 42px 0 72px;
+}
+
+.historial-compras-encabezado {
+    margin-bottom: 24px;
+}
+
+.historial-compras-encabezado h1 {
+    margin: 0;
+    color: #132238;
+    font-size: clamp(1.8rem, 5vw, 2.4rem);
+}
+
+.historial-compras-encabezado > p:last-child,
+.historial-compras-vacio p {
+    color: #40546a;
+    line-height: 1.6;
+}
+
+.historial-compras-tabla-contenedor {
+    overflow-x: auto;
+    border: 1px solid #dce6ee;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 8px 24px rgb(19 34 56 / 7%);
+}
+
+.historial-compras-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.historial-compras-tabla caption {
+    padding: 16px;
+    color: #40546a;
+    text-align: left;
+}
+
+.historial-compras-tabla th,
+.historial-compras-tabla td {
+    padding: 14px 16px;
+    border-top: 1px solid #e5edf3;
+    white-space: nowrap;
+}
+
+.historial-compras-tabla th {
+    background: #f4f7fb;
+    color: #17365d;
+    font-size: 0.88rem;
+}
+
+.historial-compras-estado {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: #e7f6ed;
+    color: #17643a;
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.historial-compras-vacio {
+    padding: 28px;
+    border: 1px solid #dce6ee;
+    border-radius: 12px;
+    background: #ffffff;
+}
+
+.historial-compras-vacio h2 {
+    margin-top: 0;
+    color: #132238;
+    font-size: 1.25rem;
+}
+
+.historial-compras-enlace {
+    display: inline-block;
+    margin-top: 8px;
+    color: #0d5aa8;
+    font-weight: 700;
+}
+
+.historial-compras-enlace:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.reservar-vuelo {
+    width: min(calc(100% - 40px), 1100px);
+    margin: 0 auto;
+    padding: 42px 0 72px;
+}
+
+.reservar-vuelo-encabezado {
+    margin-bottom: 24px;
+}
+
+.reservar-vuelo-encabezado h1 {
+    margin: 0;
+    color: #132238;
+    font-size: clamp(1.8rem, 5vw, 2.4rem);
+}
+
+.reservar-vuelo-encabezado > p:last-child,
+.vuelos-reserva-vacio,
+.reserva-pendiente p,
+.vuelo-reserva p {
+    color: #40546a;
+    line-height: 1.6;
+}
+
+.mensaje-reserva {
+    margin: 0 0 24px;
+    padding: 12px 16px;
+    border: 1px solid;
+    border-radius: 8px;
+    line-height: 1.5;
+}
+
+.mensaje-reserva-exito {
+    border-color: #a9d8b8;
+    background: #effaf2;
+    color: #17643a;
+}
+
+.mensaje-reserva-error {
+    border-color: #e4a7a7;
+    background: #fff3f3;
+    color: #8c2525;
+}
+
+.reservas-pendientes,
+.vuelos-para-reservar {
+    margin-top: 32px;
+}
+
+.reservas-pendientes h2,
+.vuelos-para-reservar h2 {
+    color: #132238;
+    font-size: 1.4rem;
+}
+
+.aviso-pago-demostracion {
+    padding: 12px 16px;
+    border-left: 4px solid #d59a18;
+    background: #fff8e8;
+    color: #60470e;
+    line-height: 1.5;
+}
+
+.reservas-pendientes-lista,
+.vuelos-reserva-lista {
+    display: grid;
+    gap: 14px;
+}
+
+.reserva-pendiente,
+.vuelo-reserva,
+.vuelos-reserva-vacio {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 20px;
+    border: 1px solid #dce6ee;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 8px 24px rgb(19 34 56 / 6%);
+}
+
+.reserva-pendiente h3,
+.vuelo-reserva h3 {
+    margin: 0;
+    color: #132238;
+    font-size: 1.15rem;
+}
+
+.reserva-pendiente p,
+.vuelo-reserva p {
+    margin: 6px 0 0;
+}
+
+.reserva-pendiente-acciones {
+    display: grid;
+    flex: 0 0 auto;
+    gap: 10px;
+}
+
+.boton-reserva {
+    min-height: 42px;
+    padding: 10px 16px;
+    border: 0;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.boton-pagar {
+    background: #0d5aa8;
+    color: #ffffff;
+}
+
+.boton-pagar:hover {
+    background: #0b4d93;
+}
+
+.boton-cancelar {
+    border: 1px solid #cbd9e4;
+    background: #ffffff;
+    color: #40546a;
+}
+
+.boton-cancelar:hover {
+    background: #f4f7fb;
+}
+
+.vuelo-reserva-aerolinea {
+    color: #0d5aa8 !important;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.vuelo-reserva-compra {
+    flex: 0 0 auto;
+    text-align: right;
+}
+
+.vuelo-reserva-compra > p {
+    margin: 0 0 10px;
+    color: #132238;
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.vuelos-reserva-vacio {
+    display: block;
+}
+
+.vuelos-reserva-vacio a {
+    color: #0d5aa8;
+    font-weight: 700;
+}
+
+.gestion-reservas {
+    width: min(calc(100% - 40px), 1100px);
+    margin: 0 auto;
+    padding: 42px 0 72px;
+}
+
+.gestion-reservas-encabezado {
+    margin-bottom: 24px;
+}
+
+.gestion-reservas-encabezado h1 {
+    margin: 0;
+    color: #132238;
+    font-size: clamp(1.8rem, 5vw, 2.4rem);
+}
+
+.gestion-reservas-encabezado > p:last-child,
+.gestion-reservas-vacio p,
+.gestion-reserva p {
+    color: #40546a;
+    line-height: 1.6;
+}
+
+.gestion-reservas-vacio {
+    padding: 28px;
+    border: 1px solid #dce6ee;
+    border-radius: 12px;
+    background: #ffffff;
+}
+
+.gestion-reservas-vacio h2 {
+    margin-top: 0;
+    color: #132238;
+}
+
+.gestion-reservas-lista {
+    display: grid;
+    gap: 16px;
+}
+
+.gestion-reserva {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 20px;
+    border: 1px solid #dce6ee;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 8px 24px rgb(19 34 56 / 6%);
+}
+
+.gestion-reserva-detalle h2 {
+    margin: 0;
+    color: #132238;
+    font-size: 1.2rem;
+}
+
+.gestion-reserva-detalle p {
+    margin: 6px 0 0;
+}
+
+.gestion-reserva-aerolinea {
+    color: #0d5aa8 !important;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.gestion-reserva-estado-acciones {
+    display: grid;
+    flex: 0 0 auto;
+    justify-items: start;
+    gap: 10px;
+    max-width: 280px;
+}
+
+.gestion-reserva-estado {
+    display: inline-block;
+    padding: 6px 11px;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: capitalize;
+}
+
+.estado-confirmada {
+    background: #e7f6ed;
+    color: #17643a;
+}
+
+.estado-pendiente {
+    background: #fff5dc;
+    color: #735510;
+}
+
+.estado-cancelada {
+    background: #f1f3f5;
+    color: #536171;
+}
+
+.gestion-reserva-estado-acciones form,
+.gestion-reserva-estado-acciones .boton-reserva {
+    width: 100%;
+}
+
+.gestion-reserva-aviso,
+.gestion-reserva-no-cancelable {
+    margin: 0;
+    font-size: 0.82rem;
+}
+
+.gestion-reserva-no-cancelable {
+    color: #8c2525;
+    line-height: 1.5;
+}
+
+.enlace-gestion-reservas {
+    display: inline-block;
+    padding: 10px 4px;
+    color: #0d5aa8;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.enlace-gestion-reservas:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
 .datos-perfil {
     display: grid;
     gap: 16px;
@@ -636,6 +1015,38 @@ a {
 }
 
 @media (max-width: 700px) {
+    .gestion-reserva {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .gestion-reserva-estado-acciones {
+        width: 100%;
+        max-width: none;
+    }
+
+    .reserva-pendiente,
+    .vuelo-reserva {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .reserva-pendiente-acciones {
+        width: 100%;
+    }
+
+    .reserva-pendiente-acciones form,
+    .reserva-pendiente-acciones .boton-reserva,
+    .vuelo-reserva-compra,
+    .vuelo-reserva-compra form,
+    .vuelo-reserva-compra .boton-reserva {
+        width: 100%;
+    }
+
+    .vuelo-reserva-compra {
+        text-align: left;
+    }
+
     .portada-inicio {
         min-height: 62vh;
     }
