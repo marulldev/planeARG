@@ -185,6 +185,7 @@ a {
 }
 
 .navegacion-principal .enlace-perfil {
+    padding: 8px 16px;
     display: inline-flex;
     align-items: center;
     gap: 8px;
