@@ -85,6 +85,7 @@ try {
     $conexion = conectarBaseDeDatos();
     $consulta = $conexion->prepare(
         "SELECT p.codPromocion, p.descripcionPromocion, p.descuentoPromocion,
+                p.fechaExpiracionPromocion,
                 a.codAerolinea, a.nombreAerolinea
          FROM promociones AS p
          INNER JOIN aerolineas AS a ON a.codAerolinea = p.codAerolinea
@@ -96,6 +97,7 @@ try {
         $codPromocion,
         $descripcionPromocion,
         $descuentoPromocion,
+        $fechaExpiracionPromocion,
         $codAerolinea,
         $nombreAerolinea
     );
@@ -105,6 +107,7 @@ try {
             'codPromocion' => $codPromocion,
             'descripcionPromocion' => $descripcionPromocion,
             'descuentoPromocion' => $descuentoPromocion,
+            'fechaExpiracionPromocion' => $fechaExpiracionPromocion,
             'codAerolinea' => $codAerolinea,
             'nombreAerolinea' => $nombreAerolinea,
         ];
@@ -159,7 +162,14 @@ $escapar = static fn(string $valor): string => htmlspecialchars($valor, ENT_QUOT
                         <div>
                             <p class="promocion-aerolinea"><?= $escapar((string) $promocion['nombreAerolinea']) ?> · Aerolínea #<?= (int) $promocion['codAerolinea'] ?></p>
                             <h2><?= $escapar((string) $promocion['descripcionPromocion']) ?></h2>
-                            <p>Promoción #<?= (int) $promocion['codPromocion'] ?> · Descuento: <?= number_format((float) $promocion['descuentoPromocion'], 2, ',', '.') ?>%</p>
+                            <p>
+                                Promoción #<?= (int) $promocion['codPromocion'] ?>
+                                · Descuento: <?= number_format((float) $promocion['descuentoPromocion'], 2, ',', '.') ?>%
+                                · Expira:
+                                <?= $promocion['fechaExpiracionPromocion'] !== null
+                                    ? $escapar(date('d/m/Y', strtotime((string) $promocion['fechaExpiracionPromocion'])))
+                                    : 'Sin fecha definida' ?>
+                            </p>
                         </div>
                         <div class="acciones-revision-promocion">
                             <form method="post">

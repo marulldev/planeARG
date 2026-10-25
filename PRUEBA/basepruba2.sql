@@ -41,6 +41,7 @@ CREATE TABLE promociones (
   descripcionPromocion VARCHAR(200),
   descuentoPromocion DECIMAL(5,2) NOT NULL,
   codAerolinea INT NOT NULL,
+  fechaExpiracionPromocion DATE NULL,
   estadoPromocion ENUM('pendiente','aprobada','denegada') NOT NULL DEFAULT 'pendiente',
   FOREIGN KEY (codAerolinea) REFERENCES aerolineas(codAerolinea)
 );

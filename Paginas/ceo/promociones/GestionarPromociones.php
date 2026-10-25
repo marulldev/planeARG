@@ -23,6 +23,16 @@ $codUsuario = (int) $_SESSION['codUsuario'];
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     $descripcion = trim((string) ($_POST['descripcionPromocion'] ?? ''));
     $descuentoIngresado = trim((string) ($_POST['descuentoPromocion'] ?? ''));
+    $fechaExpiracion = trim((string) ($_POST['fechaExpiracionPromocion'] ?? ''));
+    $fechaExpiracionValidada = DateTimeImmutable::createFromFormat('!Y-m-d', $fechaExpiracion);
+    $erroresFechaExpiracion = DateTimeImmutable::getLastErrors();
+    $fechaExpiracionValida = $fechaExpiracionValidada !== false
+        && $fechaExpiracionValidada->format('Y-m-d') === $fechaExpiracion
+        && ($erroresFechaExpiracion === false || (
+            $erroresFechaExpiracion['warning_count'] === 0
+            && $erroresFechaExpiracion['error_count'] === 0
+        ))
+        && $fechaExpiracion >= date('Y-m-d');
 
     if (!hash_equals((string) $_SESSION['csrf_auth'], (string) ($_POST['csrf_token'] ?? ''))) {
         $_SESSION['mensaje_promociones_ceo'] = [
@@ -40,6 +50,11 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
         $_SESSION['mensaje_promociones_ceo'] = [
             'tipo' => 'error',
             'texto' => 'Ingresá un descuento mayor que 0 y de hasta 100, con un máximo de dos decimales.',
+        ];
+    } elseif (!$fechaExpiracionValida) {
+        $_SESSION['mensaje_promociones_ceo'] = [
+            'tipo' => 'error',
+            'texto' => 'Ingresá una fecha de expiración válida que no sea anterior a hoy.',
         ];
     } else {
         $conexion = null;
@@ -69,10 +84,11 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
                 $descuento = (float) $descuentoIngresado;
                 $consulta = $conexion->prepare(
                     "INSERT INTO promociones
-                        (descripcionPromocion, descuentoPromocion, codAerolinea, estadoPromocion)
-                     VALUES (?, ?, ?, 'pendiente')"
+                        (descripcionPromocion, descuentoPromocion, codAerolinea,
+                         fechaExpiracionPromocion, estadoPromocion)
+                     VALUES (?, ?, ?, ?, 'pendiente')"
                 );
-                $consulta->bind_param('sdi', $descripcion, $descuento, $codAerolinea);
+                $consulta->bind_param('sdis', $descripcion, $descuento, $codAerolinea, $fechaExpiracion);
                 $consulta->execute();
                 $codPromocion = $conexion->insert_id;
                 $consulta->close();
@@ -136,7 +152,8 @@ try {
     if ($aerolinea !== null) {
         $codAerolineaConsulta = $aerolinea['codAerolinea'];
         $consultaPromociones = $conexion->prepare(
-            'SELECT codPromocion, descripcionPromocion, descuentoPromocion, estadoPromocion
+            'SELECT codPromocion, descripcionPromocion, descuentoPromocion,
+                    fechaExpiracionPromocion, estadoPromocion
              FROM promociones
              WHERE codAerolinea = ?
              ORDER BY codPromocion DESC'
@@ -147,6 +164,7 @@ try {
             $codPromocion,
             $descripcionPromocion,
             $descuentoPromocion,
+            $fechaExpiracionPromocion,
             $estadoPromocion
         );
 
@@ -155,6 +173,7 @@ try {
                 'codPromocion' => $codPromocion,
                 'descripcionPromocion' => $descripcionPromocion,
                 'descuentoPromocion' => $descuentoPromocion,
+                'fechaExpiracionPromocion' => $fechaExpiracionPromocion,
                 'estadoPromocion' => $estadoPromocion,
             ];
         }
@@ -219,6 +238,10 @@ $escapar = static fn(string $valor): string => htmlspecialchars($valor, ENT_QUOT
                         <label for="descuentoPromocion">Descuento (%)</label>
                         <input id="descuentoPromocion" name="descuentoPromocion" type="number" min="0.01" max="100" step="0.01" inputmode="decimal" required>
                     </div>
+                    <div class="campo-promocion">
+                        <label for="fechaExpiracionPromocion">Fecha de expiración</label>
+                        <input id="fechaExpiracionPromocion" name="fechaExpiracionPromocion" type="date" min="<?= date('Y-m-d') ?>" required>
+                    </div>
                     <p class="nota-promocion-pendiente">Al crearla, quedará pendiente y no se podrá aplicar hasta que un administrador la apruebe.</p>
                     <button class="boton-reserva boton-pagar" type="submit">Enviar a aprobación</button>
                 </form>
@@ -236,7 +259,14 @@ $escapar = static fn(string $valor): string => htmlspecialchars($valor, ENT_QUOT
                             <article class="promocion-elemento">
                                 <div>
                                     <h3><?= $escapar((string) $promocion['descripcionPromocion']) ?></h3>
-                                    <p>Código: #<?= (int) $promocion['codPromocion'] ?> · Descuento: <?= number_format((float) $promocion['descuentoPromocion'], 2, ',', '.') ?>%</p>
+                                    <p>
+                                        Código: #<?= (int) $promocion['codPromocion'] ?>
+                                        · Descuento: <?= number_format((float) $promocion['descuentoPromocion'], 2, ',', '.') ?>%
+                                        · Expira:
+                                        <?= $promocion['fechaExpiracionPromocion'] !== null
+                                            ? $escapar(date('d/m/Y', strtotime((string) $promocion['fechaExpiracionPromocion'])))
+                                            : 'Sin fecha definida' ?>
+                                    </p>
                                 </div>
                                 <span class="estado-promocion estado-promocion-<?= $escapar((string) $promocion['estadoPromocion']) ?>">
                                     <?= $escapar((string) $promocion['estadoPromocion']) ?>
