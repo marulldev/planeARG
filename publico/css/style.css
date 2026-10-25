@@ -196,7 +196,6 @@ a {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    object-fit: cover;
 }
 
 .navegacion-principal .enlace-perfil:hover {
