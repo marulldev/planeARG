@@ -47,10 +47,12 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
         try {
             $conexion = conectarBaseDeDatos();
             $consultaAerolinea = $conexion->prepare(
-                'SELECT codAerolinea
-                 FROM aerolineas
+                "SELECT codAerolinea
+                 FROM usuarios
                  WHERE codUsuario = ?
-                 LIMIT 1'
+                   AND tipoUsuario = 'ceo de aerolinea'
+                   AND codAerolinea IS NOT NULL
+                 LIMIT 1"
             );
             $consultaAerolinea->bind_param('i', $codUsuario);
             $consultaAerolinea->execute();
@@ -113,10 +115,12 @@ $conexion = null;
 try {
     $conexion = conectarBaseDeDatos();
     $consultaAerolinea = $conexion->prepare(
-        'SELECT codAerolinea, nombreAerolinea
-         FROM aerolineas
-         WHERE codUsuario = ?
-         LIMIT 1'
+        "SELECT a.codAerolinea, a.nombreAerolinea
+         FROM usuarios AS u
+         INNER JOIN aerolineas AS a ON a.codAerolinea = u.codAerolinea
+         WHERE u.codUsuario = ?
+           AND u.tipoUsuario = 'ceo de aerolinea'
+         LIMIT 1"
     );
     $consultaAerolinea->bind_param('i', $codUsuario);
     $consultaAerolinea->execute();
@@ -158,7 +162,7 @@ try {
     }
 } catch (mysqli_sql_exception $error) {
     error_log('Error al cargar promociones de la aerolínea: ' . $error->getMessage());
-    $errorCarga = 'No se pudieron cargar las promociones. Verificá que la tabla de aerolíneas tenga asignado el CEO y volvé a intentarlo.';
+    $errorCarga = 'No se pudieron cargar las promociones. Verificá que tu usuario CEO tenga una aerolínea asociada en usuarios.codAerolinea.';
 } finally {
     if ($conexion instanceof mysqli) {
         $conexion->close();
