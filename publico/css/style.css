@@ -504,6 +504,36 @@ a {
     grid-column: 1 / -1;
 }
 
+.opcion-ceo-registro {
+    display: flex;
+    grid-column: 1 / -1;
+    align-items: flex-start;
+    gap: 10px;
+    color: #17365d;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.opcion-ceo-registro input {
+    width: 18px;
+    height: 18px;
+    margin: 2px 0 0;
+    accent-color: #0d5aa8;
+    flex: 0 0 auto;
+}
+
+.opcion-ceo-registro span {
+    display: grid;
+    gap: 4px;
+}
+
+.opcion-ceo-registro small {
+    color: #526273;
+    font-size: 0.82rem;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
 .campos-contrasena-registro {
     display: grid;
     gap: 18px;

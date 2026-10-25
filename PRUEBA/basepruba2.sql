@@ -5,7 +5,7 @@ CREATE TABLE usuarios (
   codUsuario INT AUTO_INCREMENT PRIMARY KEY,
   nombreUsuario VARCHAR(100) NOT NULL,
   claveUsuario VARCHAR(255) NOT NULL,
-  tipoUsuario ENUM('administrador','ceo de aerolinea','usuario') NOT NULL,
+  tipoUsuario ENUM('administrador','ceo de aerolinea','ceo pendiente','usuario') NOT NULL,
   emailUsuario VARCHAR(100) NOT NULL UNIQUE,
   telefonoUsuario VARCHAR(20)
 );

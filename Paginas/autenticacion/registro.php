@@ -6,11 +6,14 @@ $erroresRegistro = [];
 $nombreCompleto = '';
 $emailIngresado = '';
 $telefonoIngresado = '';
+$solicitudCeo = false;
+$mensajeRegistro = '';
 
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     $nombreCompleto = trim((string) ($_POST['nombre_completo'] ?? ''));
     $emailIngresado = trim((string) ($_POST['email'] ?? ''));
     $telefonoIngresado = trim((string) ($_POST['telefono'] ?? ''));
+    $solicitudCeo = ($_POST['soy_ceo'] ?? '') === '1';
     $contrasena = (string) ($_POST['contrasena'] ?? '');
     $repetirContrasena = (string) ($_POST['repetir_contrasena'] ?? '');
     $tokenEnviado = (string) ($_POST['csrf_token'] ?? '');
@@ -56,15 +59,17 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
                     $erroresRegistro[] = 'Ya existe una cuenta registrada con ese correo electrónico.';
                 } else {
                     $hashContrasena = password_hash($contrasena, PASSWORD_DEFAULT);
+                    $tipoUsuarioNuevo = $solicitudCeo ? 'ceo pendiente' : 'usuario';
                     $consulta = $conexion->prepare(
                         "INSERT INTO usuarios
                             (nombreUsuario, claveUsuario, tipoUsuario, emailUsuario, telefonoUsuario)
-                         VALUES (?, ?, 'usuario', ?, ?)"
+                         VALUES (?, ?, ?, ?, ?)"
                     );
                     $consulta->bind_param(
-                        'ssss',
+                        'sssss',
                         $nombreCompleto,
                         $hashContrasena,
+                        $tipoUsuarioNuevo,
                         $emailIngresado,
                         $telefonoIngresado
                     );
@@ -72,15 +77,23 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
                     $codUsuario = $conexion->insert_id;
                     $consulta->close();
 
-                    session_regenerate_id(true);
-                    $_SESSION['codUsuario'] = (int) $codUsuario;
-                    $_SESSION['nombreUsuario'] = $nombreCompleto;
-                    $_SESSION['tipoUsuario'] = 'usuario';
-                    $_SESSION['emailUsuario'] = $emailIngresado;
-                    $_SESSION['csrf_auth'] = bin2hex(random_bytes(32));
+                    if ($solicitudCeo) {
+                        $mensajeRegistro = 'Tu cuenta fue creada y la solicitud para ser CEO quedó pendiente de aprobación. Vas a poder iniciar sesión cuando un administrador la apruebe.';
+                        $nombreCompleto = '';
+                        $emailIngresado = '';
+                        $telefonoIngresado = '';
+                        $solicitudCeo = false;
+                    } else {
+                        session_regenerate_id(true);
+                        $_SESSION['codUsuario'] = (int) $codUsuario;
+                        $_SESSION['nombreUsuario'] = $nombreCompleto;
+                        $_SESSION['tipoUsuario'] = 'usuario';
+                        $_SESSION['emailUsuario'] = $emailIngresado;
+                        $_SESSION['csrf_auth'] = bin2hex(random_bytes(32));
 
-                    header('Location: /');
-                    exit;
+                        header('Location: /');
+                        exit;
+                    }
                 }
             } catch (mysqli_sql_exception $error) {
                 $codigoError = (int) $error->getCode();
@@ -96,7 +109,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
                     1142 => 'El usuario de la base de datos no tiene permiso para consultar la tabla usuarios. Revisá sus permisos en Hostinger.',
                     2002 => 'No se pudo establecer conexión con MySQL. Verificá el servidor de base de datos indicado por Hostinger.',
                     2003 => 'El servidor MySQL no está disponible en el host configurado. Revisá los datos de conexión del sitio.',
-                    1265 => 'Un valor no coincide con el formato permitido por la base. Revisá la estructura de usuarios.',
+                    1265 => 'La base de datos todavía no permite el estado ceo pendiente. Actualizá el ENUM de tipoUsuario en phpMyAdmin.',
                     1364 => 'Falta una columna obligatoria en la tabla usuarios. Compará su estructura con PRUEBA/basepruba2.sql.',
                 ];
 
@@ -131,6 +144,10 @@ $escapar = static fn(string $valor): string => htmlspecialchars($valor, ENT_QUOT
             <p class="autenticacion-etiqueta">Sumate a PlaneARG</p>
             <h1 id="titulo-registro">Crear cuenta</h1>
             <p class="autenticacion-introduccion">Completá tus datos para registrarte.</p>
+
+            <?php if ($mensajeRegistro !== ''): ?>
+                <p class="mensaje-perfil-exito" role="status"><?= $escapar($mensajeRegistro) ?></p>
+            <?php endif; ?>
 
             <?php if ($erroresRegistro !== []): ?>
                 <div class="mensaje-autenticacion" role="alert">
@@ -219,6 +236,16 @@ $escapar = static fn(string $valor): string => htmlspecialchars($valor, ENT_QUOT
                         value="<?= $escapar($telefonoIngresado) ?>"
                         required>
                 </div>
+
+                <label class="opcion-ceo-registro" for="soy-ceo">
+                    <input
+                        id="soy-ceo"
+                        name="soy_ceo"
+                        type="checkbox"
+                        value="1"
+                        <?= $solicitudCeo ? 'checked' : '' ?>>
+                    <span>Soy CEO de una aerolínea <small>Tu solicitud necesitará aprobación antes de habilitar el acceso CEO.</small></span>
+                </label>
 
                 <button class="boton-autenticacion" type="submit">Crear cuenta</button>
             </form>

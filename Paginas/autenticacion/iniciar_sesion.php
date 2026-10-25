@@ -32,24 +32,38 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
             $consulta->close();
 
             if ($usuarioEncontrado && is_string($hashContrasena) && password_verify($contrasena, $hashContrasena)) {
-                session_regenerate_id(true);
-                $_SESSION['codUsuario'] = (int) $codUsuario;
-                $_SESSION['nombreUsuario'] = $nombreUsuario;
-                $_SESSION['tipoUsuario'] = $tipoUsuario;
-                $_SESSION['emailUsuario'] = $emailUsuario;
-                $_SESSION['csrf_auth'] = bin2hex(random_bytes(32));
-
-                if ($tipoUsuario === 'administrador') {
-                    header('Location: /Paginas/admin/menu_admin.php');
-                } elseif ($tipoUsuario === 'ceo de aerolinea') {
-                    header('Location: /Paginas/ceo/Menu%20ceo/panel_control.php');
+                if ($tipoUsuario === 'ceo pendiente') {
+                    unset(
+                        $_SESSION['codUsuario'],
+                        $_SESSION['nombreUsuario'],
+                        $_SESSION['tipoUsuario'],
+                        $_SESSION['emailUsuario']
+                    );
+                    session_regenerate_id(true);
+                    $_SESSION['csrf_auth'] = bin2hex(random_bytes(32));
+                    $errorAutenticacion = 'Tu solicitud para ser CEO todavía está pendiente de aprobación.';
                 } else {
-                    header('Location: /');
+                    session_regenerate_id(true);
+                    $_SESSION['codUsuario'] = (int) $codUsuario;
+                    $_SESSION['nombreUsuario'] = $nombreUsuario;
+                    $_SESSION['tipoUsuario'] = $tipoUsuario;
+                    $_SESSION['emailUsuario'] = $emailUsuario;
+                    $_SESSION['csrf_auth'] = bin2hex(random_bytes(32));
+
+                    if ($tipoUsuario === 'administrador') {
+                        header('Location: /Paginas/admin/menu_admin.php');
+                    } elseif ($tipoUsuario === 'ceo de aerolinea') {
+                        header('Location: /Paginas/ceo/Menu%20ceo/panel_control.php');
+                    } else {
+                        header('Location: /');
+                    }
+                    exit;
                 }
-                exit;
             }
 
-            $errorAutenticacion = 'El correo o la contraseña no son correctos.';
+            if ($errorAutenticacion === '') {
+                $errorAutenticacion = 'El correo o la contraseña no son correctos.';
+            }
         } catch (mysqli_sql_exception $error) {
             error_log('Error al iniciar sesión: ' . $error->getMessage());
             $errorAutenticacion = 'No se pudo procesar el inicio de sesión. Intentá nuevamente más tarde.';
