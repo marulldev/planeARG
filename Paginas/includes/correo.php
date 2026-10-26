@@ -45,6 +45,40 @@ function obtenerUrlBaseAplicacion(): string
 
 function enviarCorreoRecuperacion(string $destinatario, string $urlRestablecimiento): void
 {
+    $urlSegura = htmlspecialchars($urlRestablecimiento, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+    enviarCorreoMailApi(
+        $destinatario,
+        'Recuperar contraseña de PlaneARG',
+        '<p>Recibimos una solicitud para cambiar la contraseña de tu cuenta PlaneARG.</p>'
+            . '<p><a href="' . $urlSegura . '">Crear una contraseña nueva</a></p>'
+            . '<p>El enlace vence en 30 minutos. Si no pediste este cambio, podés ignorar este mensaje.</p>',
+        "Recibimos una solicitud para cambiar la contraseña de tu cuenta PlaneARG.\n\n"
+            . "Abrí este enlace para crear una contraseña nueva (vence en 30 minutos):\n"
+            . $urlRestablecimiento
+            . "\n\nSi no pediste este cambio, podés ignorar este mensaje."
+    );
+}
+
+function enviarCorreoAyuda(string $nombre, string $asunto, string $descripcion): void
+{
+    $nombreSeguro = htmlspecialchars($nombre, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+    $asuntoSeguro = htmlspecialchars($asunto, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+    $descripcionSegura = nl2br(
+        htmlspecialchars($descripcion, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')
+    );
+
+    enviarCorreoMailApi(
+        'planearg@edgardoantinori.com',
+        'Consulta de ayuda: ' . $asunto,
+        '<p><strong>Nombre:</strong> ' . $nombreSeguro . '</p>'
+            . '<p><strong>Asunto:</strong> ' . $asuntoSeguro . '</p>'
+            . '<p><strong>Descripción:</strong><br>' . $descripcionSegura . '</p>',
+        "Nombre: {$nombre}\nAsunto: {$asunto}\n\nDescripción:\n{$descripcion}"
+    );
+}
+
+function enviarCorreoMailApi(string $destinatario, string $asunto, string $html, string $texto): void
+{
     $rutaAutoload = dirname(__DIR__, 2) . '/vendor/autoload.php';
     if (!is_file($rutaAutoload)) {
         throw new RuntimeException('No se encontró el SDK de Hostinger. Ejecutá composer install en el proyecto.');
@@ -75,18 +109,12 @@ function enviarCorreoRecuperacion(string $destinatario, string $urlRestablecimie
             throw new RuntimeException('La mailbox configurada no está disponible para el token Mail API.');
         }
 
-        $urlSegura = htmlspecialchars($urlRestablecimiento, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
         $solicitud = (new \Hostinger\Model\V1SendRequest())
             ->setTo([$destinatario])
             ->setDisplayName((string) $configuracion['from_name'])
-            ->setSubject('Recuperar contraseña de PlaneARG')
-            ->setHtml('<p>Recibimos una solicitud para cambiar la contraseña de tu cuenta PlaneARG.</p>'
-                . '<p><a href="' . $urlSegura . '">Crear una contraseña nueva</a></p>'
-                . '<p>El enlace vence en 30 minutos. Si no pediste este cambio, podés ignorar este mensaje.</p>')
-            ->setText("Recibimos una solicitud para cambiar la contraseña de tu cuenta PlaneARG.\n\n"
-                . "Abrí este enlace para crear una contraseña nueva (vence en 30 minutos):\n"
-                . $urlRestablecimiento
-                . "\n\nSi no pediste este cambio, podés ignorar este mensaje.");
+            ->setSubject($asunto)
+            ->setHtml($html)
+            ->setText($texto);
 
         $apiEnvio = new \Hostinger\Api\SendApi(config: $apiConfiguracion);
         $apiEnvio->sendEmail($mailboxId, $solicitud);
@@ -94,6 +122,6 @@ function enviarCorreoRecuperacion(string $destinatario, string $urlRestablecimie
         throw $error;
     } catch (\Throwable $error) {
         error_log('Error en Hostinger Mail API: ' . get_class($error) . ': ' . $error->getMessage());
-        throw new RuntimeException('No se pudo enviar el correo de recuperación mediante Hostinger Mail API.', 0, $error);
+        throw new RuntimeException('No se pudo enviar el correo mediante Hostinger Mail API.', 0, $error);
     }
 }

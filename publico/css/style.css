@@ -1452,6 +1452,76 @@ a {
     border-top: 1px solid #cbd9e4;
 }
 
+.ayuda-contacto {
+    max-width: 720px;
+    padding-top: 36px;
+    border-top: 1px solid #cbd9e4;
+}
+
+.ayuda-contacto h2 {
+    margin: 0;
+    color: #132238;
+    font-size: 1.8rem;
+}
+
+.ayuda-contacto > p {
+    color: #40546a;
+    line-height: 1.6;
+}
+
+.formulario-ayuda {
+    display: grid;
+    gap: 18px;
+    margin-top: 24px;
+}
+
+.campo-ayuda {
+    display: grid;
+    gap: 8px;
+}
+
+.campo-ayuda label {
+    color: #132238;
+    font-weight: 700;
+}
+
+.campo-ayuda input,
+.campo-ayuda textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #b9c9d8;
+    border-radius: 8px;
+    color: #132238;
+    font: inherit;
+}
+
+.campo-ayuda textarea {
+    resize: vertical;
+}
+
+.campo-ayuda input:focus,
+.campo-ayuda textarea:focus {
+    border-color: #0d5aa8;
+    outline: 2px solid #0d5aa8;
+    outline-offset: 2px;
+}
+
+.boton-ayuda {
+    justify-self: start;
+    padding: 12px 22px;
+    border: 0;
+    border-radius: 8px;
+    background: #0d5aa8;
+    color: #fff;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.boton-ayuda:hover {
+    background: #09477f;
+}
+
 @media (max-width: 700px) {
     .ayuda-informacion {
         grid-template-columns: 1fr;
