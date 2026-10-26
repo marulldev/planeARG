@@ -96,7 +96,7 @@ try {
         $pagina = min($pagina, $totalPaginas);
         $consultaVentas = $conexion->prepare(
             "SELECT r.codReserva, r.codUsuario, u.nombreUsuario, r.fechaReserva,
-                    v.codAerolinea, a.nombreAerolinea, v.codVuelo, v.precioVuelo,
+                    v.codAerolinea, a.nombreAerolinea, v.codVuelo, r.precioReserva AS precioVuelo,
                     r.estadoReserva
              FROM reservas AS r
              INNER JOIN usuarios AS u ON u.codUsuario = r.codUsuario

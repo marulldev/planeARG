@@ -9,14 +9,24 @@ $conexion = null;
 try {
     $conexion = conectarBaseDeDatos();
     $consulta = $conexion->prepare(
-        'SELECT v.codVuelo, v.origenVuelo, v.destinoVuelo, v.fechaSalidaVuelo,
-                v.horaSalidaVuelo, v.precioVuelo, v.asientosDisponibles,
+        "SELECT v.codVuelo, v.origenVuelo, v.destinoVuelo, v.fechaSalidaVuelo,
+                v.horaSalidaVuelo, v.precioVuelo, p.descuentoPromocion,
+                ROUND(v.precioVuelo * (100 - COALESCE(p.descuentoPromocion, 0)) / 100, 2) AS precioFinal,
+                v.asientosDisponibles,
                 a.nombreAerolinea
          FROM vuelos AS v
          INNER JOIN aerolineas AS a ON a.codAerolinea = v.codAerolinea
+         LEFT JOIN promociones AS p
+           ON p.codPromocion = (
+               SELECT MAX(p2.codPromocion)
+               FROM promociones AS p2
+               WHERE p2.codAerolinea = v.codAerolinea
+                 AND p2.estadoPromocion = 'aprobada'
+                 AND (p2.fechaExpiracionPromocion IS NULL OR p2.fechaExpiracionPromocion >= CURRENT_DATE)
+           )
          WHERE TIMESTAMP(v.fechaSalidaVuelo, v.horaSalidaVuelo) > NOW()
            AND v.asientosDisponibles > 0
-         ORDER BY v.fechaSalidaVuelo, v.horaSalidaVuelo, v.codVuelo'
+         ORDER BY v.fechaSalidaVuelo, v.horaSalidaVuelo, v.codVuelo"
     );
     $consulta->execute();
     $consulta->bind_result(
@@ -25,6 +35,8 @@ try {
         $destinoVuelo,
         $fechaSalidaVuelo,
         $horaSalidaVuelo,
+        $precioOriginal,
+        $descuentoPromocion,
         $precioVuelo,
         $asientosDisponibles,
         $nombreAerolinea
@@ -38,6 +50,8 @@ try {
             'fechaSalidaVuelo' => $fechaSalidaVuelo,
             'horaSalidaVuelo' => $horaSalidaVuelo,
             'precioVuelo' => $precioVuelo,
+            'precioOriginal' => $precioOriginal,
+            'descuentoPromocion' => $descuentoPromocion,
             'asientosDisponibles' => $asientosDisponibles,
             'nombreAerolinea' => $nombreAerolinea,
         ];
@@ -105,7 +119,12 @@ $usuarioPuedeReservar = isset($_SESSION['codUsuario'])
                                 </p>
                             </div>
                             <div class="item-vuelo-accion">
-                                <p class="item-vuelo-precio">$ <?= number_format((float) $vuelo['precioVuelo'], 2, ',', '.') ?></p>
+                                <?php if ($vuelo['descuentoPromocion'] !== null): ?>
+                                    <p class="item-vuelo-precio"><del>$ <?= number_format((float) $vuelo['precioOriginal'], 2, ',', '.') ?></del> $ <?= number_format((float) $vuelo['precioVuelo'], 2, ',', '.') ?></p>
+                                    <p>Promoción: -<?= number_format((float) $vuelo['descuentoPromocion'], 2, ',', '.') ?>%</p>
+                                <?php else: ?>
+                                    <p class="item-vuelo-precio">$ <?= number_format((float) $vuelo['precioVuelo'], 2, ',', '.') ?></p>
+                                <?php endif; ?>
                                 <?php if ($usuarioPuedeReservar): ?>
                                     <a class="boton-vuelo-reservar" href="/Paginas/usuario/reservar_vuelo.php">Reservar</a>
                                 <?php elseif (!isset($_SESSION['codUsuario'])): ?>

@@ -55,14 +55,23 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
                 }
 
                 $consultaVuelo = $conexion->prepare(
-                    'SELECT fechaSalidaVuelo, horaSalidaVuelo, asientosDisponibles
-                     FROM vuelos
-                     WHERE codVuelo = ?
-                     FOR UPDATE'
+                    "SELECT v.fechaSalidaVuelo, v.horaSalidaVuelo, v.asientosDisponibles,
+                            ROUND(v.precioVuelo * (100 - COALESCE(p.descuentoPromocion, 0)) / 100, 2) AS precioFinal
+                     FROM vuelos AS v
+                     LEFT JOIN promociones AS p
+                       ON p.codPromocion = (
+                           SELECT MAX(p2.codPromocion)
+                           FROM promociones AS p2
+                           WHERE p2.codAerolinea = v.codAerolinea
+                             AND p2.estadoPromocion = 'aprobada'
+                             AND (p2.fechaExpiracionPromocion IS NULL OR p2.fechaExpiracionPromocion >= CURRENT_DATE)
+                       )
+                     WHERE v.codVuelo = ?
+                     FOR UPDATE"
                 );
                 $consultaVuelo->bind_param('i', $codVuelo);
                 $consultaVuelo->execute();
-                $consultaVuelo->bind_result($fechaSalida, $horaSalida, $asientosDisponibles);
+                $consultaVuelo->bind_result($fechaSalida, $horaSalida, $asientosDisponibles, $precioReserva);
                 $vueloEncontrado = $consultaVuelo->fetch();
                 $consultaVuelo->close();
 
@@ -93,10 +102,11 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
                 }
 
                 $crearReserva = $conexion->prepare(
-                    "INSERT INTO reservas (codUsuario, codVuelo, fechaReserva, estadoReserva)
-                     VALUES (?, ?, CURRENT_DATE, 'pendiente de pago')"
+                    "INSERT INTO reservas (codUsuario, codVuelo, fechaReserva, precioReserva, estadoReserva)
+                     VALUES (?, ?, CURRENT_DATE, ?, 'pendiente de pago')"
                 );
-                $crearReserva->bind_param('ii', $codUsuario, $codVuelo);
+                $precioReserva = (float) $precioReserva;
+                $crearReserva->bind_param('iid', $codUsuario, $codVuelo, $precioReserva);
                 $crearReserva->execute();
                 $crearReserva->close();
 
@@ -169,9 +179,19 @@ try {
 
     $consultaVuelos = $conexion->prepare(
         'SELECT v.codVuelo, v.origenVuelo, v.destinoVuelo, v.fechaSalidaVuelo,
-                v.horaSalidaVuelo, v.precioVuelo, v.asientosDisponibles, a.nombreAerolinea
+                v.horaSalidaVuelo, v.precioVuelo, p.descuentoPromocion,
+                ROUND(v.precioVuelo * (100 - COALESCE(p.descuentoPromocion, 0)) / 100, 2) AS precioFinal,
+                v.asientosDisponibles, a.nombreAerolinea
          FROM vuelos AS v
          INNER JOIN aerolineas AS a ON a.codAerolinea = v.codAerolinea
+         LEFT JOIN promociones AS p
+           ON p.codPromocion = (
+               SELECT MAX(p2.codPromocion)
+               FROM promociones AS p2
+               WHERE p2.codAerolinea = v.codAerolinea
+                 AND p2.estadoPromocion = \'aprobada\'
+                 AND (p2.fechaExpiracionPromocion IS NULL OR p2.fechaExpiracionPromocion >= CURRENT_DATE)
+           )
          WHERE TIMESTAMP(v.fechaSalidaVuelo, v.horaSalidaVuelo) > NOW()
            AND v.asientosDisponibles > 0
          ORDER BY v.fechaSalidaVuelo, v.horaSalidaVuelo'
@@ -183,6 +203,8 @@ try {
         $destinoVuelo,
         $fechaSalidaVuelo,
         $horaSalidaVuelo,
+        $precioOriginal,
+        $descuentoPromocion,
         $precioVuelo,
         $asientosDisponibles,
         $nombreAerolinea
@@ -196,6 +218,8 @@ try {
             'fechaSalidaVuelo' => $fechaSalidaVuelo,
             'horaSalidaVuelo' => $horaSalidaVuelo,
             'precioVuelo' => $precioVuelo,
+            'precioOriginal' => $precioOriginal,
+            'descuentoPromocion' => $descuentoPromocion,
             'asientosDisponibles' => $asientosDisponibles,
             'nombreAerolinea' => $nombreAerolinea,
         ];
@@ -204,7 +228,7 @@ try {
 
     $consultaReservas = $conexion->prepare(
         "SELECT r.codReserva, r.fechaReserva, v.origenVuelo, v.destinoVuelo,
-                v.fechaSalidaVuelo, v.horaSalidaVuelo, v.precioVuelo, a.nombreAerolinea
+                v.fechaSalidaVuelo, v.horaSalidaVuelo, r.precioReserva, a.nombreAerolinea
          FROM reservas AS r
          INNER JOIN vuelos AS v ON v.codVuelo = r.codVuelo
          INNER JOIN aerolineas AS a ON a.codAerolinea = v.codAerolinea
@@ -287,7 +311,7 @@ $formatearFecha = static fn(string $fecha): string => date('d/m/Y', strtotime($f
                                     <h3><?= $escapar((string) $reserva['origenVuelo']) ?> → <?= $escapar((string) $reserva['destinoVuelo']) ?></h3>
                                     <p>Reserva #<?= (int) $reserva['codReserva'] ?> · <?= $escapar((string) $reserva['nombreAerolinea']) ?></p>
                                     <p>Salida: <?= $escapar($formatearFecha((string) $reserva['fechaSalidaVuelo'])) ?> · <?= $escapar(substr((string) $reserva['horaSalidaVuelo'], 0, 5)) ?></p>
-                                    <p>Precio: $ <?= number_format((float) $reserva['precioVuelo'], 2, ',', '.') ?></p>
+                                    <p>Precio reservado: $ <?= number_format((float) $reserva['precioVuelo'], 2, ',', '.') ?></p>
                                 </div>
                                 <div class="reserva-pendiente-acciones">
                                     <form method="post">
@@ -322,7 +346,12 @@ $formatearFecha = static fn(string $fecha): string => date('d/m/Y', strtotime($f
                                     <p><?= (int) $vuelo['asientosDisponibles'] ?> <?= (int) $vuelo['asientosDisponibles'] === 1 ? 'asiento disponible' : 'asientos disponibles' ?></p>
                                 </div>
                                 <div class="vuelo-reserva-compra">
-                                    <p>$ <?= number_format((float) $vuelo['precioVuelo'], 2, ',', '.') ?></p>
+                                    <?php if ($vuelo['descuentoPromocion'] !== null): ?>
+                                        <p><del>$ <?= number_format((float) $vuelo['precioOriginal'], 2, ',', '.') ?></del> $ <?= number_format((float) $vuelo['precioVuelo'], 2, ',', '.') ?></p>
+                                        <p>Promoción: -<?= number_format((float) $vuelo['descuentoPromocion'], 2, ',', '.') ?>%</p>
+                                    <?php else: ?>
+                                        <p>$ <?= number_format((float) $vuelo['precioVuelo'], 2, ',', '.') ?></p>
+                                    <?php endif; ?>
                                     <form method="post">
                                         <input type="hidden" name="csrf_token" value="<?= $escapar((string) $_SESSION['csrf_auth']) ?>">
                                         <input type="hidden" name="accion" value="reservar">

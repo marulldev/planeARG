@@ -27,7 +27,7 @@ try {
     $consulta = $conexion->prepare(
         "SELECT r.codReserva, r.fechaReserva, r.estadoReserva,
                 v.origenVuelo, v.destinoVuelo, v.fechaSalidaVuelo,
-                v.horaSalidaVuelo, v.precioVuelo, a.nombreAerolinea
+                v.horaSalidaVuelo, r.precioReserva, a.nombreAerolinea
          FROM reservas AS r
          INNER JOIN vuelos AS v ON v.codVuelo = r.codVuelo
          INNER JOIN aerolineas AS a ON a.codAerolinea = v.codAerolinea

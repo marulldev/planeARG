@@ -59,6 +59,7 @@ CREATE TABLE reservas (
   codReserva INT AUTO_INCREMENT PRIMARY KEY,
   codUsuario INT NOT NULL,
   codVuelo INT NOT NULL,
+  precioReserva DECIMAL(10,2) NOT NULL,
   fechaReserva DATE NOT NULL,
   estadoReserva ENUM('pendiente de pago','confirmada','cancelada') NOT NULL DEFAULT 'pendiente de pago',
   FOREIGN KEY (codUsuario) REFERENCES usuarios(codUsuario),

@@ -34,24 +34,98 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     } else {
         try {
             $conexion = conectarBaseDeDatos();
-            $estadoNuevo = $accion === 'aprobar' ? 'aprobada' : 'denegada';
-            $consulta = $conexion->prepare(
-                "UPDATE promociones
-                 SET estadoPromocion = ?
-                 WHERE codPromocion = ? AND estadoPromocion = 'pendiente'"
+            $conexion->begin_transaction();
+            $consultaPromocion = $conexion->prepare(
+                "SELECT codAerolinea
+                 FROM promociones
+                 WHERE codPromocion = ? AND estadoPromocion = 'pendiente'
+                 FOR UPDATE"
             );
-            $consulta->bind_param('si', $estadoNuevo, $codPromocion);
-            $consulta->execute();
-            $promocionActualizada = $consulta->affected_rows === 1;
-            $consulta->close();
+            $consultaPromocion->bind_param('i', $codPromocion);
+            $consultaPromocion->execute();
+            $consultaPromocion->bind_result($codAerolinea);
+            $promocionEncontrada = $consultaPromocion->fetch();
+            $consultaPromocion->close();
 
-            if (!$promocionActualizada) {
+            if (!$promocionEncontrada) {
+                $conexion->rollback();
                 $mensaje = 'La promoción no existe o ya fue revisada.';
+            } elseif ($accion === 'aprobar') {
+                $bloquearAerolinea = $conexion->prepare(
+                    'SELECT codAerolinea
+                     FROM aerolineas
+                     WHERE codAerolinea = ?
+                     FOR UPDATE'
+                );
+                $bloquearAerolinea->bind_param('i', $codAerolinea);
+                $bloquearAerolinea->execute();
+                $bloquearAerolinea->bind_result($codAerolineaBloqueada);
+                $aerolineaEncontrada = $bloquearAerolinea->fetch();
+                $bloquearAerolinea->close();
+
+                $consultaActiva = $conexion->prepare(
+                    "SELECT COUNT(*)
+                     FROM promociones
+                     WHERE codAerolinea = ?
+                       AND estadoPromocion = 'aprobada'
+                       AND (fechaExpiracionPromocion IS NULL OR fechaExpiracionPromocion >= CURRENT_DATE)"
+                );
+                $consultaActiva->bind_param('i', $codAerolinea);
+                $consultaActiva->execute();
+                $consultaActiva->bind_result($promocionesActivas);
+                $consultaActiva->fetch();
+                $consultaActiva->close();
+
+                if (!$aerolineaEncontrada) {
+                    $conexion->rollback();
+                    $mensaje = 'No se encontró la aerolínea asociada a esta promoción.';
+                } elseif ((int) $promocionesActivas > 0) {
+                    $conexion->rollback();
+                    $mensaje = 'Esta aerolínea ya tiene una promoción aprobada y vigente. Esperá a que expire antes de aprobar otra.';
+                } else {
+                    $consulta = $conexion->prepare(
+                        "UPDATE promociones
+                         SET estadoPromocion = 'aprobada'
+                         WHERE codPromocion = ? AND estadoPromocion = 'pendiente'"
+                    );
+                    $consulta->bind_param('i', $codPromocion);
+                    $consulta->execute();
+                    $promocionActualizada = $consulta->affected_rows === 1;
+                    $consulta->close();
+
+                    if (!$promocionActualizada) {
+                        $conexion->rollback();
+                        $mensaje = 'La promoción no existe o ya fue revisada.';
+                    } else {
+                        $conexion->commit();
+                        $mensaje = 'La promoción #' . $codPromocion . ' fue aprobada.';
+                        $tipoMensaje = 'exito';
+                    }
+                }
             } else {
-                $mensaje = 'La promoción #' . $codPromocion . ' fue ' . $estadoNuevo . '.';
-                $tipoMensaje = 'exito';
+                $consulta = $conexion->prepare(
+                    "UPDATE promociones
+                     SET estadoPromocion = 'denegada'
+                     WHERE codPromocion = ? AND estadoPromocion = 'pendiente'"
+                );
+                $consulta->bind_param('i', $codPromocion);
+                $consulta->execute();
+                $promocionActualizada = $consulta->affected_rows === 1;
+                $consulta->close();
+
+                if (!$promocionActualizada) {
+                    $conexion->rollback();
+                    $mensaje = 'La promoción no existe o ya fue revisada.';
+                } else {
+                    $conexion->commit();
+                    $mensaje = 'La promoción #' . $codPromocion . ' fue denegada.';
+                    $tipoMensaje = 'exito';
+                }
             }
         } catch (mysqli_sql_exception $error) {
+            if ($conexion instanceof mysqli) {
+                $conexion->rollback();
+            }
             error_log('Error al revisar una promoción: ' . $error->getMessage());
             $mensaje = 'No se pudo actualizar la promoción. Intentá nuevamente más tarde.';
         } finally {

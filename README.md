@@ -14,3 +14,7 @@ El enlace vence a los 30 minutos, el token se almacena como hash y solo se permi
 ## Imágenes de novedades y promociones
 
 Ejecutá `PRUEBA/migraciones/20261025_imagenes_novedades_promociones.sql` una vez sobre la base de datos activa. Las imágenes son opcionales; se aceptan JPG, PNG y WebP de hasta 5 MB y se guardan en `publico/imagenes/contenido`. Si no se carga una imagen, se muestra `publico/imagenes/novedad/promo_generica.png`.
+
+## Promociones en vuelos
+
+Ejecutá `PRUEBA/migraciones/20261025_precio_reservas_promociones.sql` una vez sobre la base de datos activa para guardar el precio aplicado al crear cada reserva y conservarlo aunque la promoción expire después. Solo las promociones aprobadas y no vencidas se aplican a los vuelos de su aerolínea; una aerolínea no puede tener más de una promoción activa.

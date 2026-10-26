@@ -134,7 +134,7 @@ try {
     $consulta = $conexion->prepare(
         'SELECT r.codReserva, r.fechaReserva, r.estadoReserva,
                 v.origenVuelo, v.destinoVuelo, v.fechaSalidaVuelo,
-                v.horaSalidaVuelo, v.precioVuelo, a.nombreAerolinea,
+                v.horaSalidaVuelo, r.precioReserva, a.nombreAerolinea,
                 TIMESTAMPDIFF(
                     SECOND,
                     NOW(),
@@ -156,7 +156,7 @@ try {
         $destinoVuelo,
         $fechaSalidaVuelo,
         $horaSalidaVuelo,
-        $precioVuelo,
+        $precioReserva,
         $nombreAerolinea,
         $segundosHastaSalida
     );
@@ -170,7 +170,7 @@ try {
             'destinoVuelo' => $destinoVuelo,
             'fechaSalidaVuelo' => $fechaSalidaVuelo,
             'horaSalidaVuelo' => $horaSalidaVuelo,
-            'precioVuelo' => $precioVuelo,
+            'precioVuelo' => $precioReserva,
             'nombreAerolinea' => $nombreAerolinea,
             'cancelable' => in_array($estadoReserva, ['pendiente de pago', 'confirmada'], true)
                 && (int) $segundosHastaSalida >= 72 * 60 * 60,

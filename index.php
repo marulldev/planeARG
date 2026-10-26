@@ -35,15 +35,25 @@ try {
     $consultaNovedades->close();
 
     $consultaVuelos = $conexion->prepare(
-        'SELECT v.codVuelo, v.origenVuelo, v.destinoVuelo, v.fechaSalidaVuelo,
-                v.horaSalidaVuelo, v.precioVuelo, v.asientosDisponibles,
+        "SELECT v.codVuelo, v.origenVuelo, v.destinoVuelo, v.fechaSalidaVuelo,
+                v.horaSalidaVuelo, v.precioVuelo, p.descuentoPromocion,
+                ROUND(v.precioVuelo * (100 - COALESCE(p.descuentoPromocion, 0)) / 100, 2) AS precioFinal,
+                v.asientosDisponibles,
                 a.nombreAerolinea
          FROM vuelos AS v
          INNER JOIN aerolineas AS a ON a.codAerolinea = v.codAerolinea
+         LEFT JOIN promociones AS p
+           ON p.codPromocion = (
+               SELECT MAX(p2.codPromocion)
+               FROM promociones AS p2
+               WHERE p2.codAerolinea = v.codAerolinea
+                 AND p2.estadoPromocion = 'aprobada'
+                 AND (p2.fechaExpiracionPromocion IS NULL OR p2.fechaExpiracionPromocion >= CURRENT_DATE)
+           )
          WHERE TIMESTAMP(v.fechaSalidaVuelo, v.horaSalidaVuelo) > NOW()
            AND v.asientosDisponibles > 0
          ORDER BY v.codVuelo DESC
-         LIMIT 2'
+         LIMIT 2"
     );
     $consultaVuelos->execute();
     $consultaVuelos->bind_result(
@@ -52,6 +62,8 @@ try {
         $destinoVuelo,
         $fechaSalidaVuelo,
         $horaSalidaVuelo,
+        $precioOriginal,
+        $descuentoPromocionVuelo,
         $precioVuelo,
         $asientosDisponibles,
         $nombreAerolinea
@@ -64,6 +76,8 @@ try {
             'fechaSalidaVuelo' => $fechaSalidaVuelo,
             'horaSalidaVuelo' => $horaSalidaVuelo,
             'precioVuelo' => $precioVuelo,
+            'precioOriginal' => $precioOriginal,
+            'descuentoPromocion' => $descuentoPromocionVuelo,
             'asientosDisponibles' => $asientosDisponibles,
             'nombreAerolinea' => $nombreAerolinea,
         ];
@@ -200,7 +214,14 @@ $escapar = static fn(string $valor): string => htmlspecialchars($valor, ENT_QUOT
                                         <?= (int) $vuelo['asientosDisponibles'] === 1 ? 'asiento disponible' : 'asientos disponibles' ?>
                                     </p>
                                 </div>
-                                <p class="item-vuelo-precio">$ <?= number_format((float) $vuelo['precioVuelo'], 2, ',', '.') ?></p>
+                                <?php if ($vuelo['descuentoPromocion'] !== null): ?>
+                                    <div>
+                                        <p class="item-vuelo-precio"><del>$ <?= number_format((float) $vuelo['precioOriginal'], 2, ',', '.') ?></del> $ <?= number_format((float) $vuelo['precioVuelo'], 2, ',', '.') ?></p>
+                                        <p>Promoción: -<?= number_format((float) $vuelo['descuentoPromocion'], 2, ',', '.') ?>%</p>
+                                    </div>
+                                <?php else: ?>
+                                    <p class="item-vuelo-precio">$ <?= number_format((float) $vuelo['precioVuelo'], 2, ',', '.') ?></p>
+                                <?php endif; ?>
                             </article>
                         <?php endforeach; ?>
                     </div>
