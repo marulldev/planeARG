@@ -1454,6 +1454,7 @@ a {
 
 .ayuda-contacto {
     max-width: 720px;
+    margin-inline: auto;
     padding-top: 36px;
     border-top: 1px solid #cbd9e4;
 }
