@@ -1,20 +1,24 @@
-# planeARG
+# PlaneARG
 
-## Recuperación de contraseña
+PlaneARG es el trabajo final de la materia **Entornos Gráficos**, realizado en la **Universidad Tecnológica Nacional (UTN), Facultad Regional Rosario**, durante el ciclo lectivo 2026.
 
-1. Ejecutá `PRUEBA/migraciones/20261025_cod_aerolinea_nullable.sql` una vez sobre la base de datos activa para permitir cuentas que no estén asociadas a una aerolínea.
-2. Ejecutá `PRUEBA/migraciones/20261025_recuperacion_contrasena.sql` una vez sobre la base de datos activa.
-3. Ejecutá `composer install` en la raíz del proyecto para instalar las dependencias.
-4. En Hostinger, generá un token de Mail API con acceso a la mailbox.
-5. Copiá `Paginas/includes/correo_config.example.php` como `Paginas/includes/correo_config.local.php` y completá `api_access_token` con el token privado y `base_url` con la URL HTTPS pública del sitio. El archivo local está excluido de Git.
-6. Confirmá que `mailbox_email` coincide con una dirección autorizada para ese token. La aplicación consulta la API para obtener automáticamente el identificador de la mailbox.
+## ¿Qué es PlaneARG?
 
-El enlace vence a los 30 minutos, el token se almacena como hash y solo se permite una solicitud por cuenta por minuto. El formulario responde con el mismo mensaje exista o no la cuenta. El SDK requiere PHP 8.2 o superior.
+PlaneARG es un sitio web para consultar vuelos y organizar reservas. En un mismo espacio, los pasajeros pueden explorar próximas salidas, comparar rutas, horarios, aerolíneas, asientos disponibles y precios, incluidas las promociones vigentes. También pueden crear una cuenta, reservar vuelos, gestionar sus reservas y consultar su historial de compras.
 
-## Imágenes de novedades y promociones
+El sitio incluye una página de inicio con vuelos, promociones y novedades, además de secciones informativas de ayuda y presentación del proyecto. Las funciones disponibles cambian según el tipo de cuenta:
 
-Ejecutá `PRUEBA/migraciones/20261025_imagenes_novedades_promociones.sql` una vez sobre la base de datos activa. Las imágenes son opcionales; se aceptan JPG, PNG y WebP de hasta 5 MB y se guardan en `publico/imagenes/contenido`. Si no se carga una imagen, se muestra `publico/imagenes/novedad/promo_generica.png`.
+- **Pasajeros:** consultan vuelos, realizan reservas, gestionan su estado y revisan el historial de compras.
+- **CEO de aerolínea:** administra los vuelos y las promociones de su aerolínea, y consulta reportes de ventas y ocupación.
+- **Administración:** gestiona aerolíneas, solicitudes para ser CEO y novedades; revisa promociones y consulta reportes de ventas, vuelos y usuarios.
 
-## Promociones en vuelos
+Las promociones deben ser aprobadas por administración para mostrarse como ofertas vigentes. El precio asociado a una reserva queda guardado para conservar el importe aplicado al momento de reservar.
 
-Ejecutá `PRUEBA/migraciones/20261025_precio_reservas_promociones.sql` una vez sobre la base de datos activa para guardar el precio aplicado al crear cada reserva y conservarlo aunque la promoción expire después. Solo las promociones aprobadas y no vencidas se aplican a los vuelos de su aerolínea; una aerolínea no puede tener más de una promoción activa.
+## Tecnologías
+
+- PHP 8.2 o superior.
+- MySQL o MariaDB.
+- HTML y CSS.
+- Composer para instalar las dependencias de correo.
+
+La hoja de estilos principal está en `publico/css/style.css`. Las dependencias PHP se declaran en `composer.json`; se utilizan PHPMailer y el SDK de Mail API de Hostinger para las funciones de correo.
