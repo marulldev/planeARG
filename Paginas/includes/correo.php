@@ -61,6 +61,7 @@ function enviarCorreoRecuperacion(string $destinatario, string $urlRestablecimie
 
 function enviarCorreoAyuda(string $nombre, string $asunto, string $descripcion): void
 {
+    $configuracion = obtenerConfiguracionCorreo();
     $nombreSeguro = htmlspecialchars($nombre, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
     $asuntoSeguro = htmlspecialchars($asunto, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
     $descripcionSegura = nl2br(
@@ -68,7 +69,7 @@ function enviarCorreoAyuda(string $nombre, string $asunto, string $descripcion):
     );
 
     enviarCorreoMailApi(
-        'planearg@edgardoantinori.com',
+        (string) $configuracion['mailbox_email'],
         'Consulta de ayuda: ' . $asunto,
         '<p><strong>Nombre:</strong> ' . $nombreSeguro . '</p>'
             . '<p><strong>Asunto:</strong> ' . $asuntoSeguro . '</p>'
