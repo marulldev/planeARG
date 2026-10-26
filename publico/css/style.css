@@ -2208,9 +2208,7 @@ a {
     font-size: 0.96rem;
     line-height: 1.5;
     overflow-wrap: anywhere;
-    line-clamp: 3;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
 }
 
 .contenido-novedad span {
