@@ -454,12 +454,14 @@ $urlCancelarEdicion = '/Paginas/ceo/vuelos/GestionarVuelos.php';
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestionar vuelos | PlaneARG</title>
     <link rel="stylesheet" href="/publico/css/style.css?v=<?= filemtime($_SERVER['DOCUMENT_ROOT'] . '/publico/css/style.css') ?>">
 </head>
+
 <body>
     <?php include __DIR__ . '/../../plantilla/encabezado.php'; ?>
 
@@ -534,19 +536,17 @@ $urlCancelarEdicion = '/Paginas/ceo/vuelos/GestionarVuelos.php';
                     <div class="campo-vuelo">
                         <label for="capacidadTotal">Capacidad total de asientos</label>
                         <input id="capacidadTotal" name="capacidadTotal" type="number" min="1" max="999999999" step="1" value="<?= $escapar($valoresFormulario['capacidadTotal']) ?>" required>
-                        <small>Al crear el vuelo, todos los asientos comienzan disponibles.</small>
-                    </div>
-                    <?php if ($mensaje !== '' && $tipoMensaje === 'error' && $erroresFormulario !== []): ?>
-                        <p class="nota-vuelo-error" role="alert"><?= $escapar($mensaje) ?></p>
-                    <?php endif; ?>
-                    <div class="acciones-formulario-vuelo">
-                        <?php if ($modoEdicion): ?>
-                            <a class="cancelar-aerolinea" href="<?= $urlCancelarEdicion ?>">Cancelar edición</a>
+                        <?php if ($mensaje !== '' && $tipoMensaje === 'error' && $erroresFormulario !== []): ?>
+                            <p class="nota-vuelo-error" role="alert"><?= $escapar($mensaje) ?></p>
                         <?php endif; ?>
-                        <button class="boton-reserva boton-pagar" type="submit" <?= $vueloTieneReservas ? 'disabled' : '' ?>>
-                            <?= $modoEdicion ? 'Guardar cambios' : 'Crear vuelo' ?>
-                        </button>
-                    </div>
+                        <div class="acciones-formulario-vuelo">
+                            <?php if ($modoEdicion): ?>
+                                <a class="cancelar-aerolinea" href="<?= $urlCancelarEdicion ?>">Cancelar edición</a>
+                            <?php endif; ?>
+                            <button class="boton-reserva boton-pagar" type="submit" <?= $vueloTieneReservas ? 'disabled' : '' ?>>
+                                <?= $modoEdicion ? 'Guardar cambios' : 'Crear vuelo' ?>
+                            </button>
+                        </div>
                 </form>
             </section>
 
@@ -592,4 +592,5 @@ $urlCancelarEdicion = '/Paginas/ceo/vuelos/GestionarVuelos.php';
 
     <?php include __DIR__ . '/../../plantilla/pie_pagina.php'; ?>
 </body>
+
 </html>
