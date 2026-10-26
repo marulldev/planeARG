@@ -2495,6 +2495,31 @@ a {
     background: #ffffff;
 }
 
+.reporte-ventas-filtros-ceo {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) auto;
+}
+
+.reporte-ventas-resumen {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 28px;
+    margin-bottom: 16px;
+    padding: 16px 18px;
+    border: 1px solid #dce6ee;
+    border-radius: 10px;
+    background: #ffffff;
+}
+
+.reporte-ventas-resumen p {
+    margin: 0;
+    color: #26384b;
+}
+
+.reporte-ventas-resumen p span {
+    color: #40546a;
+    font-weight: 700;
+}
+
 .reporte-ventas-campo {
     display: grid;
     gap: 6px;
@@ -2648,6 +2673,10 @@ a {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
+    .reporte-ventas-filtros-ceo {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
     .reporte-ventas-aplicar {
         grid-column: 1 / -1;
     }
@@ -2666,6 +2695,10 @@ a {
     }
 
     .reporte-ventas-filtros {
+        grid-template-columns: 1fr;
+    }
+
+    .reporte-ventas-filtros-ceo {
         grid-template-columns: 1fr;
     }
 
@@ -3303,6 +3336,34 @@ a {
     font-size: 0.9rem;
 }
 
+.reporte-ocupacion-resumen {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 28px;
+    margin-bottom: 10px;
+    padding: 16px 18px;
+    border: 1px solid #dce6ee;
+    border-radius: 10px;
+    background: #ffffff;
+}
+
+.reporte-ocupacion-resumen p {
+    margin: 0;
+    color: #26384b;
+}
+
+.reporte-ocupacion-resumen p span {
+    color: #40546a;
+    font-weight: 700;
+}
+
+.reporte-ocupacion-nota {
+    margin: 0 0 16px;
+    color: #536171;
+    font-size: 0.84rem;
+    line-height: 1.5;
+}
+
 @media (max-width: 760px) {
     .reporte-vuelos-filtros {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -3336,6 +3397,10 @@ a {
     .reporte-vuelos-datos + .reporte-vuelos-datos {
         border-top: 1px solid #e6edf3;
         border-left: 0;
+    }
+
+    .reporte-ocupacion-datos {
+        border-top: 1px solid #e6edf3;
     }
 
     .reporte-vuelos-paginacion > div {
